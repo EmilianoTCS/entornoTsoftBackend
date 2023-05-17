@@ -20,7 +20,7 @@ if (isset($_GET['insertarEmpleado'])) {
     $password = $data->password;
     $tipoUsuario = $data->tipoUsuario;
     $nomRol = $data->nomRol;
-    $$usuarioAdmin = $data->usuarioAdmin;
+    $usuarioAdmin = $data->usuarioAdmin;
     
 
     $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo,'$usuario','$password','$tipoUsuario','$usuarioAdmin', '$nomRol', @p0)";
