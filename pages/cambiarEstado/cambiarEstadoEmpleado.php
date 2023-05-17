@@ -14,7 +14,7 @@ if (isset($_GET['cambiarEstadoEmpleado'])) {
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_cambiarEstadoEmpleado($idEmpleado,'$usuarioModificacion')";
+    $query = "CALL SP_cambiarEstadoEmpleado($idEmpleado,'$usuarioModificacion', @p0)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
