@@ -10,19 +10,20 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['insertarEmpleado'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nombreEmpleado = $data->nombreEmpleado;
-    $correo = $data->correo;
-    $nomPais = $data->nomPais;
-    $nomCargo = $data->nomCargo;
-    $nomArea = $data->nomArea;
+    $nomEmpleado = $data->nomEmpleado;
+    $correoEmpleado = $data->correo;
+    $telefonoEmpleado = $data->telefonoEmpleado;
+    $idPais = $data->idPais;
+    $idCargo = $data->idCargo;
+    $idArea = $data->idArea;
     $usuario = $data->usuario;
     $password = $data->password;
-    $tipoUser = $data->tipoUser;
+    $tipoUsuario = $data->tipoUsuario;
     $nomRol = $data->nomRol;
-    $telefono = $data->telefono;
+    $$usuarioAdmin = $data->usuarioAdmin;
     
 
-    $query = "CALL SP_editarEmpleado($idEmpleado,'$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo,'$usuarioModificacion', @p0)";
+    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo,'$usuario','$password','$tipoUsuario','$usuarioAdmin', '$nomRol', @p0)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
