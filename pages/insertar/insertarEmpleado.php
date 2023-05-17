@@ -11,7 +11,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['insertarEmpleado'])) {
     $data = json_decode(file_get_contents("php://input"));
     $nomEmpleado = $data->nomEmpleado;
-    $correoEmpleado = $data->correo;
+    $correoEmpleado = $data->correoEmpleado;
     $telefonoEmpleado = $data->telefonoEmpleado;
     $idPais = $data->idPais;
     $idCargo = $data->idCargo;
