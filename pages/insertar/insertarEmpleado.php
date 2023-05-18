@@ -23,7 +23,7 @@ if (isset($_GET['insertarEmpleado'])) {
     $usuarioAdmin = $data->usuarioAdmin;
     
 
-    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo,'$usuario','$password','$tipoUsuario','$usuarioAdmin', '$nomRol', @p0)";
+    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo,'$usuario','$password','$tipoUsuario','$usuarioAdmin','$nomRol', @p0)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
