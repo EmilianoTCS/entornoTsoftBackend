@@ -8,13 +8,13 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['cambiarEstadoEmpleado'])) {
+if (isset($_GET['cambiarEstadoAlumno'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $idEmpleado = $data->idEmpleado;
+    $idAlumno = $data->idAlumno;
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_cambiarEstadoEmpleado($idEmpleado,'$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_cambiarEstadoAlumno($idAlumno,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -29,11 +29,12 @@ if (isset($_GET['cambiarEstadoEmpleado'])) {
             );
         } else {
             $json[] = array(
-                'idEmpleado' => $row['idEmpleado'],
-                'nomEmpleado' => $row['nomEmpleado'],
-                'correoEmpleado' => $row['correoEmpleado'],
-                'telefonoEmpleado' => $row['telefonoEmpleado'],
+                'idAlumno' => $row['idAlumno'],
+                'nomAlumno' => $row['nomAlumno'],
+                'correoAlumno' => $row['correoAlumno'],
+                'telefonoAlumno' => $row['telefonoAlumno'],
                 'nomArea' => $row['nomArea'],
+                'nomServicio' => $row['nomServicio'],
                 'nomPais' => $row['nomPais'],
                 'nomCargo' => $row['nomCargo']
             );
