@@ -8,12 +8,13 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarEmpleado'])) {
+if (isset($_GET['insertarAlumno'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nomEmpleado = $data->nomEmpleado;
-    $correoEmpleado = $data->correoEmpleado;
-    $telefonoEmpleado = $data->telefonoEmpleado;
+    $nomAlumno = $data->nomAlumno;
+    $correoAlumno = $data->correoAlumno;
+    $telefonoAlumno = $data->telefonoAlumno;
     $idPais = $data->idPais;
+    $idServicio = $data->idServicio;
     $idCargo = $data->idCargo;
     $idArea = $data->idArea;
     $usuario = $data->usuario;
@@ -23,7 +24,7 @@ if (isset($_GET['insertarEmpleado'])) {
     $usuarioAdmin = $data->usuarioAdmin;
 
 
-    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado', $idPais, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioAdmin', $nomRol, @p0, @p1)";
+    $query = "CALL SP_insertarEmpleado('$nomAlumno','$correoAlumno','$telefonoAlumno',$idPais, $idServicio, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioAdmin', $nomRol, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -39,10 +40,10 @@ if (isset($_GET['insertarEmpleado'])) {
             );
         } else {
             $json[] = array(
-                'idEmpleado' => $row['idEmpleado'],
-                'nomEmpleado' => $row['nomEmpleado'],
-                'correoEmpleado' => $row['correoEmpleado'],
-                'telefonoEmpleado' => $row['telefonoEmpleado'],
+                'idAlumno' => $row['idAlumno'],
+                'nomAlumno' => $row['nomAlumno'],
+                'correoAlumno' => $row['correoAlumno'],
+                'telefonoAlumno' => $row['telefonoAlumno'],
                 'nomArea' => $row['nomArea'],
                 'nomPais' => $row['nomPais'],
                 'nomCargo' => $row['nomCargo']

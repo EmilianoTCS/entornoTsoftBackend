@@ -8,27 +8,24 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarEmpleado'])) {
+if (isset($_GET['editarAlumno'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nomEmpleado = $data->nomEmpleado;
-    $correoEmpleado = $data->correoEmpleado;
-    $telefonoEmpleado = $data->telefonoEmpleado;
+    $idAlumno = $data->idAlumno;
+    $nomAlumno = $data->nomAlumno;
+    $correoAlumno = $data->correoAlumno;
+    $telefonoAlumno = $data->telefonoAlumno;
     $idPais = $data->idPais;
-    $idCargo = $data->idCargo;
+    $idServicio = $data->idServicio;
     $idArea = $data->idArea;
-    $usuario = $data->usuario;
-    $password = $data->password;
-    $tipoUsuario = $data->tipoUsuario;
-    $nomRol = $data->nomRol;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $idCargo = $data->idCargo;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado', $idPais, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioAdmin', $nomRol, @p0, @p1)";
+    $query = "CALL SP_editarAlumno($idAlumno,'$nomAlumno','$correoAlumno','$telefonoAlumno',$idPais, $idServicio, $idArea, $idCargo,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
-
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
@@ -39,11 +36,12 @@ if (isset($_GET['insertarEmpleado'])) {
             );
         } else {
             $json[] = array(
-                'idEmpleado' => $row['idEmpleado'],
-                'nomEmpleado' => $row['nomEmpleado'],
-                'correoEmpleado' => $row['correoEmpleado'],
-                'telefonoEmpleado' => $row['telefonoEmpleado'],
+                'idAlumno' => $row['idAlumno'],
+                'nomAlumno' => $row['nomAlumno'],
+                'correoAlumno' => $row['correoAlumno'],
+                'telefonoAlumno' => $row['telefonoAlumno'],
                 'nomArea' => $row['nomArea'],
+                'nomServicio' => $row['nomServicio'],
                 'nomPais' => $row['nomPais'],
                 'nomCargo' => $row['nomCargo']
             );
@@ -51,6 +49,7 @@ if (isset($_GET['insertarEmpleado'])) {
     }
     $jsonstring = json_encode($json);
     echo $jsonstring;
+    mysqli_close($conection);
 } else {
     echo json_encode("Error");
 }

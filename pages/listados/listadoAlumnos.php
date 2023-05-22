@@ -7,16 +7,17 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listadoEmpleados'])) {
+if (isset($_GET['listadoAlumnos'])) {
 
     $data = json_decode(file_get_contents("php://input"));
 
     $data->num_boton = "" || null ? $num_boton = 1 : $data->num_boton;
+
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEmpleados('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoAlumnos('$inicio', '$cantidadPorPagina')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -25,10 +26,12 @@ if (isset($_GET['listadoEmpleados'])) {
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idEmpleado' => $row['idEmpleado'],
-            'nomEmpleado' => $row['nomEmpleado'],
-            'correoEmpleado' => $row['correoEmpleado'],
-            'telefonoEmpleado' => $row['telefonoEmpleado'],
+            'idAlumno' => $row['idAlumno'],
+            'nomAlumno' => $row['nomAlumno'],
+            'correoAlumno' => $row['correoAlumno'],
+            'telefonoAlumno' => $row['telefonoAlumno'],
+            'isActive' => $row['isActive'],
+            'nomServicio' => $row['nomServicio'],
             'nomArea' => $row['nomArea'],
             'nomPais' => $row['nomPais'],
             'nomCargo' => $row['nomCargo']

@@ -8,27 +8,22 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarEmpleado'])) {
+if (isset($_GET['editarContacto'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nomEmpleado = $data->nomEmpleado;
-    $correoEmpleado = $data->correoEmpleado;
-    $telefonoEmpleado = $data->telefonoEmpleado;
-    $idPais = $data->idPais;
-    $idCargo = $data->idCargo;
-    $idArea = $data->idArea;
-    $usuario = $data->usuario;
-    $password = $data->password;
-    $tipoUsuario = $data->tipoUsuario;
-    $nomRol = $data->nomRol;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $idContacto = $data->idContacto;
+    $nomContacto = $data->nomContacto;
+    $correoContacto = $data->correoContacto;
+    $telefonoContacto = $data->telefonoContacto;
+    $isActive = true;
+    $idServicio = $data->idServicio;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado', $idPais, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioAdmin', $nomRol, @p0, @p1)";
+    $query = "CALL SP_editarContacto($idContacto,'$nomContacto','$correoContacto','$telefonoContacto','$isActive', $idServicio,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
-
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
@@ -39,18 +34,19 @@ if (isset($_GET['insertarEmpleado'])) {
             );
         } else {
             $json[] = array(
-                'idEmpleado' => $row['idEmpleado'],
-                'nomEmpleado' => $row['nomEmpleado'],
-                'correoEmpleado' => $row['correoEmpleado'],
-                'telefonoEmpleado' => $row['telefonoEmpleado'],
-                'nomArea' => $row['nomArea'],
-                'nomPais' => $row['nomPais'],
-                'nomCargo' => $row['nomCargo']
+                'idContacto' => $row['idContacto'],
+                'nomContacto' => $row['nomContacto'],
+                'correoContacto' => $row['correoContacto'],
+                'fechaIni' => $row['fechaIni'],
+                'fechaFin' => $row['fechaFin'],
+                'nomServicio' => $row['nomServicio']
+
             );
         }
     }
     $jsonstring = json_encode($json);
     echo $jsonstring;
+    mysqli_close($conection);
 } else {
     echo json_encode("Error");
 }

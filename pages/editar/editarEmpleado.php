@@ -20,7 +20,7 @@ if (isset($_GET['editarEmpleado'])) {
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarEmpleado($idEmpleado,'$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo,'$usuarioModificacion', @p0)";
+    $query = "CALL SP_editarEmpleado($idEmpleado,'$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -28,15 +28,22 @@ if (isset($_GET['editarEmpleado'])) {
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
-        $json[] = array(
-            'idEmpleado' => $row['idEmpleado'],
-            'nomEmpleado' => $row['nomEmpleado'],
-            'correoEmpleado' => $row['correoEmpleado'],
-            'telefonoEmpleado' => $row['telefonoEmpleado'],
-            'nomArea' => $row['nomArea'],
-            'nomPais' => $row['nomPais'],
-            'nomCargo' => $row['nomCargo']
-        );
+        if ($row['OUT_CODRESULT'] != '00') {
+            $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT']
+            );
+        } else {
+            $json[] = array(
+                'idEmpleado' => $row['idEmpleado'],
+                'nomEmpleado' => $row['nomEmpleado'],
+                'correoEmpleado' => $row['correoEmpleado'],
+                'telefonoEmpleado' => $row['telefonoEmpleado'],
+                'nomArea' => $row['nomArea'],
+                'nomPais' => $row['nomPais'],
+                'nomCargo' => $row['nomCargo']
+            );
+        }
     }
     $jsonstring = json_encode($json);
     echo $jsonstring;

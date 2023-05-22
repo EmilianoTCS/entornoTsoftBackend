@@ -8,41 +8,41 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['cambiarEstadoEmpleado'])) {
+if (isset($_GET['insertarServicio'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $idEmpleado = $data->idEmpleado;
-    $usuarioModificacion = $data->usuarioModificacion;
+    $nomServicio = $data->nomServicio;
+    $idCliente = $data->idCliente;
+    $usuarioAdmin = $data->usuarioAdmin;
 
-
-    $query = "CALL SP_cambiarEstadoEmpleado($idEmpleado,'$usuarioModificacion', @p0)";
+    $query = "CALL SP_insertarServicio('$nomServicio',$idCliente,'$usuarioAdmin', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
 
+
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
-        if ($row['OUT_CODRESULT'] != '00') {
+        if ($row['OUT_STATUSERROR'] != '00') {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT']
             );
         } else {
             $json[] = array(
-                'idEmpleado' => $row['idEmpleado'],
-                'nomEmpleado' => $row['nomEmpleado'],
-                'correoEmpleado' => $row['correoEmpleado'],
-                'telefonoEmpleado' => $row['telefonoEmpleado'],
-                'nomArea' => $row['nomArea'],
-                'nomPais' => $row['nomPais'],
-                'nomCargo' => $row['nomCargo']
+                'idServicio' => $row['idServicio'],
+                'nomServicio' => $row['nomServicio'],
+                'isActive' => $row['isActive'],
+                'idCliente' => $row['idCliente'],
+                'fechaCreacion' => $row['fechaCreacion'],
+                'usuarioCreacion' => $row['usuarioCreacion'],
+                'fechaModificacion' => $row['fechaModificacion'],
+                'usuarioModificacion' => $row['usuarioModificacion'],
             );
         }
     }
     $jsonstring = json_encode($json);
     echo $jsonstring;
-    mysqli_close($conection);
-
 } else {
     echo json_encode("Error");
 }

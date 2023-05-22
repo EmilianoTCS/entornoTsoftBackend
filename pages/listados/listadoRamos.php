@@ -7,7 +7,7 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listadoEmpleados'])) {
+if (isset($_GET['listadoRamos'])) {
 
     $data = json_decode(file_get_contents("php://input"));
 
@@ -16,7 +16,7 @@ if (isset($_GET['listadoEmpleados'])) {
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEmpleados('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoRamos('$inicio', '$cantidadPorPagina')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -25,13 +25,14 @@ if (isset($_GET['listadoEmpleados'])) {
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idEmpleado' => $row['idEmpleado'],
-            'nomEmpleado' => $row['nomEmpleado'],
-            'correoEmpleado' => $row['correoEmpleado'],
-            'telefonoEmpleado' => $row['telefonoEmpleado'],
-            'nomArea' => $row['nomArea'],
-            'nomPais' => $row['nomPais'],
-            'nomCargo' => $row['nomCargo']
+            'idRamo' => $row['idRamo'],
+            'codRamo' => $row['codRamo'],
+            'nomRamo' => $row['nomRamo'],
+            'tipoRamo' => $row['tipoRamo'],
+            'tipoRamoHH' => $row['tipoRamoHH'],
+            'duracionRamoHH' => $row['duracionRamoHH'],
+            'cantSesionesRamo' => $row['cantSesionesRamo'],
+            'nomCurso' => $row['nomCurso']
         );
     }
     $jsonstring = json_encode($json);
