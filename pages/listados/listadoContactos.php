@@ -7,15 +7,14 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listadoRelatorRamo'])) {
-
+if (isset($_GET['listadoContactos'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoRelatorRamo('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoContactos('$inicio', '$cantidadPorPagina')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -24,11 +23,14 @@ if (isset($_GET['listadoRelatorRamo'])) {
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idRelatorRamo' => $row['idRelatorRamo'],
+            'idContacto' => $row['idContacto'],
+            'nomContacto' => $row['nomContacto'],
+            'correoContacto' => $row['correoContacto'],
+            'telefonoContacto' => $row['telefonoContacto'],
             'fechaIni' => $row['fechaIni'],
             'fechaFin' => $row['fechaFin'],
-            'nomEmpleado' => $row['nomEmpleado'],
-            'nomRamo' => $row['nomRamo']
+            'nomServicio' => $row['nomServicio']
+
         );
     }
     $jsonstring = json_encode($json);

@@ -7,15 +7,14 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listadoRelatorRamo'])) {
-
+if (isset($_GET['listadoNotaExamen'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoRelatorRamo('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoNotaExamen('$inicio', '$cantidadPorPagina')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -24,11 +23,11 @@ if (isset($_GET['listadoRelatorRamo'])) {
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idRelatorRamo' => $row['idRelatorRamo'],
-            'fechaIni' => $row['fechaIni'],
-            'fechaFin' => $row['fechaFin'],
-            'nomEmpleado' => $row['nomEmpleado'],
-            'nomRamo' => $row['nomRamo']
+            'idNotaExamen' => $row['idNotaExamen'],
+            'notaExamen' => $row['notaExamen'],
+            'apruebaExamen' => $row['apruebaExamen'],
+            'nomExamen' => $row['nomExamen'],
+            'idCursoAlumno' => $row['idCursoAlumno']
         );
     }
     $jsonstring = json_encode($json);

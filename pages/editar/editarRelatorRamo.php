@@ -7,15 +7,19 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listadoRelatorRamo'])) {
+if (isset($_GET['editarRelatorRamo'])) {
 
     $data = json_decode(file_get_contents("php://input"));
-    $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
-    $inicio = ($num_boton - 1) * $cantidadPorPagina;
+    $idRelatorRamo = $data->idRelatorRamo;
+    $fechaIni = $data->fechaIni;
+    $fechaFin = $data->fechaFin;
+    $isActive = $data->isActive;
+    $idEmpleado = $data->idEmpleado;
+    $idRamo = $data->idRamo;
+    $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_listadoRelatorRamo('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_editarRelatorRamo($idRelatorRamo,'$fechaIni', '$fechaFin', '$isActive',$idEmpleado, $idRamo, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -27,7 +31,7 @@ if (isset($_GET['listadoRelatorRamo'])) {
             'idRelatorRamo' => $row['idRelatorRamo'],
             'fechaIni' => $row['fechaIni'],
             'fechaFin' => $row['fechaFin'],
-            'nomEmpleado' => $row['nomEmpleado'],
+            'nomEmp' => $row['nomEmp'],
             'nomRamo' => $row['nomRamo']
         );
     }

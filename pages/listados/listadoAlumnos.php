@@ -28,7 +28,6 @@ if (isset($_GET['listadoAlumnos'])) {
             'nomAlumno' => $row['nomAlumno'],
             'correoAlumno' => $row['correoAlumno'],
             'telefonoAlumno' => $row['telefonoAlumno'],
-            'isActive' => $row['isActive'],
             'nomServicio' => $row['nomServicio'],
             'nomArea' => $row['nomArea'],
             'nomPais' => $row['nomPais'],
