@@ -25,13 +25,13 @@ if (isset($_GET['listadoAlumnos'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idAlumno' => $row['idAlumno'],
-            'nomAlumno' => $row['nomAlumno'],
-            'correoAlumno' => $row['correoAlumno'],
-            'telefonoAlumno' => $row['telefonoAlumno'],
-            'nomServicio' => $row['nomServicio'],
-            'nomArea' => $row['nomArea'],
-            'nomPais' => $row['nomPais'],
-            'nomCargo' => $row['nomCargo']
+            'nomAlumno' => $row['UPPER(alum.nomAlumno)'],
+            'correoAlumno' => $row['UPPER(alum.correoAlumno)'],
+            'telefonoAlumno' => $row['UPPER(alum.telefonoAlumno)'],
+            'nomServicio' => $row['UPPER(serv.nomServicio)'],
+            'nomArea' => $row['UPPER(ar.nomArea)'],
+            'nomPais' => $row['UPPER(pa.nomPais)'],
+            'nomCargo' => $row['UPPER(car.nomCargo)']
         );
     }
     $jsonstring = json_encode($json);

@@ -28,7 +28,7 @@ if (isset($_GET['listadoCursoAlumnoSesion'])) {
             'fechaFin' => $row['fechaFin'],
             'asistencia' => $row['asistencia'],
             'participacion' => $row['participacion'],
-            'nomSesion' => $row['nomSesion'],
+            'nomSesion' => $row['UPPER(se.nomSesion)'],
             'idCursoAlumno' => $row['idCursoAlumno']
         );
     }

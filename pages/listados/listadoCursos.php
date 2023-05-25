@@ -24,9 +24,9 @@ if (isset($_GET['listadoCursos'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idCurso' => $row['idCurso'],
-            'codCurso' => $row['codCurso'],
-            'nomCurso' => $row['nomCurso'],
-            'tipoHH' => $row['tipoHH'],
+            'codCurso' => $row['UPPER(cur.codCurso)'],
+            'nomCurso' => $row['UPPER(cur.nomCurso)'],
+            'tipoHH' => $row['UPPER(cur.tipoHH)'],
             'duracionCursoHH' => $row['duracionCursoHH'],
             'cantSesionesCurso' => $row['cantSesionesCurso']
 

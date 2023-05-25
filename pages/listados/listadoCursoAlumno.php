@@ -30,11 +30,11 @@ if (isset($_GET['listadoCursoAlumno'])) {
             'horaFin' => $row['horaFin'],
             'porcAsistencia' => $row['porcAsistencia'],
             'porcParticipacion' => $row['porcParticipacion'],
-            'claseAprobada' => $row['claseAprobada'],
+            'claseAprobada' => $row['UPPER(curAl.claseAprobada)'],
             'porcAprobacion' => $row['porcAprobacion'],
-            'estadoCurso' => $row['estadoCurso'],
-            'nomAlumno' => $row['nomAlumno'],
-            'nomCurso' => $row['nomCurso']
+            'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
+            'nomAlumno' => $row['UPPER(al.nomAlumno)'],
+            'nomCurso' => $row['UPPER(cur.nomCurso)']
         );
     }
     $jsonstring = json_encode($json);

@@ -27,8 +27,8 @@ if (isset($_GET['listadoRelatorRamo'])) {
             'idRelatorRamo' => $row['idRelatorRamo'],
             'fechaIni' => $row['fechaIni'],
             'fechaFin' => $row['fechaFin'],
-            'nomEmpleado' => $row['nomEmpleado'],
-            'nomRamo' => $row['nomRamo']
+            'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+            'nomRamo' => $row['UPPER(ram.nomRamo)']
         );
     }
     $jsonstring = json_encode($json);

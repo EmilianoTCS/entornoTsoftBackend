@@ -24,12 +24,12 @@ if (isset($_GET['listadoContactos'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idContacto' => $row['idContacto'],
-            'nomContacto' => $row['nomContacto'],
-            'correoContacto' => $row['correoContacto'],
+            'nomContacto' => $row['UPPER(con.nomContacto)'],
+            'correoContacto' => $row['UPPER(con.correoContacto)'],
             'telefonoContacto' => $row['telefonoContacto'],
             'fechaIni' => $row['fechaIni'],
             'fechaFin' => $row['fechaFin'],
-            'nomServicio' => $row['nomServicio']
+            'nomServicio' => $row['UPPER(serv.nomServicio)']
 
         );
     }

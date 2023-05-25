@@ -26,11 +26,11 @@ if (isset($_GET['listadoSesiones'])) {
         $json[] = array(
             'idSesion' => $row['idSesion'],
             'nroSesion' => $row['nroSesion'],
-            'nomSesion' => $row['nomSesion'],
-            'tipoSesion' => $row['tipoSesion'],
-            'tipoSesionHH' => $row['tipoSesionHH'],
-            'duracionSesionHH' => $row['duracionSesionHH'],
-            'nomRamo' => $row['nomRamo']
+            'nomSesion' => $row['UPPER(se.nomSesion)'],
+            'tipoSesion' => $row['UPPER(se.tipoSesion)'],
+            'tipoSesionHH' => $row['UPPER(se.tipoSesionHH)'],
+            'duracionSesionHH' => $row['UPPER(se.duracionSesionHH)'],
+            'nomRamo' => $row['UPPER(ram.nomRamo)']
         );
     }
     $jsonstring = json_encode($json);

@@ -25,8 +25,8 @@ if (isset($_GET['listadoServicios'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idServicio' => $row['idServicio'],
-            'nomServicio' => $row['nomServicio'],
-            'nomCliente' => $row['nomCliente'],
+            'nomServicio' => $row['UPPER(serv.nomServicio)'],
+            'nomCliente' => $row['UPPER(cli.nomCliente)'],
         );
     }
     $jsonstring = json_encode($json);

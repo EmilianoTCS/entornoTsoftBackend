@@ -9,13 +9,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['listadoEmpleados'])) {
 
-    $data = json_decode(file_get_contents("php://input"));
-    $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
-    $inicio = ($num_boton - 1) * $cantidadPorPagina;
+    // $data = json_decode(file_get_contents("php://input"));
+    // $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    // $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
+    // $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEmpleados('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoEmpleados('0', '10')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -25,12 +25,12 @@ if (isset($_GET['listadoEmpleados'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idEmpleado' => $row['idEmpleado'],
-            'nomEmpleado' => $row['nomEmpleado'],
-            'correoEmpleado' => $row['correoEmpleado'],
+            'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+            'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
             'telefonoEmpleado' => $row['telefonoEmpleado'],
-            'nomArea' => $row['nomArea'],
-            'nomPais' => $row['nomPais'],
-            'nomCargo' => $row['nomCargo']
+            'nomArea' => $row['UPPER(ar.nomArea)'],
+            'nomPais' => $row['UPPER(pa.nomPais)'],
+            'nomCargo' => $row['UPPER(ca.nomCargo)']
         );
     }
     $jsonstring = json_encode($json);

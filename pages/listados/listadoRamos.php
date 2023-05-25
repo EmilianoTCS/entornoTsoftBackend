@@ -25,13 +25,13 @@ if (isset($_GET['listadoRamos'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idRamo' => $row['idRamo'],
-            'codRamo' => $row['codRamo'],
-            'nomRamo' => $row['nomRamo'],
-            'tipoRamo' => $row['tipoRamo'],
-            'tipoRamoHH' => $row['tipoRamoHH'],
+            'codRamo' => $row['UPPER(ram.codRamo)'],
+            'nomRamo' => $row['UPPER(ram.nomRamo)'],
+            'tipoRamo' => $row['UPPER(ram.tipoRamo)'],
+            'tipoRamoHH' => $row['UPPER(ram.tipoRamoHH)'],
             'duracionRamoHH' => $row['duracionRamoHH'],
             'cantSesionesRamo' => $row['cantSesionesRamo'],
-            'nomCurso' => $row['nomCurso']
+            'nomCurso' => $row['UPPER(cur.nomCurso)']
         );
     }
     $jsonstring = json_encode($json);

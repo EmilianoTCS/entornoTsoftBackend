@@ -24,9 +24,9 @@ if (isset($_GET['listadoRamoExamen'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idRamoExamen' => $row['idRamoExamen'],
-            'nomExamen' => $row['nomExamen'],
+            'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
             'fechaExamen' => $row['fechaExamen'],
-            'nomRamo' => $row['nomRamo']
+            'nomRamo' => $row['UPPER(ram.nomRamo)']
         );
     }
     $jsonstring = json_encode($json);
