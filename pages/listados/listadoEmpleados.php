@@ -9,13 +9,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['listadoEmpleados'])) {
 
-    // $data = json_decode(file_get_contents("php://input"));
-    // $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    // $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
-    // $inicio = ($num_boton - 1) * $cantidadPorPagina;
+    $data = json_decode(file_get_contents("php://input"));
+    $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
+    $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEmpleados('0', '10')";
+    $query = "CALL SP_listadoEmpleados($inicio, $cantidadPorPagina)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

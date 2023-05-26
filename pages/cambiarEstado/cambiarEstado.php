@@ -14,7 +14,6 @@ if (isset($_GET['cambiarEstado'])) {
     $nombreTabla = $data->nombreTabla;
     $usuarioModificacion = $data->usuarioModificacion;
 
-
     $query = "CALL SP_cambiarEstado('$nombreTabla', $idRegistro,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
