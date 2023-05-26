@@ -32,13 +32,8 @@ if (isset($_GET['editarServicio'])) {
         } else {
             $json[] = array(
                 'idServicio' => $row['idServicio'],
-                'nomServicio' => $row['nomServicio'],
-                'isActive' => $row['isActive'],
-                'idCliente' => $row['idCliente'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'nomServicio' => $row['UPPER(serv.nomServicio)'],
+                'nomCliente' => $row['UPPER(cli.nomCliente)'],
             );
         }
     }

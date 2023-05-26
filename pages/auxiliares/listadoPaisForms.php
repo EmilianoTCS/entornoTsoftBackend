@@ -19,7 +19,7 @@ if (isset($_GET['listados'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idPais' => $row['idPais'],
-            'nomPais' => $row['nomPais']
+            'nomPais' => $row['UPPER(nomPais)']
         );
     }
     $jsonstring = json_encode(($json));

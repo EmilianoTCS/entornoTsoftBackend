@@ -8,18 +8,19 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarContacto'])) {
+if (isset($_GET['editarCursoAlumnoSesion'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nomContacto = $data->nomContacto;
-    $correoContacto = $data->correoContacto;
-    $telefonoContacto = $data->telefonoContacto;
+    $idCursoAlumnoSesion = $data->idCursoAlumnoSesion;
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
+    $asistencia = $data->asistencia;
+    $participacion = $data->participacion;
     $isActive = $data->isActive;
-    $idServicio = $data->idServicio;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $idSesion = $data->idSesion;
+    $idCursoAlumno = $data->idCursoAlumno;
+    $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_insertarEmpleado('$nomContacto','$correoContacto','$telefonoContacto', '$fechaIni', '$fechaFin', $isActive, $idServicio,'$usuarioAdmin', @p0, @p1)";
+    $query = "CALL SP_editarCursoAlumnoSesion($idCursoAlumnoSesion, '$fechaIni','$fechaFin', $asistencia, $participacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -34,13 +35,13 @@ if (isset($_GET['insertarContacto'])) {
             );
         } else {
             $json[] = array(
-                'idContacto' => $row['idContacto'],
-                'nomContacto' => $row['UPPER(con.nomContacto)'],
-                'correoContacto' => $row['UPPER(con.correoContacto)'],
-                'telefonoContacto' => $row['telefonoContacto'],
+                'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
-                'nomServicio' => $row['UPPER(serv.nomServicio)']
+                'asistencia' => $row['asistencia'],
+                'participacion' => $row['participacion'],
+                'nomSesion' => $row['UPPER(se.nomSesion)'],
+                'idCursoAlumno' => $row['idCursoAlumno']
             );
         }
     }

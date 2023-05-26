@@ -8,8 +8,9 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarCursoAlumno'])) {
+if (isset($_GET['editarCursoAlumno'])) {
     $data = json_decode(file_get_contents("php://input"));
+    $idCursoAlumno = $data->idCursoAlumno;
     $fechaIni = $data->fechaIni;
     $horaIni = $data->horaIni;
     $fechaFin = $data->fechaFin;
@@ -25,7 +26,7 @@ if (isset($_GET['insertarCursoAlumno'])) {
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarCursoAlumno( '$fechaIni','$horaIni','$fechaFin','$horaFin', $porcAsistencia, $porcParticipacion, '$claseAprobada', $porcAprobacion,'$estadoCurso','$isActive', $idAlumno, $idCurso,'$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarCursoAlumno($idCursoAlumno, '$fechaIni','$horaIni','$fechaFin','$horaFin', $porcAsistencia, $porcParticipacion, '$claseAprobada', $porcAprobacion,'$estadoCurso','$isActive', $idAlumno, $idCurso,'$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

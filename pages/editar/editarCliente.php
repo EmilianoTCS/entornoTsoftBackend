@@ -33,9 +33,9 @@ if (isset($_GET['editarCliente'])) {
         } else {
             $json[] = array(
                 'idCliente' => $row['idCliente'],
-                'nomCliente' => $row['nomCliente'],
-                'direccionCliente' => $row['direccionCliente'],
-                'nomPais' => $row['nomPais'],
+                'nomCliente' => $row['UPPER(cli.nomCliente)'],
+                'direccionCliente' => $row['UPPER(cli.direccionCliente)'],
+                'nomPais' => $row['UPPER(pa.nomPais)'],
 
             );
         }

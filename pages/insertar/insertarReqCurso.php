@@ -8,22 +8,20 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarContacto'])) {
+if (isset($_GET['insertarReqCurso'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nomContacto = $data->nomContacto;
-    $correoContacto = $data->correoContacto;
-    $telefonoContacto = $data->telefonoContacto;
-    $fechaIni = $data->fechaIni;
-    $fechaFin = $data->fechaFin;
     $isActive = $data->isActive;
-    $idServicio = $data->idServicio;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $idCurso = $data->idCurso;
+    $idCursoRequisito = $data->idCursoRequisito;
+    $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_insertarEmpleado('$nomContacto','$correoContacto','$telefonoContacto', '$fechaIni', '$fechaFin', $isActive, $idServicio,'$usuarioAdmin', @p0, @p1)";
+
+    $query = "CALL SP_insertarReqCurso( $isActive, $idCurso, $idCursoRequisito, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
+
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
@@ -34,13 +32,9 @@ if (isset($_GET['insertarContacto'])) {
             );
         } else {
             $json[] = array(
-                'idContacto' => $row['idContacto'],
-                'nomContacto' => $row['UPPER(con.nomContacto)'],
-                'correoContacto' => $row['UPPER(con.correoContacto)'],
-                'telefonoContacto' => $row['telefonoContacto'],
-                'fechaIni' => $row['fechaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'nomServicio' => $row['UPPER(serv.nomServicio)']
+                'idReqCurso' => $row['idReqCurso'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)'],
+                'requisitoCurso' => $row['requisitoCurso']
             );
         }
     }

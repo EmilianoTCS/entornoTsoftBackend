@@ -38,18 +38,13 @@ if (isset($_GET['editarRamo'])) {
         } else {
             $json[] = array(
                 'idRamo' => $row['idRamo'],
-                'codRamo' => $row['codRamo'],
-                'nomRamo' => $row['nomRamo'],
-                'tipoRamo' => $row['tipoRamo'],
-                'tipoRamoHH' => $row['tipoRamoHH'],
+                'codRamo' => $row['UPPER(ram.codRamo)'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)'],
+                'tipoRamo' => $row['UPPER(ram.tipoRamo)'],
+                'tipoRamoHH' => $row['UPPER(ram.tipoRamoHH)'],
                 'duracionRamoHH' => $row['duracionRamoHH'],
                 'cantSesionesRamo' => $row['cantSesionesRamo'],
-                'isActive' => $row['isActive'],
-                'idCurso' => $row['idCurso'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)']
             );
         }
     }

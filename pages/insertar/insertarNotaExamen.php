@@ -18,7 +18,7 @@ if (isset($_GET['insertarNotaExamen'])) {
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarNotaExamen($notaExamen,'$apruebaExamen','$isActive', $idRamoExamen, $idCursoAlumno, $usuarioCreacion, @p0, @p1)";
+    $query = "CALL SP_insertarNotaExamen( $notaExamen,'$apruebaExamen','$isActive', $idRamoExamen, $idCursoAlumno, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -36,8 +36,8 @@ if (isset($_GET['insertarNotaExamen'])) {
             $json[] = array(
                 'idNotaExamen' => $row['idNotaExamen'],
                 'notaExamen' => $row['notaExamen'],
-                'apruebaExamen' => $row['apruebaExamen'],
-                'nomExamen' => $row['nomExamen'],
+                'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
+                'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
                 'idCursoAlumno' => $row['idCursoAlumno']
             );
         }

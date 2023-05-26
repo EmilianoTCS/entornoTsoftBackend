@@ -19,7 +19,7 @@ if (isset($_GET['listados'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idArea' => $row['idArea'],
-            'nomArea' => $row['nomArea']
+            'nomArea' => $row['UPPER(nomArea)']
         );
     }
     $jsonstring = json_encode(($json));

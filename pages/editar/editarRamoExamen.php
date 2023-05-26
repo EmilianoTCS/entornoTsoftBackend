@@ -7,19 +7,18 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['editarRelatorRamo'])) {
+if (isset($_GET['editarRamoExamen'])) {
 
     $data = json_decode(file_get_contents("php://input"));
-    $idRelatorRamo = $data->idRelatorRamo;
-    $fechaIni = $data->fechaIni;
-    $fechaFin = $data->fechaFin;
+    $idRamoExamen = $data->idRamoExamen;
+    $nomExamen = $data->nomExamen;
+    $apruebaExamen = $data->apruebaExamen;
     $isActive = $data->isActive;
-    $idEmpleado = $data->idEmpleado;
     $idRamo = $data->idRamo;
+    $idCursoAlumno = $data->idCursoAlumno;
     $usuarioCreacion = $data->usuarioCreacion;
 
-
-    $query = "CALL SP_editarRelatorRamo($idRelatorRamo,'$fechaIni', '$fechaFin', '$isActive',$idEmpleado, $idRamo, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarRamoExamen($idRamoExamen, '$nomExamen', '$apruebaExamen', '$isActive', '$idRamo', '$idCursoAlumno', '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -28,10 +27,9 @@ if (isset($_GET['editarRelatorRamo'])) {
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idRelatorRamo' => $row['idRelatorRamo'],
-            'fechaIni' => $row['fechaIni'],
-            'fechaFin' => $row['fechaFin'],
-            'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+            'idRamoExamen' => $row['idRamoExamen'],
+            'nomExamen' => $row['UPPER(ramEx.nomExamen)'],
+            'fechaExamen' => $row['fechaExamen'],
             'nomRamo' => $row['UPPER(ram.nomRamo)']
         );
     }

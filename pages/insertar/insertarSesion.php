@@ -19,7 +19,7 @@ if (isset($_GET['insertarSesion'])) {
     $idRamo = $data->idRamo;
     $usuarioAdmin = $data->usuarioAdmin;
 
-    $query = "CALL SP_ING_SESION('$nroSesion','$nomSesion','$tipoSesion', $tipoSesionHH, $duracionSesionHH , $isActive, $idRamo, $usuarioAdmin, @p0, @p1, @p2)";
+    $query = "CALL SP_insertarSesion('$nroSesion','$nomSesion','$tipoSesion', $tipoSesionHH, $duracionSesionHH , $isActive, $idRamo, '$usuarioAdmin', @p0, @p1, @p2)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -37,16 +37,11 @@ if (isset($_GET['insertarSesion'])) {
             $json[] = array(
                 'idSesion' => $row['idSesion'],
                 'nroSesion' => $row['nroSesion'],
-                'nomSesion' => $row['nomSesion'],
-                'tipoSesion' => $row['tipoSesion'],
-                'tipoSesionHH' => $row['tipoSesionHH'],
-                'duracionSesionHH' => $row['duracionSesionHH'],
-                'isActive' => $row['isActive'],
-                'idRamo' => $row['idRamo'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'nomSesion' => $row['UPPER(se.nomSesion)'],
+                'tipoSesion' => $row['UPPER(se.tipoSesion)'],
+                'tipoSesionHH' => $row['UPPER(se.tipoSesionHH)'],
+                'duracionSesionHH' => $row['UPPER(se.duracionSesionHH)'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)']
             );
         }
     }

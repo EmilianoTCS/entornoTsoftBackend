@@ -18,7 +18,7 @@ if (isset($_GET['insertarRelatorRamo'])) {
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarRelatorRamo('$fechaIni', '$fechaFin', '$isActive',$idEmpleado, $idRamo, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarRelatorRamo('$fechaIni', '$fechaFin', '$isActive', $idEmpleado, $idRamo, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -30,8 +30,8 @@ if (isset($_GET['insertarRelatorRamo'])) {
             'idRelatorRamo' => $row['idRelatorRamo'],
             'fechaIni' => $row['fechaIni'],
             'fechaFin' => $row['fechaFin'],
-            'nomEmp' => $row['nomEmp'],
-            'nomRamo' => $row['nomRamo']
+            'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+            'nomRamo' => $row['UPPER(ram.nomRamo)']
         );
     }
     $jsonstring = json_encode($json);

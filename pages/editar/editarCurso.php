@@ -36,16 +36,11 @@ if (isset($_GET['editarCurso'])) {
         } else {
             $json[] = array(
                 'idCurso' => $row['idCurso'],
-                'codCurso' => $row['codCurso'],
-                'nomCurso' => $row['nomCurso'],
-                'tipoHH' => $row['tipoHH'],
+                'codCurso' => $row['UPPER(cur.codCurso)'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)'],
+                'tipoHH' => $row['UPPER(cur.tipoHH)'],
                 'duracionCursoHH' => $row['duracionCursoHH'],
-                'cantSesionesCurso' => $row['cantSesionesCurso'],
-                'isActive' => $row['isActive'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'cantSesionesCurso' => $row['cantSesionesCurso']
             );
         }
     }

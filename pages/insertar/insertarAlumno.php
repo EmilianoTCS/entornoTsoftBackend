@@ -24,7 +24,7 @@ if (isset($_GET['insertarAlumno'])) {
     $usuarioAdmin = $data->usuarioAdmin;
 
 
-    $query = "CALL SP_insertarEmpleado('$nomAlumno','$correoAlumno','$telefonoAlumno',$idPais, $idServicio, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioAdmin', $nomRol, @p0, @p1)";
+    $query = "CALL SP_insertarEmpleado('$nomAlumno','$correoAlumno','$telefonoAlumno', $idPais, $idServicio, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioAdmin', $nomRol, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -41,12 +41,13 @@ if (isset($_GET['insertarAlumno'])) {
         } else {
             $json[] = array(
                 'idAlumno' => $row['idAlumno'],
-                'nomAlumno' => $row['nomAlumno'],
-                'correoAlumno' => $row['correoAlumno'],
-                'telefonoAlumno' => $row['telefonoAlumno'],
-                'nomArea' => $row['nomArea'],
-                'nomPais' => $row['nomPais'],
-                'nomCargo' => $row['nomCargo']
+                'nomAlumno' => $row['UPPER(alum.nomAlumno)'],
+                'correoAlumno' => $row['UPPER(alum.correoAlumno)'],
+                'telefonoAlumno' => $row['UPPER(alum.telefonoAlumno)'],
+                'nomServicio' => $row['UPPER(serv.nomServicio)'],
+                'nomArea' => $row['UPPER(ar.nomArea)'],
+                'nomPais' => $row['UPPER(pa.nomPais)'],
+                'nomCargo' => $row['UPPER(car.nomCargo)']
             );
         }
     }

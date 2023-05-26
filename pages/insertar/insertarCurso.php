@@ -18,7 +18,7 @@ if (isset($_GET['insertarCurso'])) {
     $isActive = $data->isActive;
     $usuarioAdmin = $data->usuarioAdmin;
 
-    $query = "CALL SP_ING_CURSO('$codCurso','$nomCurso','$tipoHH', $duracionCursoHH, $cantSesionesCurso, $isActive, '$usuarioAdmin', @p0, @p1, @p2, @p3)";
+    $query = "CALL SP_insertarCurso( '$codCurso','$nomCurso','$tipoHH', $duracionCursoHH, $cantSesionesCurso, $isActive, '$usuarioAdmin', @p0, @p1, @p2, @p3)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -35,16 +35,11 @@ if (isset($_GET['insertarCurso'])) {
         } else {
             $json[] = array(
                 'idCurso' => $row['idCurso'],
-                'codCurso' => $row['codCurso'],
-                'nomCurso' => $row['nomCurso'],
-                'tipoHH' => $row['tipoHH'],
+                'codCurso' => $row['UPPER(cur.codCurso)'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)'],
+                'tipoHH' => $row['UPPER(cur.tipoHH)'],
                 'duracionCursoHH' => $row['duracionCursoHH'],
-                'cantSesionesCurso' => $row['cantSesionesCurso'],
-                'isActive' => $row['isActive'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'cantSesionesCurso' => $row['cantSesionesCurso']
             );
         }
     }

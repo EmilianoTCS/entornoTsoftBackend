@@ -23,7 +23,7 @@ if (isset($_GET['listadoReqCurso'])) {
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idNotaExamen' => $row['idNotaExamen'],
+            'idReqCurso' => $row['idReqCurso'],
             'nomCurso' => $row['UPPER(cur.nomCurso)'],
             'requisitoCurso' => $row['requisitoCurso']
         );

@@ -37,16 +37,11 @@ if (isset($_GET['editarSesion'])) {
             $json[] = array(
                 'idSesion' => $row['idSesion'],
                 'nroSesion' => $row['nroSesion'],
-                'nomSesion' => $row['nomSesion'],
-                'tipoSesion' => $row['tipoSesion'],
-                'tipoSesionHH' => $row['tipoSesionHH'],
-                'duracionSesionHH' => $row['duracionSesionHH'],
-                'isActive' => $row['isActive'],
-                'idRamo' => $row['idRamo'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'nomSesion' => $row['UPPER(se.nomSesion)'],
+                'tipoSesion' => $row['UPPER(se.tipoSesion)'],
+                'tipoSesionHH' => $row['UPPER(se.tipoSesionHH)'],
+                'duracionSesionHH' => $row['UPPER(se.duracionSesionHH)'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)']
             );
         }
     }

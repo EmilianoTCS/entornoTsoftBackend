@@ -40,12 +40,12 @@ if (isset($_GET['insertarEmpleado'])) {
         } else {
             $json[] = array(
                 'idEmpleado' => $row['idEmpleado'],
-                'nomEmpleado' => $row['nomEmpleado'],
-                'correoEmpleado' => $row['correoEmpleado'],
+                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+                'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
                 'telefonoEmpleado' => $row['telefonoEmpleado'],
-                'nomArea' => $row['nomArea'],
-                'nomPais' => $row['nomPais'],
-                'nomCargo' => $row['nomCargo']
+                'nomArea' => $row['UPPER(ar.nomArea)'],
+                'nomPais' => $row['UPPER(pa.nomPais)'],
+                'nomCargo' => $row['UPPER(ca.nomCargo)']
             );
         }
     }

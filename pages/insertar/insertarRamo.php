@@ -17,10 +17,10 @@ if (isset($_GET['insertarRamo'])) {
     $duracionRamoHH = $data->duracionRamoHH;
     $cantSesionesRamo = $data->cantSesionesRamo;
     $isActive = $data->isActive;
-    $idCurso = $data->idCurso; 
+    $idCurso = $data->idCurso;
     $usuarioAdmin = $data->usuarioAdmin;
 
-    $query = "CALL SP_ING_RAMO('$codRamo','$nomRamo','$tipoRamo', $tipoRamoHH, $duracionRamoHH , $cantSesionesRamo, $isActive, $idCurso, '$usuarioAdmin', @p0, @p1, @p2, @p3)";
+    $query = "CALL SP_insertarRamo('$codRamo','$nomRamo','$tipoRamo', $tipoRamoHH, $duracionRamoHH , $cantSesionesRamo, $isActive, $idCurso, '$usuarioAdmin', @p0, @p1, @p2, @p3)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -37,18 +37,13 @@ if (isset($_GET['insertarRamo'])) {
         } else {
             $json[] = array(
                 'idRamo' => $row['idRamo'],
-                'codRamo' => $row['codRamo'],
-                'nomRamo' => $row['nomRamo'],
-                'tipoRamo' => $row['tipoRamo'],
-                'tipoRamoHH' => $row['tipoRamoHH'],
+                'codRamo' => $row['UPPER(ram.codRamo)'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)'],
+                'tipoRamo' => $row['UPPER(ram.tipoRamo)'],
+                'tipoRamoHH' => $row['UPPER(ram.tipoRamoHH)'],
                 'duracionRamoHH' => $row['duracionRamoHH'],
                 'cantSesionesRamo' => $row['cantSesionesRamo'],
-                'isActive' => $row['isActive'],
-                'idCurso' => $row['idCurso'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)']
             );
         }
     }

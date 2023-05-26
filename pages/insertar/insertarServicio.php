@@ -14,7 +14,7 @@ if (isset($_GET['insertarServicio'])) {
     $idCliente = $data->idCliente;
     $usuarioAdmin = $data->usuarioAdmin;
 
-    $query = "CALL SP_insertarServicio('$nomServicio',$idCliente,'$usuarioAdmin', @p0, @p1)";
+    $query = "CALL SP_insertarServicio('$nomServicio', $idCliente,'$usuarioAdmin', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -31,13 +31,8 @@ if (isset($_GET['insertarServicio'])) {
         } else {
             $json[] = array(
                 'idServicio' => $row['idServicio'],
-                'nomServicio' => $row['nomServicio'],
-                'isActive' => $row['isActive'],
-                'idCliente' => $row['idCliente'],
-                'fechaCreacion' => $row['fechaCreacion'],
-                'usuarioCreacion' => $row['usuarioCreacion'],
-                'fechaModificacion' => $row['fechaModificacion'],
-                'usuarioModificacion' => $row['usuarioModificacion'],
+                'nomServicio' => $row['UPPER(serv.nomServicio)'],
+                'nomCliente' => $row['UPPER(cli.nomCliente)'],
             );
         }
     }

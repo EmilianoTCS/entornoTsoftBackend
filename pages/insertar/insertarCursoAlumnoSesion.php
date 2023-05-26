@@ -21,7 +21,7 @@ if (isset($_GET['insertarCursoAlumnoSesion'])) {
 
 
 
-    $query = "CALL SP_insertarCursoAlumnoSesion('$fechaIni','$fechaFin',$asistencia,$participacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarCursoAlumnoSesion( '$fechaIni','$fechaFin', $asistencia, $participacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -42,7 +42,7 @@ if (isset($_GET['insertarCursoAlumnoSesion'])) {
                 'fechaFin' => $row['fechaFin'],
                 'asistencia' => $row['asistencia'],
                 'participacion' => $row['participacion'],
-                'nomSesion' => $row['nomSesion'],
+                'nomSesion' => $row['UPPER(se.nomSesion)'],
                 'idCursoAlumno' => $row['idCursoAlumno']
             );
         }
