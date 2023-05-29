@@ -17,7 +17,7 @@ if (isset($_GET['editarCliente'])) {
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarAlumno($idCliente,'$nomCliente','$direccionCliente','$idPais','$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_editarCliente($idCliente,'$nomCliente','$direccionCliente','$idPais','$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

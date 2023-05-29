@@ -25,13 +25,21 @@ if (isset($_GET['insertarRamoExamen'])) {
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
-        $json[] = array(
-            'idRamoExamen' => $row['idRamoExamen'],
-            'nomExamen' => $row['UPPER(ramEx.nomExamen)'],
-            'fechaExamen' => $row['fechaExamen'],
-            'nomRamo' => $row['UPPER(ram.nomRamo)']
-        );
+        if ($row['OUT_CODRESULT'] != '00') {
+            $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT']
+            );
+        } else {
+            $json[] = array(
+                'idRamoExamen' => $row['idRamoExamen'],
+                'nomExamen' => $row['UPPER(ramEx.nomExamen)'],
+                'fechaExamen' => $row['fechaExamen'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)']
+            );
+        }
     }
+
     $jsonstring = json_encode($json);
     echo $jsonstring;
 }

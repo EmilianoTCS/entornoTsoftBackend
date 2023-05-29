@@ -25,15 +25,24 @@ if (isset($_GET['insertarRelatorRamo'])) {
     }
 
     $json = array();
+
     while ($row = mysqli_fetch_array($result)) {
-        $json[] = array(
-            'idRelatorRamo' => $row['idRelatorRamo'],
-            'fechaIni' => $row['fechaIni'],
-            'fechaFin' => $row['fechaFin'],
-            'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-            'nomRamo' => $row['UPPER(ram.nomRamo)']
-        );
+        if ($row['OUT_CODRESULT'] != '00') {
+            $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT']
+            );
+        } else {
+            $json[] = array(
+                'idRelatorRamo' => $row['idRelatorRamo'],
+                'fechaIni' => $row['fechaIni'],
+                'fechaFin' => $row['fechaFin'],
+                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)']
+            );
+        }
     }
+
     $jsonstring = json_encode($json);
     echo $jsonstring;
 }
