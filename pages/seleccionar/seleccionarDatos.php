@@ -32,13 +32,13 @@ if (isset($_GET['seleccionarDatos'])) {
                 case 'alumno':
                     $json[] = array(
                         'idAlumno' => $row['idAlumno'],
-                        'nomAlumno' => $row['nomAlumno'],
-                        'correoAlumno' => $row['correoAlumno'],
-                        'telefonoAlumno' => $row['telefonoAlumno'],
-                        'nomArea' => $row['nomArea'],
-                        'nomServicio' => $row['nomServicio'],
-                        'nomPais' => $row['nomPais'],
-                        'nomCargo' => $row['nomCargo']
+                        'nomAlumno' => $row['UPPER(alum.nomAlumno)'],
+                        'correoAlumno' => $row['UPPER(alum.correoAlumno)'],
+                        'telefonoAlumno' => $row['UPPER(alum.telefonoAlumno)'],
+                        'nomServicio' => $row['UPPER(serv.nomServicio)'],
+                        'nomArea' => $row['UPPER(ar.nomArea)'],
+                        'nomPais' => $row['UPPER(pa.nomPais)'],
+                        'nomCargo' => $row['UPPER(car.nomCargo)']
                     );
                     break;
                 case 'cliente':
