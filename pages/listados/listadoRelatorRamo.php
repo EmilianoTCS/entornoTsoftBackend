@@ -1,6 +1,7 @@
 <?php
 
 include("../../model/conexion.php");
+include("../paginador/cantPaginas.php");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET,POST");
@@ -30,7 +31,11 @@ if (isset($_GET['listadoRelatorRamo'])) {
             'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
             'nomRamo' => $row['UPPER(ram.nomRamo)']
         );
+        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
     }
-    $jsonstring = json_encode($json);
+    $jsonstring = json_encode([
+        'datos' => $json,
+        'paginador' => $FN_cantPaginas
+    ]);
     echo $jsonstring;
 }

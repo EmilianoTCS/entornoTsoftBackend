@@ -1,6 +1,7 @@
 <?php
 
 include("../../model/conexion.php");
+include("../paginador/cantPaginas.php");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET,POST");
@@ -20,7 +21,6 @@ if (isset($_GET['listadoAlumnos'])) {
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
-
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
@@ -33,7 +33,11 @@ if (isset($_GET['listadoAlumnos'])) {
             'nomPais' => $row['UPPER(pa.nomPais)'],
             'nomCargo' => $row['UPPER(car.nomCargo)']
         );
+        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
     }
-    $jsonstring = json_encode($json);
+    $jsonstring = json_encode([
+        'datos' => $json,
+        'paginador' => $FN_cantPaginas
+    ]);
     echo $jsonstring;
 }
