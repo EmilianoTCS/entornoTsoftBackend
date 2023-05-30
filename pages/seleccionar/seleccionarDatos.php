@@ -51,12 +51,12 @@ if (isset($_GET['seleccionarDatos'])) {
                     break;
                 case 'contacto':
                     $json[] = array(
-                        'idContacto' => $row['con.idContacto'],
+                        'idContacto' => $row['idContacto'],
                         'nomContacto' => $row['UPPER(con.nomContacto)'],
                         'correoContacto' => $row['UPPER(con.correoContacto)'],
-                        'telefonoContacto' => $row['con.telefonoContacto'],
-                        'fechaIni' => $row['con.fechaIni'],
-                        'fechaFin' => $row['con.fechaFin'],
+                        'telefonoContacto' => $row['telefonoContacto'],
+                        'fechaIni' => $row['fechaIni'],
+                        'fechaFin' => $row['fechaFin'],
                         'nomServicio' => $row['UPPER(serv.nomServicio)']
                     );
                     break;
