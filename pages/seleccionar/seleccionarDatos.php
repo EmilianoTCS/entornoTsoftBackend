@@ -54,6 +54,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idContacto' => $row['idContacto'],
                         'nomContacto' => $row['UPPER(con.nomContacto)'],
                         'correoContacto' => $row['UPPER(con.correoContacto)'],
+                        'telefonoContacto' => $row['con.telefonoContacto'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
                         'nomServicio' => $row['UPPER(serv.nomServicio)']
