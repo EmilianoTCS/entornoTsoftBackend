@@ -28,7 +28,7 @@ if (isset($_GET['insertarAlumno'])) {
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
-    }
+    }   
 
 
     $json = array();
