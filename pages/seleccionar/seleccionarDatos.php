@@ -35,10 +35,10 @@ if (isset($_GET['seleccionarDatos'])) {
                         'nomAlumno' => $row['UPPER(alum.nomAlumno)'],
                         'correoAlumno' => $row['UPPER(alum.correoAlumno)'],
                         'telefonoAlumno' => $row['UPPER(alum.telefonoAlumno)'],
-                        'nomServicio' => $row['UPPER(serv.nomServicio)'],
-                        'nomArea' => $row['UPPER(ar.nomArea)'],
-                        'nomPais' => $row['UPPER(pa.nomPais)'],
-                        'nomCargo' => $row['UPPER(car.nomCargo)']
+                        'idServicio' => $row['idServicio'],
+                        'idArea' => $row['idArea'],
+                        'idPais' => $row['idPais'],
+                        'idCargo' => $row['idCargo']
                     );
                     break;
                 case 'cliente':
@@ -46,7 +46,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idCliente' => $row['idCliente'],
                         'nomCliente' => $row['UPPER(cli.nomCliente)'],
                         'direccionCliente' => $row['UPPER(cli.direccionCliente)'],
-                        'nomPais' => $row['UPPER(pa.nomPais)'],
+                        'idPais' => $row['idPais'],
                     );
                     break;
                 case 'contacto':
@@ -57,7 +57,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'telefonoContacto' => $row['telefonoContacto'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
-                        'nomServicio' => $row['UPPER(serv.nomServicio)']
+                        'idServicio' => $row['idServicio']
                     );
                     break;
                 case 'curso':
@@ -82,8 +82,8 @@ if (isset($_GET['seleccionarDatos'])) {
                         'claseAprobada' => $row['UPPER(curAl.claseAprobada)'],
                         'porcAprobacion' => $row['porcAprobacion'],
                         'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
-                        'nomAlumno' => $row['UPPER(al.nomAlumno)'],
-                        'nomCurso' => $row['UPPER(cur.nomCurso)']
+                        'idAlumno' => $row['idAlumno'],
+                        'idCurso' => $row['idCurso']
                     );
                     break;
                 case 'cursoalumno_sesion':
@@ -103,9 +103,9 @@ if (isset($_GET['seleccionarDatos'])) {
                         'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
                         'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
                         'telefonoEmpleado' => $row['telefonoEmpleado'],
-                        'nomArea' => $row['UPPER(ar.nomArea)'],
-                        'nomPais' => $row['UPPER(pa.nomPais)'],
-                        'nomCargo' => $row['UPPER(ca.nomCargo)']
+                        'idArea' => $row['idArea'],
+                        'idPais' => $row['idPais'],
+                        'idCargo' => $row['idCargo']
                     );
                     break;
                 case 'notaexamen':
@@ -113,8 +113,19 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idNotaExamen' => $row['idNotaExamen'],
                         'notaExamen' => $row['notaExamen'],
                         'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
-                        'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
+                        'idRamoExamen' => $row['idRamoExamen'],
                         'idCursoAlumno' => $row['idCursoAlumno']
+                    );
+                    break;
+                case 'ramo':
+                    $json[] = array(
+                        'codRamo' => $row['UPPER(ram.codRamo)'],
+                        'nomRamo' => $row['UPPER(ram.nomRamo)'],
+                        'tipoRamo' => $row['UPPER(ram.tipoRamo)'],
+                        'tipoRamoHH' => $row['UPPER(ram.tipoRamoHH)'],
+                        'duracionRamo' => $row['UPPER(ram.duracionRamoHH)'],
+                        'cantSesionesRamo' => $row['cantSesionesRamo'],
+                        'idCurso' => $row['idCurso']
                     );
                     break;
                 case 'ramoexamen':
@@ -122,7 +133,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idRamoExamen' => $row['idRamoExamen'],
                         'nomExamen' => $row['UPPER(ramEx.nomExamen)'],
                         'fechaExamen' => $row['fechaExamen'],
-                        'nomRamo' => $row['UPPER(ram.nomRamo)']
+                        'idRamo' => $row['idRamo']
                     );
                     break;
                 case 'relatorramo':
@@ -145,7 +156,7 @@ if (isset($_GET['seleccionarDatos'])) {
                     $json[] = array(
                         'idServicio' => $row['idServicio'],
                         'nomServicio' => $row['UPPER(serv.nomServicio)'],
-                        'nomCliente' => $row['UPPER(cli.nomCliente)'],
+                        'idCliente' => $row['idCliente'],
                     );
                     break;
                 case 'sesion':
@@ -156,7 +167,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'tipoSesion' => $row['UPPER(se.tipoSesion)'],
                         'tipoSesionHH' => $row['UPPER(se.tipoSesionHH)'],
                         'duracionSesionHH' => $row['UPPER(se.duracionSesionHH)'],
-                        'nomRamo' => $row['UPPER(ram.nomRamo)']
+                        'idRamo' => $row['idRamo']
                     );
                     break;
             }

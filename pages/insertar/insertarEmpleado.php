@@ -20,10 +20,10 @@ if (isset($_GET['insertarEmpleado'])) {
     $password = $data->password;
     $tipoUsuario = $data->tipoUsuario;
     $nomRol = $data->nomRol;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado', $idPais, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioAdmin', $nomRol, @p0, @p1)";
+    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado', $idPais, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioCreacion', $nomRol, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

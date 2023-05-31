@@ -19,9 +19,9 @@ if (isset($_GET['editarRamo'])) {
     $cantSesionesRamo = $data->cantSesionesRamo;
     $isActive = $data->isActive;
     $idCurso = $data->idCurso;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $usuarioModificacion = $data->usuarioModificacion;
 
-    $query = "CALL SP_editarRamo($idRamo, '$codRamo','$nomRamo','$tipoRamo', $tipoRamoHH, $duracionRamoHH , $cantSesionesRamo, $isActive, $idCurso, '$usuarioAdmin', @p0, @p1, @p2)";
+    $query = "CALL SP_editarRamo($idRamo, '$codRamo','$nomRamo','$tipoRamo', $tipoRamoHH, $duracionRamoHH , $cantSesionesRamo, $isActive, $idCurso, '$usuarioModificacion', @p0, @p1, @p2)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

@@ -12,9 +12,9 @@ if (isset($_GET['insertarServicio'])) {
     $data = json_decode(file_get_contents("php://input"));
     $nomServicio = $data->nomServicio;
     $idCliente = $data->idCliente;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_insertarServicio('$nomServicio', $idCliente,'$usuarioAdmin', @p0, @p1)";
+    $query = "CALL SP_insertarServicio('$nomServicio', $idCliente,'$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

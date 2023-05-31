@@ -13,9 +13,9 @@ if (isset($_GET['editarServicio'])) {
     $idServicio = $data->idServicio;
     $nomServicio = $data->nomServicio;
     $idCliente = $data->idCliente;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $usuarioModificacion = $data->usuarioModificacion;
 
-    $query = "CALL SP_editarServicio($idServicio, '$nomServicio',$idCliente,'$usuarioAdmin', @p0, @p1)";
+    $query = "CALL SP_editarServicio($idServicio, '$nomServicio',$idCliente,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

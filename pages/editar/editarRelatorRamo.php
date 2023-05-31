@@ -16,10 +16,10 @@ if (isset($_GET['editarRelatorRamo'])) {
     $isActive = $data->isActive;
     $idEmpleado = $data->idEmpleado;
     $idRamo = $data->idRamo;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarRelatorRamo($idRelatorRamo,'$fechaIni', '$fechaFin', '$isActive',$idEmpleado, $idRamo, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarRelatorRamo($idRelatorRamo,'$fechaIni', '$fechaFin', '$isActive',$idEmpleado, $idRamo, '$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

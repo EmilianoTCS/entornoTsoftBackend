@@ -16,10 +16,10 @@ if (isset($_GET['editarNotaExamen'])) {
     $isActive = $data->isActive;
     $idRamoExamen = $data->idRamoExamen;
     $idCursoAlumno = $data->idCursoAlumno;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarNotaExamen($idNotaExamen, $notaExamen,'$apruebaExamen','$isActive', $idRamoExamen, $idCursoAlumno, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarNotaExamen($idNotaExamen, $notaExamen,'$apruebaExamen','$isActive', $idRamoExamen, $idCursoAlumno, '$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

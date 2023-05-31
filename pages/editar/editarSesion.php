@@ -17,9 +17,9 @@ if (isset($_GET['editarSesion'])) {
     $duracionSesionHH = $data->duracionSesionHH;
     $isActive = $data->isActive;
     $idRamo = $data->idRamo;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $usuarioModificacion = $data->usuarioModificacion;
 
-    $query = "CALL SP_editarSesion('$nroSesion','$nomSesion','$tipoSesion', $tipoSesionHH, $duracionSesionHH , $isActive, $idRamo, $usuarioAdmin, @p0, @p1, @p2)";
+    $query = "CALL SP_editarSesion('$nroSesion','$nomSesion','$tipoSesion', $tipoSesionHH, $duracionSesionHH , $isActive, $idRamo, $usuarioModificacion, @p0, @p1, @p2)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

@@ -14,10 +14,10 @@ if (isset($_GET['editarReqCurso'])) {
     $isActive = $data->isActive;
     $idCurso = $data->idCurso;
     $idCursoRequisito = $data->idCursoRequisito;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarReqCurso($idReqCurso, $isActive, $idCurso, $idCursoRequisito, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarReqCurso($idReqCurso, $isActive, $idCurso, $idCursoRequisito, '$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

@@ -16,9 +16,9 @@ if (isset($_GET['insertarCurso'])) {
     $duracionCursoHH = $data->duracionCursoHH;
     $cantSesionesCurso = $data->cantSesionesCurso;
     $isActive = $data->isActive;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_insertarCurso( '$codCurso','$nomCurso','$tipoHH', $duracionCursoHH, $cantSesionesCurso, $isActive, '$usuarioAdmin', @p0, @p1, @p2, @p3)";
+    $query = "CALL SP_insertarCurso( '$codCurso','$nomCurso','$tipoHH', $duracionCursoHH, $cantSesionesCurso, $isActive, '$usuarioCreacion', @p0, @p1, @p2, @p3)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

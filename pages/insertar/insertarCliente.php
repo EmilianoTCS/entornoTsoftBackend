@@ -13,9 +13,9 @@ if (isset($_GET['insertarCliente'])) {
     $nomCliente = $data->nomCliente;
     $direccionCliente = $data->direccionCliente;
     $idPais = $data->idPais;
-    $usuarioAdmin = $data->usuarioAdmin;
+    $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_insertarCliente('$nomCliente', '$direccionCliente', $idPais,'$usuarioAdmin', @p0, @p1)";
+    $query = "CALL SP_insertarCliente('$nomCliente', '$direccionCliente', $idPais,'$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
