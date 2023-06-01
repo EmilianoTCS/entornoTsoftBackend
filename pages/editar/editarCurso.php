@@ -17,7 +17,7 @@ if (isset($_GET['editarCurso'])) {
     $duracionCursoHH = $data->duracionCursoHH;
     $cantSesionesCurso = $data->cantSesionesCurso;
     $isActive = $data->isActive;
-    $usuarioModificación = $data->usuarioModificación;
+    $usuarioModificacion = $data->usuarioModificacion;
 
     $query = "CALL SP_editarCurso($idCurso,'$codCurso','$nomCurso','$tipoHH', $duracionCursoHH, $cantSesionesCurso, $isActive, '$usuarioModificación', @p1, @p2, @p3)";
     $result = mysqli_query($conection, $query);
