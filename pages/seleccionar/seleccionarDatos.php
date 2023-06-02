@@ -123,7 +123,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'nomRamo' => $row['UPPER(ram.nomRamo)'],
                         'tipoRamo' => $row['UPPER(ram.tipoRamo)'],
                         'tipoRamoHH' => $row['UPPER(ram.tipoRamoHH)'],
-                        'duracionRamo' => $row['UPPER(ram.duracionRamoHH)'],
+                        'duracionRamo' => $row['ram.duracionRamoHH'],
                         'cantSesionesRamo' => $row['cantSesionesRamo'],
                         'idCurso' => $row['idCurso']
                     );
