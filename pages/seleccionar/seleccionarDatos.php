@@ -93,7 +93,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'fechaFin' => $row['fechaFin'],
                         'asistencia' => $row['asistencia'],
                         'participacion' => $row['participacion'],
-                        'nomSesion' => $row['UPPER(se.nomSesion)'],
+                        'idSesion' => $row['idSesion'],
                         'idCursoAlumno' => $row['idCursoAlumno']
                     );
                     break;
