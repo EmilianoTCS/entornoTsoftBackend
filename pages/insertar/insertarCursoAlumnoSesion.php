@@ -44,7 +44,7 @@ if (isset($_GET['insertarCursoAlumnoSesion'])) {
                 'fechaFin' => $row['fechaFin'],
                 'asistencia' => $row['asistencia'],
                 'participacion' => $row['participacion'],
-                'nomSesion' => $row['UPPER(se.nomSesion)'],
+                'idSesion' => $row['idSesion'],
                 'idCursoAlumno' => $row['idCursoAlumno']
             );
         }
