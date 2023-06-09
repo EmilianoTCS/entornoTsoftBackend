@@ -22,21 +22,41 @@ if (isset($_GET['listadoCursos'])) {
     }
 
     $json = array();
-    while ($row = mysqli_fetch_array($result)) {
-        $json[] = array(
-            'idCurso' => $row['idCurso'],
-            'codCurso' => $row['UPPER(cur.codCurso)'],
-            'nomCurso' => $row['UPPER(cur.nomCurso)'],
-            'tipoHH' => $row['UPPER(cur.tipoHH)'],
-            'duracionCursoHH' => $row['duracionCursoHH'],
-            'cantSesionesCurso' => $row['cantSesionesCurso']
+    if (mysqli_num_rows($result) > 0) {
 
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idCurso' => $row['idCurso'],
+                'codCurso' => $row['UPPER(cur.codCurso)'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)'],
+                'tipoHH' => $row['UPPER(cur.tipoHH)'],
+                'duracionCursoHH' => $row['duracionCursoHH'],
+                'cantSesionesCurso' => $row['cantSesionesCurso']
+
+            );
+
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
+        $json[] = array(
+            'idCurso' => 'empty / vacio',
+            'codCurso' => 'empty / vacio',
+            'nomCurso' => 'empty / vacio',
+            'tipoHH' => 'empty / vacio',
+            'duracionCursoHH' => 'empty / vacio',
+            'cantSesionesCurso' => 'empty / vacio'
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }

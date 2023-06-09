@@ -23,26 +23,51 @@ if (isset($_GET['listadoCursoAlumno'])) {
     }
 
     $json = array();
-    while ($row = mysqli_fetch_array($result)) {
+    if (mysqli_num_rows($result) > 0) {
+
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idCursoAlumno' => $row['idCursoAlumno'],
+                'fechaIni' => $row['fechaIni'],
+                'horaIni' => $row['horaIni'],
+                'fechaFin' => $row['fechaFin'],
+                'horaFin' => $row['horaFin'],
+                'porcAsistencia' => $row['porcAsistencia'],
+                'porcParticipacion' => $row['porcParticipacion'],
+                'claseAprobada' => $row['UPPER(curAl.claseAprobada)'],
+                'porcAprobacion' => $row['porcAprobacion'],
+                'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
+                'nomAlumno' => $row['UPPER(al.nomAlumno)'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)']
+            );
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
         $json[] = array(
-            'idCursoAlumno' => $row['idCursoAlumno'],
-            'fechaIni' => $row['fechaIni'],
-            'horaIni' => $row['horaIni'],
-            'fechaFin' => $row['fechaFin'],
-            'horaFin' => $row['horaFin'],
-            'porcAsistencia' => $row['porcAsistencia'],
-            'porcParticipacion' => $row['porcParticipacion'],
-            'claseAprobada' => $row['UPPER(curAl.claseAprobada)'],
-            'porcAprobacion' => $row['porcAprobacion'],
-            'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
-            'nomAlumno' => $row['UPPER(al.nomAlumno)'],
-            'nomCurso' => $row['UPPER(cur.nomCurso)']
+            'idCursoAlumno' => 'empty / vacio',
+            'fechaIni' => 'empty / vacio',
+            'horaIni' => 'empty / vacio',
+            'fechaFin' => 'empty / vacio',
+            'horaFin' => 'empty / vacio',
+            'porcAsistencia' => 'empty / vacio',
+            'porcParticipacion' => 'empty / vacio',
+            'claseAprobada' => 'empty / vacio',
+            'porcAprobacion' => 'empty / vacio',
+            'estadoCurso' => 'empty / vacio',
+            'nomAlumno' => 'empty / vacio',
+            'nomCurso' => 'empty / vacio',
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }

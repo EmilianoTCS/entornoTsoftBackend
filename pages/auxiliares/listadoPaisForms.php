@@ -14,6 +14,7 @@ if (isset($_GET['listados'])) {
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
+    $json = array();
 
 
     while ($row = mysqli_fetch_array($result)) {

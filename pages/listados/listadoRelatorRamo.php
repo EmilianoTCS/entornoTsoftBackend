@@ -23,6 +23,8 @@ if (isset($_GET['listadoRelatorRamo'])) {
     }
 
     $json = array();
+    if (mysqli_num_rows($result) > 0) {
+
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idRelatorRamo' => $row['idRelatorRamo'],
@@ -31,11 +33,29 @@ if (isset($_GET['listadoRelatorRamo'])) {
             'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
             'nomRamo' => $row['UPPER(ram.nomRamo)']
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+      
     }
     $jsonstring = json_encode([
         'datos' => $json,
         'paginador' => $FN_cantPaginas
     ]);
     echo $jsonstring;
+} else {
+    $json[] = array(
+        'idRelatorRamo' => 'empty / vacio',
+        'fechaIni' => 'empty / vacio',
+        'fechaFin' => 'empty / vacio',
+        'nomEmpleado' => 'empty / vacio',
+        'nomRamo' => 'empty / vacio',
+
+    );
+
+    $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+    $jsonstring = json_encode([
+        'datos' => $json,
+        'paginador' => $FN_cantPaginas
+    ]);
+    echo $jsonstring;
+}
 }

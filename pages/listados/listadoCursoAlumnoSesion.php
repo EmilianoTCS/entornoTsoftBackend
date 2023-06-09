@@ -22,21 +22,42 @@ if (isset($_GET['listadoCursoAlumnoSesion'])) {
     }
 
     $json = array();
-    while ($row = mysqli_fetch_array($result)) {
+    if (mysqli_num_rows($result) > 0) {
+
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
+                'fechaIni' => $row['fechaIni'],
+                'fechaFin' => $row['fechaFin'],
+                'asistencia' => $row['asistencia'],
+                'participacion' => $row['participacion'],
+                'nomSesion' => $row['UPPER(se.nomSesion)'],
+                'idCursoAlumno' => $row['idCursoAlumno']
+            );
+
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
         $json[] = array(
-            'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
-            'fechaIni' => $row['fechaIni'],
-            'fechaFin' => $row['fechaFin'],
-            'asistencia' => $row['asistencia'],
-            'participacion' => $row['participacion'],
-            'nomSesion' => $row['UPPER(se.nomSesion)'],
-            'idCursoAlumno' => $row['idCursoAlumno']
+            'idCursoAlumnoSesion' => 'empty / vacio',
+            'fechaIni' => 'empty / vacio',
+            'fechaFin' => 'empty / vacio',
+            'asistencia' => 'empty / vacio',
+            'participacion' => 'empty / vacio',
+            'nomSesion' => 'empty / vacio',
+            'idCursoAlumno' => 'empty / vacio'
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }

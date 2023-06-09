@@ -22,7 +22,7 @@ if (isset($_GET['listados'])) {
             'nomRamo' => $row['UPPER(nomRamo)']
         );
     }
-    $jsonstring = json_encode(($json));
+    $jsonstring = json_encode($json);
     echo $jsonstring;
     mysqli_close($conection);
 } else {

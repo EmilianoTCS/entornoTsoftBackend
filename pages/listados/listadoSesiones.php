@@ -23,21 +23,43 @@ if (isset($_GET['listadoSesiones'])) {
     }
 
     $json = array();
-    while ($row = mysqli_fetch_array($result)) {
+    if (mysqli_num_rows($result) > 0) {
+
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idSesion' => $row['idSesion'],
+                'nroSesion' => $row['nroSesion'],
+                'nomSesion' => $row['UPPER(se.nomSesion)'],
+                'tipoSesion' => $row['UPPER(se.tipoSesion)'],
+                'tipoSesionHH' => $row['UPPER(se.tipoSesionHH)'],
+                'duracionSesionHH' => $row['UPPER(se.duracionSesionHH)'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)']
+            );
+
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
         $json[] = array(
-            'idSesion' => $row['idSesion'],
-            'nroSesion' => $row['nroSesion'],
-            'nomSesion' => $row['UPPER(se.nomSesion)'],
-            'tipoSesion' => $row['UPPER(se.tipoSesion)'],
-            'tipoSesionHH' => $row['UPPER(se.tipoSesionHH)'],
-            'duracionSesionHH' => $row['UPPER(se.duracionSesionHH)'],
-            'nomRamo' => $row['UPPER(ram.nomRamo)']
+            'idSesion' => 'empty / vacio',
+            'nroSesion' => 'empty / vacio',
+            'nomSesion' => 'empty / vacio',
+            'tipoSesion' => 'empty / vacio',
+            'tipoSesionHH' => 'empty / vacio',
+            'duracionSesionHH' => 'empty / vacio',
+            'nomRamo' => 'empty / vacio',
+
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }

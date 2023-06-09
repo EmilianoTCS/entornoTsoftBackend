@@ -23,21 +23,42 @@ if (isset($_GET['listadoEmpleados'])) {
     }
 
     $json = array();
-    while ($row = mysqli_fetch_array($result)) {
+    if (mysqli_num_rows($result) > 0) {
+
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idEmpleado' => $row['idEmpleado'],
+                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+                'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
+                'telefonoEmpleado' => $row['telefonoEmpleado'],
+                'nomArea' => $row['UPPER(ar.nomArea)'],
+                'nomPais' => $row['UPPER(pa.nomPais)'],
+                'nomCargo' => $row['UPPER(ca.nomCargo)']
+            );
+
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
         $json[] = array(
-            'idEmpleado' => $row['idEmpleado'],
-            'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-            'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
-            'telefonoEmpleado' => $row['telefonoEmpleado'],
-            'nomArea' => $row['UPPER(ar.nomArea)'],
-            'nomPais' => $row['UPPER(pa.nomPais)'],
-            'nomCargo' => $row['UPPER(ca.nomCargo)']
+            'idEmpleado' => 'empty / vacio',
+            'nomEmpleado' => 'empty / vacio',
+            'correoEmpleado' => 'empty / vacio',
+            'telefonoEmpleado' => 'empty / vacio',
+            'nomArea' => 'empty / vacio',
+            'nomPais' => 'empty / vacio',
+            'nomCargo' => 'empty / vacio'
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }

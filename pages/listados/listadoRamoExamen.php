@@ -22,18 +22,37 @@ if (isset($_GET['listadoRamoExamen'])) {
     }
 
     $json = array();
-    while ($row = mysqli_fetch_array($result)) {
+    if (mysqli_num_rows($result) > 0) {
+
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idRamoExamen' => $row['idRamoExamen'],
+                'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
+                'fechaExamen' => $row['fechaExamen'],
+                'nomRamo' => $row['UPPER(ram.nomRamo)']
+            );
+
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
         $json[] = array(
-            'idRamoExamen' => $row['idRamoExamen'],
-            'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
-            'fechaExamen' => $row['fechaExamen'],
-            'nomRamo' => $row['UPPER(ram.nomRamo)']
+            'idRamoExamen' => 'empty / vacio',
+            'nomExamen' => 'empty / vacio',
+            'fechaExamen' => 'empty / vacio',
+            'nomRamo' => 'empty / vacio',
+
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }

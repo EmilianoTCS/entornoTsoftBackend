@@ -23,17 +23,34 @@ if (isset($_GET['listadoServicios'])) {
     }
 
     $json = array();
-    while ($row = mysqli_fetch_array($result)) {
+    if (mysqli_num_rows($result) > 0) {
+
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idServicio' => $row['idServicio'],
+                'nomServicio' => $row['UPPER(serv.nomServicio)'],
+                'nomCliente' => $row['UPPER(cli.nomCliente)'],
+            );
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
         $json[] = array(
-            'idServicio' => $row['idServicio'],
-            'nomServicio' => $row['UPPER(serv.nomServicio)'],
-            'nomCliente' => $row['UPPER(cli.nomCliente)'],
+            'idServicio' => 'empty / vacio',
+            'nomServicio' => 'empty / vacio',
+            'nomCliente' => 'empty / vacio',
+
         );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }

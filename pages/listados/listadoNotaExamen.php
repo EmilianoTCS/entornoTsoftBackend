@@ -13,6 +13,7 @@ if (isset($_GET['listadoNotaExamen'])) {
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
+    $json = array();
 
 
     $query = "CALL SP_listadoNotaExamen('$inicio', '$cantidadPorPagina')";
@@ -21,20 +22,37 @@ if (isset($_GET['listadoNotaExamen'])) {
         die('Query Failed' . mysqli_error($conection));
     }
 
-    $json = array();
-    while ($row = mysqli_fetch_array($result)) {
-        $json[] = array(
-            'idNotaExamen' => $row['idNotaExamen'],
-            'notaExamen' => $row['notaExamen'],
-            'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
-            'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
-            'idCursoAlumno' => $row['idCursoAlumno']
-        );
-        $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_array($result)) {
+            $json[] = array(
+                'idNotaExamen' => $row['idNotaExamen'],
+                'notaExamen' => $row['notaExamen'],
+                'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
+                'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
+                'idCursoAlumno' => $row['idCursoAlumno']
+            );
+
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+        }
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
+    } else {
+         $json[] = array(
+                'idNotaExamen' => 'empty / vacio',
+                'notaExamen' => 'empty / vacio',
+                'apruebaExamen' => 'empty / vacio',
+                'nomExamen' => 'empty / vacio',
+                'idCursoAlumno' => 'empty / vacio'
+            );
+
+        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
+        $jsonstring = json_encode([
+            'datos' => $json,
+            'paginador' => $FN_cantPaginas
+        ]);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode([
-        'datos' => $json,
-        'paginador' => $FN_cantPaginas
-    ]);
-    echo $jsonstring;
 }
