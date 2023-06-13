@@ -12,11 +12,12 @@ if (isset($_GET['listadoServicios'])) {
 
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->idCliente = "" || null ? $idCliente = null : $num_boton = $data->idCliente;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoServicios('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoServicios('$inicio', '$cantidadPorPagina', '$idCliente')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
