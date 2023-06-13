@@ -11,12 +11,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listadoSesiones'])) {
 
     $data = json_decode(file_get_contents("php://input"));
+    $data->idRamo = "" || null ? $idRamo = null : $idRamo = $data->idRamo;
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
-    $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoSesiones('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoSesiones('$inicio', '$cantidadPorPagina', '$idRamo')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

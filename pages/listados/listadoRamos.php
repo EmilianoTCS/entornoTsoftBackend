@@ -12,11 +12,12 @@ if (isset($_GET['listadoRamos'])) {
 
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->idCurso = "" || null ? $idCurso = null : $idCurso = $data->idCurso;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoRamos('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoRamos('$inicio', '$cantidadPorPagina', '$idCurso')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
