@@ -11,12 +11,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listadoNotaExamen'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->idRamoExamen = "" || null ? $idRamoExamen = null : $idRamoExamen = $data->idRamoExamen;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
     $json = array();
 
 
-    $query = "CALL SP_listadoNotaExamen('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoNotaExamen('$inicio', '$cantidadPorPagina', '$idRamoExamen')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
