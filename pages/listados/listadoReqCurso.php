@@ -16,7 +16,7 @@ if (isset($_GET['listadoReqCurso'])) {
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoReqCurso('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoReqCurso('$inicio', '$cantidadPorPagina', '$idCurso')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -31,8 +31,7 @@ if (isset($_GET['listadoReqCurso'])) {
                 'nomCurso' => $row['UPPER(cur.nomCurso)'],
                 'requisitoCurso' => $row['requisitoCurso']
             );
-                $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
-  
+            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
         }
         $jsonstring = json_encode([
             'datos' => $json,
@@ -44,7 +43,7 @@ if (isset($_GET['listadoReqCurso'])) {
             'idReqCurso' => 'empty / vacio',
             'nomCurso' => 'empty / vacio',
             'requisitoCurso' => 'empty / vacio',
-                    
+
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

@@ -12,11 +12,17 @@ if (isset($_GET['listadoAlumnos'])) {
 
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->idPais = "" || null ? $idPais = null : $idPais = $data->num_boidPaiston;
+    $data->idServicio = "" || null ? $idServicio = null : $idServicio = $data->idServicio;
+    $data->idArea = "" || null ? $idArea = null : $idArea = $data->idArea;
+    $data->idCargo = "" || null ? $idCargo = null : $idCargo = $data->idCargo;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
+  
+    
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoAlumnos('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoAlumnos('$inicio', '$cantidadPorPagina', '$idPais','$idServicio', '$idArea', '$idCargo')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
