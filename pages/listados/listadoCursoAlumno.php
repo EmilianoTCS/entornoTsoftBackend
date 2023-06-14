@@ -18,7 +18,7 @@ if (isset($_GET['listadoCursoAlumno'])) {
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoCursoAlumno('$inicio', '$cantidadPorPagina','$idAlumno'. '$idCurso')";
+    $query = "CALL SP_listadoCursoAlumno('$inicio', '$cantidadPorPagina','$idAlumno', '$idCurso')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
