@@ -11,13 +11,12 @@ if (isset($_GET['insertarRamoExamen'])) {
 
     $data = json_decode(file_get_contents("php://input"));
     $nomExamen = $data->nomExamen;
-    $apruebaExamen = $data->apruebaExamen;
+    $fechaExamen = $data->fechaExamen;
     $isActive = $data->isActive;
-    $idRamoExamen = $data->idRamoExamen;
-    $idCursoAlumno = $data->idCursoAlumno;
+    $idRamo = $data->idRamo;
     $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_insertarRamoExamen('$nomExamen', '$apruebaExamen', '$isActive', '$idRamoExamen', '$idCursoAlumno', '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarRamoExamen('$nomExamen', '$fechaExamen', '$isActive', '$idRamo', '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
