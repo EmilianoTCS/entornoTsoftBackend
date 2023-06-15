@@ -20,7 +20,7 @@ if (isset($_GET['insertarRamo'])) {
     $idCurso = $data->idCurso;
     $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_insertarRamo('$codRamo','$nomRamo','$tipoRamo', $tipoRamoHH, $duracionRamoHH , $cantSesionesRamo, $isActive, $idCurso, '$usuarioCreacion', @p0, @p1, @p2)";
+    $query = "CALL SP_insertarRamo('$codRamo','$nomRamo','$tipoRamo', '$tipoRamoHH', $duracionRamoHH , $cantSesionesRamo, $isActive, $idCurso, '$usuarioCreacion', @p0, @p1, @p2)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
