@@ -148,7 +148,7 @@ if (isset($_GET['seleccionarDatos'])) {
                 case 'reqcurso':
                     $json[] = array(
                         'idReqCurso' => $row['idReqCurso'],
-                        'nomCurso' => $row['UPPER(cur.nomCurso)'],
+                        'nomCurso' => $row['idCurso'],
                         'requisitoCurso' => $row['requisitoCurso']
                     );
                     break;
