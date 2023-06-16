@@ -15,12 +15,12 @@ if (isset($_GET['insertarCursoAlumno'])) {
     $fechaFin = $data->fechaFin;
     $horaFin = $data->horaFin;
 
-    $data->porcAsistencia = "" || null || 0 ? $porcAsistencia = 0 : $porcAsistencia = $data->porcAsistencia;
-    $data->porcParticipacion = "" || null || 0 ? $porcParticipacion = 0 : $porcParticipacion = $data->porcParticipacion;
-    $data->claseAprobada = "" || null || 0 ? $claseAprobada = 'N' : $claseAprobada = $data->claseAprobada;
-    $data->porcAprobacion = "" || null || 0 ? $porcAprobacion = 0 : $porcAprobacion = $data->porcAprobacion;
-    $data->estadoCurso = "" || null || 0 ? $estadoCurso = 'reprobado' : $estadoCurso = $data->estadoCurso;
-    
+    $data->porcAsistencia = "" || $data->porcAsistencia = null || $data->porcAsistencia = 0 ? $porcAsistencia = 0 : $porcAsistencia = $data->porcAsistencia;
+    $data->porcParticipacion = "" || $data->porcParticipacion = null || $data->porcParticipacion =  0 ? $porcParticipacion = 0 : $porcParticipacion = $data->porcParticipacion;
+    $data->claseAprobada = "" || $data->claseAprobada = null || $data->claseAprobada = 0 ? $claseAprobada = 'N' : $claseAprobada = $data->claseAprobada;
+    $data->porcAprobacion = "" || $data->porcAprobacion = null || $data->porcAprobacion = 0 ? $porcAprobacion = 0 : $porcAprobacion = $data->porcAprobacion;
+    $data->estadoCurso = "" || $data->estadoCurso = null || $data->estadoCurso = 0 ? $estadoCurso = 'reprobado' : $estadoCurso = $data->estadoCurso;
+
     $isActive = $data->isActive;
     $idAlumno = $data->idAlumno;
     $idCurso = $data->idCurso;
