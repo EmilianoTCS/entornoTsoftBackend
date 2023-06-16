@@ -34,7 +34,8 @@ if (isset($_GET['listadoSesiones'])) {
                 'tipoSesion' => $row['UPPER(se.tipoSesion)'],
                 'tipoSesionHH' => $row['UPPER(se.tipoSesionHH)'],
                 'duracionSesionHH' => $row['UPPER(se.duracionSesionHH)'],
-                'nomRamo' => $row['UPPER(ram.nomRamo)']
+                'nomRamo' => $row['UPPER(ram.nomRamo)'],
+                'nomCurso' => $row['UPPER(cur.nomCurso)']
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
@@ -53,6 +54,8 @@ if (isset($_GET['listadoSesiones'])) {
             'tipoSesionHH' => 'empty / vacio',
             'duracionSesionHH' => 'empty / vacio',
             'nomRamo' => 'empty / vacio',
+            'nomCurso' => 'empty / vacio'
+
 
         );
 
