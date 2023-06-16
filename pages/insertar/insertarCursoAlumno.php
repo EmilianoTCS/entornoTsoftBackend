@@ -14,11 +14,13 @@ if (isset($_GET['insertarCursoAlumno'])) {
     $horaIni = $data->horaIni;
     $fechaFin = $data->fechaFin;
     $horaFin = $data->horaFin;
-    $porcAsistencia = $data->porcAsistencia;
-    $porcParticipacion = $data->porcParticipacion;
-    $claseAprobada = $data->claseAprobada;
-    $porcAprobacion = $data->porcAprobacion;
-    $estadoCurso = $data->estadoCurso;
+
+    $data->porcAsistencia = "" || null || 0 ? $porcAsistencia = 0 : $porcAsistencia = $data->porcAsistencia;
+    $data->porcParticipacion = "" || null || 0 ? $porcParticipacion = 0 : $porcParticipacion = $data->porcParticipacion;
+    $data->claseAprobada = "" || null || 0 ? $claseAprobada = 'N' : $claseAprobada = $data->claseAprobada;
+    $data->porcAprobacion = "" || null || 0 ? $porcAprobacion = 0 : $porcAprobacion = $data->porcAprobacion;
+    $data->estadoCurso = "" || null || 0 ? $estadoCurso = 'reprobado' : $estadoCurso = $data->estadoCurso;
+    
     $isActive = $data->isActive;
     $idAlumno = $data->idAlumno;
     $idCurso = $data->idCurso;
