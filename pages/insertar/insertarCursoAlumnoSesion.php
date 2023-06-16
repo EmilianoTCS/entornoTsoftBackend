@@ -12,8 +12,8 @@ if (isset($_GET['insertarCursoAlumnoSesion'])) {
     $data = json_decode(file_get_contents("php://input"));
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
-  $data->porcAsistencia = "" || $data->porcAsistencia = null || $data->porcAsistencia = 0 ? $porcAsistencia = 0 : $porcAsistencia = $data->porcAsistencia;
-    $data->porcParticipacion = "" || $data->porcParticipacion = null || $data->porcParticipacion =  0 ? $porcParticipacion = 0 : $porcParticipacion = $data->porcParticipacion;
+    $data->asistencia = "" || $data->asistencia = null || $data->asistencia = 0 ? $asistencia = 0 : $asistencia = $data->asistencia;
+    $data->participacion = "" || $data->participacion = null || $data->participacion =  0 ? $participacion = 0 : $participacion = $data->participacion;
     $isActive = $data->isActive;
     $idSesion = $data->idSesion;
     $idCursoAlumno = $data->idCursoAlumno;
@@ -23,7 +23,7 @@ if (isset($_GET['insertarCursoAlumnoSesion'])) {
 
 
 
-    $query = "CALL SP_insertarCursoAlumnoSesion('$fechaIni','$fechaFin', $porcAsistencia, $porcParticipacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarCursoAlumnoSesion('$fechaIni','$fechaFin', $asistencia, $participacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
