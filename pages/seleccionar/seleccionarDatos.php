@@ -141,8 +141,8 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idRelatorRamo' => $row['idRelatorRamo'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
-                        'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-                        'nomRamo' => $row['UPPER(ram.nomRamo)']
+                        'idEmpleado' => $row['idEmpleado'],
+                        'idRamo' => $row['idRamo']
                     );
                     break;
                 case 'reqcurso':
