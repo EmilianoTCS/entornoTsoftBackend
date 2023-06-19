@@ -53,7 +53,9 @@ if (isset($_GET['listadoContactos'])) {
             'telefonoContacto' => 'empty / vacio',
             'fechaIni' => 'empty / vacio',
             'fechaFin' => 'empty / vacio',
-            'nomServicio' => 'empty / vacio'
+            'nomServicio' => 'empty / vacio',
+            'nomCliente' => 'empty / vacio'
+
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
