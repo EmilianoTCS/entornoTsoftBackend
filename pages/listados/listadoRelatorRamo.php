@@ -17,7 +17,7 @@ if (isset($_GET['listadoRelatorRamo'])) {
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoRelatorRamo('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_listadoRelatorRamo('$inicio', '$cantidadPorPagina', '$idEmpleado')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
