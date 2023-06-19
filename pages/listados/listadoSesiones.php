@@ -12,6 +12,7 @@ if (isset($_GET['listadoSesiones'])) {
 
     $data = json_decode(file_get_contents("php://input"));
     $data->idRamo = "" || null ? $idRamo = null : $idRamo = $data->idRamo;
+    $data->idCurso = "" || null ? $idCurso = null : $idCurso = $data->idCurso;
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
