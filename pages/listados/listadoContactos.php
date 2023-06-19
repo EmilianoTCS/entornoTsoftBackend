@@ -16,7 +16,6 @@ if (isset($_GET['listadoContactos'])) {
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
-
     $query = "CALL SP_listadoContactos('$inicio', '$cantidadPorPagina', '$idServicio', '$idCliente')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
@@ -34,7 +33,8 @@ if (isset($_GET['listadoContactos'])) {
                 'telefonoContacto' => $row['telefonoContacto'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
-                'nomServicio' => $row['UPPER(serv.nomServicio)']
+                'nomServicio' => $row['UPPER(serv.nomServicio)'],
+                'nomCliente' => $row['nomCliente']
 
             );
 
