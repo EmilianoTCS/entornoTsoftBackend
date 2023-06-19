@@ -23,7 +23,7 @@ if (isset($_GET['insertarServicio'])) {
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
-        if ($row['OUT_STATUSERROR'] != '00') {
+        if ($row['OUT_CODRESULT'] != '00') {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT']
