@@ -13,6 +13,8 @@ if (isset($_GET['editarCursoAlumnoSesion'])) {
     $idCursoAlumnoSesion = $data->idCursoAlumnoSesion;
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
+    $horaIni = $data->horaIni;
+    $horaFin = $data->horaFin;
     $asistencia = $data->asistencia;
     $participacion = $data->participacion;
     $isActive = $data->isActive;
@@ -20,7 +22,7 @@ if (isset($_GET['editarCursoAlumnoSesion'])) {
     $idCursoAlumno = $data->idCursoAlumno;
     $usuarioModificacion = $data->usuarioModificacion;
 
-    $query = "CALL SP_editarCursoAlumnoSesion($idCursoAlumnoSesion, '$fechaIni','$fechaFin', $asistencia, $participacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_editarCursoAlumnoSesion($idCursoAlumnoSesion, '$fechaIni','$fechaFin', $asistencia, $participacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioModificacion', @p0, @p1, '$horaFin', '$horaIni')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
