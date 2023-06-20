@@ -50,7 +50,7 @@ if (isset($_GET['insertarCursoAlumno'])) {
                 'horaFin' => $row['horaFin'],
                 'porcAsistencia' => $row['porcAsistencia'],
                 'porcParticipacion' => $row['porcParticipacion'],
-                'claseAprobada' => $row['curAl.claseAprobada'],
+                'claseAprobada' => $row['claseAprobada'],
                 'porcAprobacion' => $row['porcAprobacion'],
                 'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
                 'nomAlumno' => $row['UPPER(al.nomAlumno)'],
