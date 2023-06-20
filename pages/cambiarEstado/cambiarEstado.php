@@ -158,6 +158,16 @@ if (isset($_GET['cambiarEstado'])) {
                         'nomRamo' => $row['UPPER(ram.nomRamo)']
                     );
                     break;
+                case 'eddproyecto':
+                    $json[] = array(
+                        'idEDDProyecto' => $row['idEDDProyecto'],
+                        'nomProyecto' => $row['nomProyecto'],
+                        'fechaIni' => $row['fechaIni'],
+                        'fechaFin' => $row['fechaFin'],
+                        'nomServicio' => $row['nomServicio'],
+                        'idServicio' => $row['idServicio']
+                    );
+                    break;
             }
         }
     }

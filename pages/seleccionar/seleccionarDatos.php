@@ -11,10 +11,11 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['seleccionarDatos'])) {
     $data = json_decode(file_get_contents("php://input"));
-    // $idRegistro = $data->idRegistro;
-    // $nombreTabla = $data->nombreTabla;
-    $idRegistro = 1;
-    $nombreTabla = "relatorramo";
+    $idRegistro = $data->idRegistro;
+    $nombreTabla = $data->nombreTabla;
+    
+    // $idRegistro = 1;
+    // $nombreTabla = "eddproyecto";
 
     $query = "CALL SP_seleccionarDatos('$nombreTabla', $idRegistro, @p0, @p1)";
     $result = mysqli_query($conection, $query);
@@ -174,7 +175,7 @@ if (isset($_GET['seleccionarDatos'])) {
                     break;
                 case 'eddproyecto':
                     $json[] = array(
-                        'idEDDProyecto' => $row['idEDDProyecto  '],
+                        'idEDDProyecto' => $row['idEDDProyecto'],
                         'nomProyecto' => $row['nomProyecto'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],

@@ -8,17 +8,17 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarEddProyecto'])) {
+if (isset($_GET['editarEddProyEmp'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nomProyecto = $data->nomProyecto;
-    $fechaIni = $data->fechaIni;
-    $fechaFin = $data->fechaFin;
+    $idEDDProyEmp = $data->idEDDProyEmp;
+    $idProyecto = $data->idProyecto;
+    $idEmpleado = $data->idEmpleado;
+    $cargoEnProy = $data->cargoEnProy;
     $isActive = $data->isActive;
-    $idServicio = $data->idServicio;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_insertarEddProyecto('$nomProyecto','$fechaIni','$fechaFin', $isActive, $idServicio, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarEddProyEmp($idEDDProyEmp, '$idProyecto','$idEmpleado','$cargoEnProy', $isActive,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -34,11 +34,10 @@ if (isset($_GET['insertarEddProyecto'])) {
             );
         } else {
             $json[] = array(
-                'idEDDProyecto' => $row['idEDDProyecto'],
+                'idEDDProyEmp' => $row['idEDDProyEmp'],
                 'nomProyecto' => $row['nomProyecto'],
-                'fechaIni' => $row['fechaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'nomServicio' => $row['nomServicio'],
+                'nomEmpleado' => $row['nomEmpleado'],
+                'cargoEnProy' => $row['cargoEnProy'],
             );
         }
     }
