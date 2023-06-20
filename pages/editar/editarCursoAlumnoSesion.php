@@ -38,6 +38,8 @@ if (isset($_GET['editarCursoAlumnoSesion'])) {
                 'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
+                'horaIni' => $row['horaIni'],
+                'horaFin' => $row['horaFin'],
                 'asistencia' => $row['asistencia'],
                 'participacion' => $row['participacion'],
                 'nomSesion' => $row['UPPER(se.nomSesion)'],

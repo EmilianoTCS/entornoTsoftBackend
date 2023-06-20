@@ -13,7 +13,7 @@ if (isset($_GET['seleccionarDatos'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idRegistro = $data->idRegistro;
     $nombreTabla = $data->nombreTabla;
-    
+
     // $idRegistro = 1;
     // $nombreTabla = "eddproyecto";
 
@@ -94,6 +94,8 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
+                        'horaIni' => $row['horaIni'],
+                        'horaFin' => $row['horaFin'],
                         'asistencia' => $row['asistencia'],
                         'participacion' => $row['participacion'],
                         'idSesion' => $row['idSesion'],
@@ -181,6 +183,14 @@ if (isset($_GET['seleccionarDatos'])) {
                         'fechaFin' => $row['fechaFin'],
                         'nomServicio' => $row['nomServicio'],
                         'idServicio' => $row['idServicio']
+                    );
+                    break;
+                case 'eddproyemp':
+                    $json[] = array(
+                        'idEDDProyEmp' => $row['idEDDProyEmp'],
+                        'idProyecto' => $row['idProyecto'],
+                        'idEmpleado' => $row['idEmpleado'],
+                        'cargoEnProy' => $row['cargoEnProy'],
                     );
                     break;
             }

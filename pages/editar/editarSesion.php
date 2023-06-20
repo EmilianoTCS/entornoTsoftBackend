@@ -10,6 +10,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['editarSesion'])) {
     $data = json_decode(file_get_contents("php://input"));
+    $idSesion = $data->idSesion;
     $nroSesion = $data->nroSesion;
     $nomSesion = $data->nomSesion;
     $tipoSesion = $data->tipoSesion;
@@ -19,7 +20,7 @@ if (isset($_GET['editarSesion'])) {
     $idRamo = $data->idRamo;
     $usuarioModificacion = $data->usuarioModificacion;
 
-    $query = "CALL SP_editarSesion('$nroSesion','$nomSesion','$tipoSesion', '$tipoSesionHH', $duracionSesionHH , $isActive, $idRamo, '$usuarioModificacion', @p0, @p1, @p2)";
+    $query = "CALL SP_editarSesion('$idSesion', '$nroSesion','$nomSesion','$tipoSesion', '$tipoSesionHH', $duracionSesionHH , $isActive, $idRamo, '$usuarioModificacion', @p0, @p1, @p2)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
