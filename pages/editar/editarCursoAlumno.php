@@ -49,7 +49,7 @@ if (isset($_GET['editarCursoAlumno'])) {
                 'horaFin' => $row['horaFin'],
                 'porcAsistencia' => $row['porcAsistencia'],
                 'porcParticipacion' => $row['porcParticipacion'],
-                'claseAprobada' => $row['UPPER(curAl.claseAprobada)'],
+                'claseAprobada' => $row['claseAprobada'],
                 'porcAprobacion' => $row['porcAprobacion'],
                 'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
                 'nomAlumno' => $row['UPPER(al.nomAlumno)'],
