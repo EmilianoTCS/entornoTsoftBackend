@@ -168,6 +168,24 @@ if (isset($_GET['cambiarEstado'])) {
                         'idServicio' => $row['idServicio']
                     );
                     break;
+                case 'eddproyemp':
+                    $json[] = array(
+                        'idEDDProyEmp' => $row['idEDDProyEmp'],
+                        'nomProyecto' => $row['nomProyecto'],
+                        'nomEmpleado' => $row['nomEmpleado'],
+                        'cargoEnProy' => $row['cargoEnProy'],
+                    );
+                    break;
+                case 'emptipoperfil':
+                    $json[] = array(
+                        'idEDDProyecto' => $row['idEDDProyecto'],
+                        'nomProyecto' => $row['nomProyecto'],
+                        'fechaIni' => $row['fechaIni'],
+                        'fechaFin' => $row['fechaFin'],
+                        'nomServicio' => $row['nomServicio'],
+                        'idServicio' => $row['idServicio']
+                    );
+                    break;
             }
         }
     }

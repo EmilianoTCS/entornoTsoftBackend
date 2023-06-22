@@ -193,6 +193,13 @@ if (isset($_GET['seleccionarDatos'])) {
                         'cargoEnProy' => $row['cargoEnProy'],
                     );
                     break;
+                case 'emptipoperfil':
+                    $json[] = array(
+                        'idEmpTipoPerfil' => $row['idEmpTipoPerfil'],
+                        'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+                        'nomTipoPerfil' => $row['UPPER(tp.nomTipoPerfil)'],
+                    );
+                    break;
             }
         }
     }
