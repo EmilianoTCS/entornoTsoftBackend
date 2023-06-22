@@ -196,8 +196,15 @@ if (isset($_GET['seleccionarDatos'])) {
                 case 'emptipoperfil':
                     $json[] = array(
                         'idEmpTipoPerfil' => $row['idEmpTipoPerfil'],
-                        'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-                        'nomTipoPerfil' => $row['UPPER(tp.nomTipoPerfil)'],
+                        'idEmpleado' => $row['idEmpleado'],
+                        'idTipoPerfil' => $row['idTipoPerfil'],
+                    );
+                    break;
+                case 'empsubsist':
+                    $json[] = array(
+                        'idEmpSubsist' => $row['idEmpSubsist'],
+                        'idEmpleado' => $row['idEmpleado'],
+                        'idSubsistema' => $row['idSubsistema'],
                     );
                     break;
             }

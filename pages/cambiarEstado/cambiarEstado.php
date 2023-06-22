@@ -186,6 +186,13 @@ if (isset($_GET['cambiarEstado'])) {
                         'idServicio' => $row['idServicio']
                     );
                     break;
+                case 'empsubsist':
+                    $json[] = array(
+                        'idEmpSubsist' => $row['idEmpSubsist'],
+                        'nomEmpleado' => $row['nomEmpleado'],
+                        'nomSubsistema' => $row['nomSubsistema'],
+                    );
+                    break;
             }
         }
     }
