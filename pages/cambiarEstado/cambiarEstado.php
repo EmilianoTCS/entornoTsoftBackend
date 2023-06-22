@@ -178,12 +178,9 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'emptipoperfil':
                     $json[] = array(
-                        'idEDDProyecto' => $row['idEDDProyecto'],
-                        'nomProyecto' => $row['nomProyecto'],
-                        'fechaIni' => $row['fechaIni'],
-                        'fechaFin' => $row['fechaFin'],
-                        'nomServicio' => $row['nomServicio'],
-                        'idServicio' => $row['idServicio']
+                        'idEmpTipoPerfil' => $row['idEmpTipoPerfil'],
+                        'nomEmpleado' => $row['nomEmpleado'],
+                        'nomTipoPerfil' => $row['nomTipoPerfil'],
                     );
                     break;
                 case 'empsubsist':

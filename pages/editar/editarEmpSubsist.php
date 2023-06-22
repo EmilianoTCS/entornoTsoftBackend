@@ -17,7 +17,7 @@ if (isset($_GET['editarEmpSubsist'])) {
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarEmpSubsist('$idEmpSubsist', '$idEmpleado','$idSubsistema', $isActive, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarEmpSubsist('$idEmpSubsist', '$idEmpleado','$idSubsistema', $isActive, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query); 
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

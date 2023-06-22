@@ -15,7 +15,7 @@ if (isset($_GET['seleccionarDatos'])) {
     $nombreTabla = $data->nombreTabla;
 
     // $idRegistro = 1;
-    // $nombreTabla = "eddproyecto";
+    // $nombreTabla = "empsubsist";
 
     $query = "CALL SP_seleccionarDatos('$nombreTabla', $idRegistro, @p0, @p1)";
     $result = mysqli_query($conection, $query);

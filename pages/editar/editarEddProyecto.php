@@ -35,7 +35,7 @@ if (isset($_GET['editarEddProyecto'])) {
             );
         } else {
             $json[] = array(
-                'idEDDProyecto' => $row['idEDDProyecto  '],
+                'idEDDProyecto' => $row['idEDDProyecto'],
                 'nomProyecto' => $row['nomProyecto'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],

@@ -8,16 +8,15 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['editarEmpTipoPerfil'])) {
+if (isset($_GET['insertarEddEvalCompetencia'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $idEmpTipoPerfil = $data->idEmpTipoPerfil;
-    $idEmpleado = $data->idEmpleado;
-    $idTipoPerfil = $data->idTipoPerfil;
+    $nomCompetencia = $data->nomCompetencia;
     $isActive = $data->isActive;
-    $usuarioModificacion = $data->usuarioModificacion;
+    $usuarioCreacion = $data->usuarioCreacion;
 
-    $query = "CALL SP_editarEmpTipoPerfil('$idEmpTipoPerfil', '$idEmpleado','$idTipoPerfil', $isActive, '$usuarioModificacion', @p0, @p1)";
-    $result = mysqli_query($conection, $query); 
+
+    $query = "CALL SP_insertarEddEvalCompetencia('$nomCompetencia','$isActive', '$usuarioCreacion', @p0, @p1)";
+    $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
@@ -32,9 +31,9 @@ if (isset($_GET['editarEmpTipoPerfil'])) {
             );
         } else {
             $json[] = array(
-                'idEmpTipoPerfil' => $row['idEmpTipoPerfil'],
-                'nomTipoPerfil' => $row['UPPER(tp.nomTipoPerfil)'],
-                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+                'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                'nomCompetencia' => $row['nomCompetencia'],
+
             );
         }
     }
