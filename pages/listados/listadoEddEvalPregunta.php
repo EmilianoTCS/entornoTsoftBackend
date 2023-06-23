@@ -8,15 +8,15 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listadoEmpTipoPerfil'])) {
+if (isset($_GET['listadoEddEvalPregunta'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->idEmpleado = "" || null ? $idEmpleado = null : $idEmpleado = $data->idEmpleado;
-    $data->idTipoPerfil = "" || null ? $idTipoPerfil = null : $idTipoPerfil = $data->idTipoPerfil;
+    $data->idEDDEvaluacion = "" || null ? $idEDDEvaluacion = null : $idEDDEvaluacion = $data->idEDDEvaluacion;
+    $data->idEDDEvalCompetencia = "" || null ? $idEDDEvalCompetencia = null : $idEDDEvalCompetencia = $data->idEDDEvalCompetencia;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
-    $query = "CALL SP_listadoEmpTipoPerfil('$inicio', '$cantidadPorPagina', '$idEmpleado', '$idTipoPerfil')";
+    $query = "CALL SP_listadoEddEvalPregunta('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEDDEvalCompetencia')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -27,9 +27,13 @@ if (isset($_GET['listadoEmpTipoPerfil'])) {
 
         while ($row = mysqli_fetch_array($result)) {
             $json[] = array(
-                'idEmpTipoPerfil' => $row['idEmpTipoPerfil'],
-                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-                'nomTipoPerfil' => $row['UPPER(tp.nomTipoPerfil)'],
+                'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
+                'nomPregunta' => $row['nomPregunta'],
+                'ordenPregunta' => $row['ordenPregunta'],
+                'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                'nomEvaluacion' => $row['nomEvaluacion'],
+                'nomCompetencia' => $row['nomCompetencia'],
 
             );
 
@@ -42,9 +46,13 @@ if (isset($_GET['listadoEmpTipoPerfil'])) {
         echo $jsonstring;
     } else {
         $json[] = array(
-            'idEmpTipoPerfil' => 'empty / vacio',
-            'nomEmpleado' => 'empty / vacio',
-            'nomTipoPerfil' => 'empty / vacio',
+            'idEDDEvalPregunta' => 'empty / vacio',
+            'nomPregunta' => 'empty / vacio',
+            'ordenPregunta' => 'empty / vacio',
+            'idEDDEvaluacion' => 'empty / vacio',
+            'idEDDEvalCompetencia' => 'empty / vacio',
+            'nomEvaluacion' => 'empty / vacio',
+            'nomCompetencia' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

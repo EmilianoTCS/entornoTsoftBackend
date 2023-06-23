@@ -207,6 +207,26 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idSubsistema' => $row['idSubsistema'],
                     );
                     break;
+                case 'eddevalcompetencia':
+                    $json[] = array(
+                        'nomCompetencia' => $row['nomCompetencia'],
+                    );
+                    break;
+                case 'eddevalresppreg':
+                    $json[] = array(
+                        'nomRespPreg' => $row['nomRespPreg'],
+                        'ordenRespPreg' => $row['ordenRespPreg'],
+                        'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
+                    );
+                    break;
+                case 'eddevalpregunta':
+                    $json[] = array(
+                        'nomPregunta' => $row['nomPregunta'],
+                        'ordenPregunta' => $row['ordenPregunta'],
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                    );
+                    break;
             }
         }
     }

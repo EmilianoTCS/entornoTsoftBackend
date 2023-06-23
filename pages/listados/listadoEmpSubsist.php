@@ -8,7 +8,7 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listadoEmpTipoPerfil'])) {
+if (isset($_GET['listadoEmpSubsist'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->idEmpleado = "" || null ? $idEmpleado = null : $idEmpleado = $data->idEmpleado;
@@ -16,7 +16,7 @@ if (isset($_GET['listadoEmpTipoPerfil'])) {
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
-    $query = "CALL SP_listadoContactos('$inicio', '$cantidadPorPagina', '$idEmpleado', '$idSubsistema')";
+    $query = "CALL SP_listadoEmpSubsist('$inicio', '$cantidadPorPagina', '$idEmpleado', '$idSubsistema')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
