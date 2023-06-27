@@ -247,6 +247,16 @@ if (isset($_GET['seleccionarDatos'])) {
                         'fechaFin' => $row['fechaFin'],
                     );
                     break;
+                case 'eddevalproyemp':
+                    $json[] = array(
+                        'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'idEDDProyEmp' => $row['idEDDProyEmp'],
+                        'evalRespondida' => $row['evalRespondida'],
+                        'fechaIni' => $row['fechaIni'],
+                        'fechaFin' => $row['fechaFin'],
+                    );
+                    break;
             }
         }
     }
