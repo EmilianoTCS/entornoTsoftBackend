@@ -15,10 +15,10 @@ if (isset($_GET['editarEddEvalRespPreg'])) {
     $ordenRespPreg = $data->ordenRespPreg;
     $isActive = $data->isActive;
     $idEDDEvalPregunta = $data->idEDDEvalPregunta;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarEddEvalRespPreg('$idEDDEvalRespPreg','$nomRespPreg','$ordenRespPreg', '$isActive', $idEDDEvalPregunta, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarEddEvalRespPreg('$idEDDEvalRespPreg','$nomRespPreg','$ordenRespPreg', '$isActive', $idEDDEvalPregunta, '$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

@@ -16,10 +16,10 @@ if (isset($_GET['editarEddProyecto'])) {
     $fechaFin = $data->fechaFin;
     $isActive = $data->isActive;
     $idServicio = $data->idServicio;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarEddProyecto($idEDDProyecto, '$nomProyecto','$fechaIni','$fechaFin', $isActive, $idServicio, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarEddProyecto($idEDDProyecto, '$nomProyecto','$fechaIni','$fechaFin', $isActive, $idServicio, '$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

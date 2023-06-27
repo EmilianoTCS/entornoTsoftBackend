@@ -14,10 +14,10 @@ if (isset($_GET['editarEmpSubsist'])) {
     $idEmpleado = $data->idEmpleado;
     $idSubsistema = $data->idSubsistema;
     $isActive = $data->isActive;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarEmpSubsist('$idEmpSubsist', '$idEmpleado','$idSubsistema', $isActive, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_editarEmpSubsist('$idEmpSubsist', '$idEmpleado','$idSubsistema', $isActive, '$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query); 
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
