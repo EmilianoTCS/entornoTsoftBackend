@@ -227,6 +227,17 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
                     );
                     break;
+                case 'eddevalproyresp':
+                    $json[] = array(
+                        'idEDDEvalProyResp' => $row['idEDDEvalProyResp'],
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'idEDDProyEmp' => $row['idEDDProyEmp'],
+                        'respuesta' => $row['respuesta'],
+                        'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                        'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
+                        'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg']
+                    );
+                    break;
             }
         }
     }
