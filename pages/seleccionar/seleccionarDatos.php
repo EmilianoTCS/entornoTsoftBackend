@@ -238,6 +238,15 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg']
                     );
                     break;
+                case 'eddevaluacion':
+                    $json[] = array(
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'nomEvaluacion' => $row['nomEvaluacion'],
+                        'tipoEvaluacion' => $row['tipoEvaluacion'],
+                        'fechaIni' => $row['fechaIni'],
+                        'fechaFin' => $row['fechaFin'],
+                    );
+                    break;
             }
         }
     }
