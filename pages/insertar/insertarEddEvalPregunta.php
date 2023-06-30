@@ -14,11 +14,11 @@ if (isset($_GET['insertarEddEvalPregunta'])) {
     $ordenPregunta = $data->ordenPregunta;
     $isActive = $data->isActive;
     $idEDDEvaluacion = $data->idEDDEvaluacion;
-    $idEDDCompetencia = $data->idEDDCompetencia;
+    $idEDDEvalCompetencia = $data->idEDDEvalCompetencia;
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarEddEvalPregunta( '$nomPregunta', '$ordenPregunta', '$isActive', '$idEDDEvaluacion','$idEDDCompetencia', '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarEddEvalPregunta( '$nomPregunta', '$ordenPregunta', '$isActive', '$idEDDEvaluacion','$idEDDEvalCompetencia', '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
