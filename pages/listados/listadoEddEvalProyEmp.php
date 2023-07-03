@@ -33,7 +33,9 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
                 'evalRespondida' => $row['evalRespondida'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
-                'nomEvaluacion' => $row['nomEvaluacion']
+                'nomEvaluacion' => $row['nomEvaluacion'],
+                'nomProyecto' => $row['nomProyecto'],
+                'nomEmpleado' => $row['nomEmpleado'],
 
             );
 
@@ -46,13 +48,15 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
         echo $jsonstring;
     } else {
         $json[] = array(
-            'idEDDEvalPregunta' => 'empty / vacio',
-            'nomPregunta' => 'empty / vacio',
-            'ordenPregunta' => 'empty / vacio',
+            'idEDDEvalProyEmp' => 'empty / vacio',
             'idEDDEvaluacion' => 'empty / vacio',
-            'idEDDEvalCompetencia' => 'empty / vacio',
+            'idEDDProyEmp' => 'empty / vacio',
+            'evalRespondida' => 'empty / vacio',
+            'fechaIni' => 'empty / vacio',
+            'fechaFin' => 'empty / vacio',
             'nomEvaluacion' => 'empty / vacio',
-            'nomCompetencia' => 'empty / vacio',
+            'nomProyecto' => 'empty / vacio',
+            'nomEmpleado' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
