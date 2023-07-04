@@ -9,7 +9,7 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 if (isset($_GET['listados'])) {
-    $query = "CALL SP_AUX_listadoCursoAlumnoForms()";
+    $query = "CALL SP_AUX_listadoEddProyEmpForms()";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -19,8 +19,8 @@ if (isset($_GET['listados'])) {
 
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idCursoAlumno' => $row['idCursoAlumno'],
-            'nomCursoAlumno ' => $row['nomCursoAlumno '],
+            'idEDDProyEmp' => $row['idEDDProyEmp'],
+            'nomProyEmp' => $row['nomProyEmp']
         );
     }
     $jsonstring = json_encode(($json));
