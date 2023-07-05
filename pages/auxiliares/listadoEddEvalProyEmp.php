@@ -19,7 +19,7 @@ if (isset($_GET['listados'])) {
 
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idEDDEvalProyEmpleado' => $row['idEDDEvalProyEmp'],
+            'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
             'nomEvalProyEmp' => $row['nomEvalProyEmp']
         );
     }
