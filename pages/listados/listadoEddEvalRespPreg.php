@@ -32,6 +32,7 @@ if (isset($_GET['listadoEddEvalRespPreg'])) {
                 'ordenRespPreg' => $row['ordenRespPreg'],
                 'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
                 'nomPregunta' => $row['nomPregunta'],
+                'nomEvaluacion' => $row['nomEvaluacion'],
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
