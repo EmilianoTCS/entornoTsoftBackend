@@ -85,7 +85,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'claseAprobada' => $row['UPPER(curAl.claseAprobada)'],
                         'porcAprobacion' => $row['porcAprobacion'],
                         'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
-                        'idAlumno' => $row['idAlumno'],
+                        'idEmpleado' => $row['idEmpleado'],
                         'idCurso' => $row['idCurso']
                     );
                     break;

@@ -21,12 +21,12 @@ if (isset($_GET['editarCursoAlumno'])) {
     $porcAprobacion = $data->porcAprobacion;
     $estadoCurso = $data->estadoCurso;
     $isActive = $data->isActive;
-    $idAlumno = $data->idAlumno;
+    $idEmpleado = $data->idEmpleado;
     $idCurso = $data->idCurso;
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarCursoAlumno($idCursoAlumno, '$fechaIni','$horaIni','$fechaFin','$horaFin', $porcAsistencia, $porcParticipacion, '$claseAprobada', $porcAprobacion,'$estadoCurso','$isActive', $idAlumno, $idCurso,'$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_editarCursoAlumno($idCursoAlumno, '$fechaIni','$horaIni','$fechaFin','$horaFin', $porcAsistencia, $porcParticipacion, '$claseAprobada', $porcAprobacion,'$estadoCurso','$isActive', $idEmpleado, $idCurso,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -52,7 +52,7 @@ if (isset($_GET['editarCursoAlumno'])) {
                 'claseAprobada' => $row['claseAprobada'],
                 'porcAprobacion' => $row['porcAprobacion'],
                 'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
-                'nomAlumno' => $row['UPPER(al.nomAlumno)'],
+                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
                 'nomCurso' => $row['UPPER(cur.nomCurso)']
             );
         }

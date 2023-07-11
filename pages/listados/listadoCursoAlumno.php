@@ -12,13 +12,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listadoCursoAlumno'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->idAlumno = "" || null ? $idAlumno = null : $idAlumno = $data->idAlumno;
+    $data->idEmpleado = "" || null ? $idEmpleado = null : $idEmpleado = $data->idEmpleado;
     $data->idCurso = "" || null ? $idCurso = null : $idCurso = $data->idCurso;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoCursoAlumno('$inicio', '$cantidadPorPagina','$idAlumno', '$idCurso')";
+    $query = "CALL SP_listadoCursoAlumno('$inicio', '$cantidadPorPagina','$idEmpleado', '$idCurso')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -39,7 +39,7 @@ if (isset($_GET['listadoCursoAlumno'])) {
                 'claseAprobada' => $row['claseAprobada'],
                 'porcAprobacion' => $row['porcAprobacion'],
                 'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
-                'nomAlumno' => $row['UPPER(al.nomAlumno)'],
+                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
                 'nomCurso' => $row['UPPER(cur.nomCurso)']
             );
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);

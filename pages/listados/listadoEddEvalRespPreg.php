@@ -45,8 +45,12 @@ if (isset($_GET['listadoEddEvalRespPreg'])) {
         echo $jsonstring;
     } else {
         $json[] = array(
-            'idEDDEvalCompetencia' => 'empty / vacio',
-            'nomCompetencia' => 'empty / vacio'
+            'idEDDEvalRespPreg' => 'empty / vacio',
+            'nomRespPreg' => 'empty / vacio',
+            'ordenRespPreg' => 'empty / vacio',
+            'idEDDEvalPregunta' => 'empty / vacio',
+            'nomPregunta' => 'empty / vacio',
+            'nomEvaluacion' => 'empty / vacio'
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
