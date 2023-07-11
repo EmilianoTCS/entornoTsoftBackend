@@ -11,12 +11,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listadoEddEvalRespPreg'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->idEDDEvalPregunta = "" || null ? $idEDDEvalPregunta = 1 : $idEDDEvalPregunta = $data->idEDDEvalPregunta;
+    $data->idEDDEvalPregunta = "" || null ? $idEDDEvalPregunta = null : $idEDDEvalPregunta = $data->idEDDEvalPregunta;
+    $data->idEvaluacion = "" || null ? $idEvaluacion = null : $idEvaluacion = $data->idEvaluacion;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEddEvalRespPreg('$inicio', '$cantidadPorPagina', $idEDDEvalPregunta)";
+    $query = "CALL SP_listadoEddEvalRespPreg('$inicio', '$cantidadPorPagina', '$idEDDEvalPregunta', '$idEvaluacion')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

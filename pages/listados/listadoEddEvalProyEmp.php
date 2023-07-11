@@ -16,6 +16,7 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
+
     $query = "CALL SP_listadoEddEvalProyEmp('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEDDProyEmp')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
