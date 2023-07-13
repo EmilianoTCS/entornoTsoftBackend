@@ -38,7 +38,7 @@ if (isset($_GET['listadoCursoAlumno'])) {
                 'porcParticipacion' => $row['porcParticipacion'],
                 'claseAprobada' => $row['claseAprobada'],
                 'porcAprobacion' => $row['porcAprobacion'],
-                'estadoCurso' => $row['UPPER(curAl.estadoCurso)'],
+                'estadoCurso' => $row['estadoCurso'],
                 'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
                 'nomCurso' => $row['UPPER(cur.nomCurso)']
             );
