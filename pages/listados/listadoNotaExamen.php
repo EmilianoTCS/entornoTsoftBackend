@@ -30,7 +30,9 @@ if (isset($_GET['listadoNotaExamen'])) {
                 'notaExamen' => $row['notaExamen'],
                 'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
                 'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
-                'idCursoAlumno' => $row['idCursoAlumno']
+                'idCursoAlumno' => $row['idCursoAlumno'],
+                'nomEmpleado' => $row['nomEmpleado'],
+                'nomCurso' => $row['nomCurso'],
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
@@ -46,7 +48,9 @@ if (isset($_GET['listadoNotaExamen'])) {
                 'notaExamen' => 'empty / vacio',
                 'apruebaExamen' => 'empty / vacio',
                 'nomExamen' => 'empty / vacio',
-                'idCursoAlumno' => 'empty / vacio'
+                'idCursoAlumno' => 'empty / vacio',
+                'nomEmpleado' => 'empty / vacio',
+                'nomCurso' => 'empty / vacio'
             );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
