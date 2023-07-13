@@ -20,7 +20,7 @@ if (isset($_GET['listados'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idCursoAlumno' => $row['idCursoAlumno'],
-            'nomCursoAlumno ' => $row['nomCursoAlumno '],
+            'nomCursoAlumno' => $row['nomCursoAlumno'],
         );
     }
     $jsonstring = json_encode(($json));
