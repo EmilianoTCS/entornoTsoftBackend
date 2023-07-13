@@ -28,7 +28,7 @@ if (isset($_GET['listadoNotaExamen'])) {
             $json[] = array(
                 'idNotaExamen' => $row['idNotaExamen'],
                 'notaExamen' => $row['notaExamen'],
-                'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
+                'apruebaExamen' => $row['apruebaExamen'],
                 'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
                 'idCursoAlumno' => $row['idCursoAlumno'],
                 'nomEmpleado' => $row['nomEmpleado'],
