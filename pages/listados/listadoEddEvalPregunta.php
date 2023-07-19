@@ -35,6 +35,8 @@ if (isset($_GET['listadoEddEvalPregunta'])) {
                 'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
                 'nomEvaluacion' => $row['nomEvaluacion'],
                 'nomCompetencia' => $row['nomCompetencia'],
+                'tipoResp' => $row['tipoResp'],
+                'preguntaObligatoria' => $row['preguntaObligatoria'],
 
             );
 
@@ -54,6 +56,8 @@ if (isset($_GET['listadoEddEvalPregunta'])) {
             'idEDDEvalCompetencia' => 'empty / vacio',
             'nomEvaluacion' => 'empty / vacio',
             'nomCompetencia' => 'empty / vacio',
+            'tipoResp' => 'empty / vacio',
+                'preguntaObligatoria' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

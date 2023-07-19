@@ -42,6 +42,8 @@ if (isset($_GET['editarEddEvalPregunta'])) {
                 'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
                 'nomEvaluacion' => $row['nomEvaluacion'],
                 'nomCompetencia' => $row['nomCompetencia'],
+                'tipoResp' => $row['tipoResp'],
+                'preguntaObligatoria' => $row['preguntaObligatoria'],
 
             );
         }
