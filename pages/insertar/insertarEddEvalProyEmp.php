@@ -16,7 +16,7 @@ if (isset($_GET['insertarEddEvalProyEmp'])) {
     $evalRespondida = $data->evalRespondida;
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
-    $isActive = $data->isActive ;
+    $isActive = $data->isActive;
     $usuarioCreacion = $data->usuarioCreacion;
 
 

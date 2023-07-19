@@ -251,6 +251,8 @@ if (isset($_GET['seleccionarDatos'])) {
                     $json[] = array(
                         'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'idEDDProyEmpEvaluador'=> $row['idEDDProyEmpEvaluador'],
+                        'idEDDProyEmpEvaluado'=> $row['idEDDProyEmpEvaluado'],
                         'idEDDProyEmp' => $row['idEDDProyEmp'],
                         'evalRespondida' => $row['evalRespondida'],
                         'fechaIni' => $row['fechaIni'],
