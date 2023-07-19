@@ -30,13 +30,15 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
             $json[] = array(
                 'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDProyEmp' => $row['idEDDProyEmp'],
+                'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
+                'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
                 'evalRespondida' => $row['evalRespondida'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
                 'nomEvaluacion' => $row['nomEvaluacion'],
                 'nomProyecto' => $row['nomProyecto'],
-                'nomEmpleado' => $row['nomEmpleado'],
+                'nomEmpleadoEvaluador' => $row['nomEmpleadoEvaluador'],
+                'nomEmpleadoEvaluado' => $row['nomEmpleadoEvaluado'],
 
             );
 
@@ -51,13 +53,15 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
         $json[] = array(
             'idEDDEvalProyEmp' => 'empty / vacio',
             'idEDDEvaluacion' => 'empty / vacio',
-            'idEDDProyEmp' => 'empty / vacio',
+            'idEDDProyEmpEvaluador' => 'empty / vacio',
+            'idEDDProyEmpEvaluado' => 'empty / vacio',
             'evalRespondida' => 'empty / vacio',
             'fechaIni' => 'empty / vacio',
             'fechaFin' => 'empty / vacio',
             'nomEvaluacion' => 'empty / vacio',
             'nomProyecto' => 'empty / vacio',
-            'nomEmpleado' => 'empty / vacio',
+            'nomEmpleadoEvaluador' => 'empty / vacio',
+            'nomEmpleadoEvaluado' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

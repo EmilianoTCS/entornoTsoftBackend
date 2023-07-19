@@ -37,11 +37,15 @@ if (isset($_GET['insertarEddEvalProyEmp'])) {
             $json[] = array(
                 'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDProyEmp' => $row['idEDDProyEmp'],
+                'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
+                'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
                 'evalRespondida' => $row['evalRespondida'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
-                'nomEvaluacion' => $row['nomEvaluacion']
+                'nomEvaluacion' => $row['nomEvaluacion'],
+                'nomProyecto' => $row['nomProyecto'],
+                'nomEmpleadoEvaluador' => $row['nomEmpleadoEvaluador'],
+                'nomEmpleadoEvaluado' => $row['nomEmpleadoEvaluado'],
             );
         }
     }
