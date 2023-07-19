@@ -11,7 +11,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['insertarEddEvalProyEmp'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idEDDEvaluacion = $data->idEDDEvaluacion;
-    $idEDDProyEmp = $data->idEDDProyEmp;
+    $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
+    $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
     $evalRespondida = $data->evalRespondida;
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
@@ -19,7 +20,7 @@ if (isset($_GET['insertarEddEvalProyEmp'])) {
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarEddEvalProyEmp($idEDDEvaluacion, $idEDDProyEmp, '$evalRespondida', '$fechaIni', '$fechaFin', '$isActive', '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarEddEvalProyEmp($idEDDEvaluacion, $idEDDProyEmpEvaluado, $idEDDProyEmpEvaluador, '$evalRespondida', '$fechaIni', '$fechaFin', '$isActive', '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
