@@ -12,6 +12,8 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idEDDEvaluacion = $data->idEDDEvaluacion;
     $idEDDProyEmp = $data->idEDDProyEmp;
+    $fechaIniEvaluacion = $data->fechaIniEvaluacion;
+    $fechaFinEvaluacion = $data->fechaFinEvaluacion;
     $respuesta = $data->respuesta;
     $isActive = $data->isActive ;
     $idEDDEvalProyEmp = $data->idEDDEvalProyEmp;
@@ -20,7 +22,18 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarEddEvalProyResp( $idEDDEvaluacion, $idEDDProyEmp, '$respuesta' , '$isActive', $idEDDEvalProyEmp, $idEDDEvalPregunta, '$idEDDEvalRespPreg','$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarEddEvalProyResp(
+        $idEDDEvaluacion, 
+        $idEDDProyEmp, 
+        '$fechaIniEvaluacion', 
+        '$fechaFinEvaluacion', 
+        '$respuesta' , 
+        '$isActive', 
+        $idEDDEvalProyEmp, 
+        $idEDDEvalPregunta, 
+        '$idEDDEvalRespPreg',
+        '$usuarioCreacion',
+         @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
