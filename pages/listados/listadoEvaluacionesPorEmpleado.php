@@ -11,7 +11,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listadoEvaluacionesPorEmpleado'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idEmpleado = $data->idEmpleado;
-
+    
     $query = "CALL SP_listadoEvaluacionesPorEmpleado('$idEmpleado')";
     $result = mysqli_query($conection, $query);
     if (!$result) {

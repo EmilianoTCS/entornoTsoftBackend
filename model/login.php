@@ -41,6 +41,7 @@ if (isset($_GET['login'])) {
             'token' => $token,
             'usuario' => $row['usuario'],
             'nomRol' => $row['nomRol'],
+            'idEmpleado' => $row['idEmpleado'],
 
         );
         echo json_encode($json);
@@ -51,7 +52,7 @@ if (isset($_GET['login'])) {
             'error' => true,
             'usuario' => null,
             'nomRol' => null,
-            'hola' => 'hola',
+            'idEmpleado' => null,
 
 
         );
