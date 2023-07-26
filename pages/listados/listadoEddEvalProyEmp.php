@@ -40,6 +40,7 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
                 'nomProyecto' => $row['nomProyecto'],
                 'nomEmpleadoEvaluador' => $row['nomEmpleadoEvaluador'],
                 'nomEmpleadoEvaluado' => $row['nomEmpleadoEvaluado'],
+                'tiempoTotalEnMin' => $row['tiempoTotalEnMin'],
 
             );
 
@@ -63,6 +64,8 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
             'nomProyecto' => 'empty / vacio',
             'nomEmpleadoEvaluador' => 'empty / vacio',
             'nomEmpleadoEvaluado' => 'empty / vacio',
+            'tiempoTotalEnMin' => 'empty / vacio',
+
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
