@@ -34,6 +34,7 @@ if (isset($_GET['listadoRespPregEvaluaciones'])) {
                 'ordenRespPreg' => $row['ordenRespPreg'],
                 'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
                 'nomRespPreg' => $row['nomRespPreg'],
+                'preguntaObligatoria' => $row['preguntaObligatoria'],
             );
         }
     }
