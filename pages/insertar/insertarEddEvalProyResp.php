@@ -7,63 +7,44 @@ header("Access-Control-Allow-Headers: access");
 header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-
+date_default_timezone_set("America/Argentina/Buenos_Aires");
 if (isset($_GET['insertarEddEvalProyResp'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $idEDDEvaluacion = $data->idEDDEvaluacion;
-    $idEDDProyEmp = $data->idEDDProyEmp;
-    $fechaIniEvaluacion = $data->fechaIniEvaluacion;
-    $fechaFinEvaluacion = $data->fechaFinEvaluacion;
-    $respuesta = $data->respuesta;
-    $isActive = $data->isActive ;
-    $idEDDEvalProyEmp = $data->idEDDEvalProyEmp;
-    $idEDDEvalPregunta = $data->idEDDEvalPregunta;
-    $idEDDEvalRespPreg = $data->idEDDEvalRespPreg;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $datosExtra = $data->datosExtra;
+    $respuestas = $data->respuestas;
 
 
-    $query = "CALL SP_insertarEddEvalProyResp(
-        $idEDDEvaluacion, 
-        $idEDDProyEmp, 
-        '$fechaIniEvaluacion', 
-        '$fechaFinEvaluacion', 
-        '$respuesta' , 
-        '$isActive', 
-        $idEDDEvalProyEmp, 
-        $idEDDEvalPregunta, 
-        '$idEDDEvalRespPreg',
-        '$usuarioCreacion',
-         @p0, @p1)";
-    $result = mysqli_query($conection, $query);
-    if (!$result) {
-        die('Query Failed' . mysqli_error($conection));
-    }
+    $idEDDEvaluacion = $datosExtra->idEDDEvaluacion;
+    $idEDDProyEmpEvaluador = $datosExtra->idEDDProyEmpEvaluador;
+    $fechaInicioExamen = date('Y-m-d H:i:s', strtotime($datosExtra->fechaInicioExamen));
+    $fechaFinExamen = date('Y-m-d H:i:s', strtotime($datosExtra->fechaFinExamen));
+    $usuarioCreacion = $datosExtra->usuarioCreacion;
+    $isActive = true;
 
 
-    $json = array();
-    while ($row = mysqli_fetch_array($result)) {
-        if ($row['OUT_CODRESULT'] != '00') {
-            $json[] = array(
-                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                'OUT_MJERESULT' => $row['OUT_MJERESULT']
-            );
-        } else {
-            $json[] = array(
-                'idEDDEvalProyResp' => $row['idEDDEvalProyResp'],
-                'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDProyEmp' => $row['idEDDProyEmp'],
-                'respuesta' => $row['respuesta'],
-                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
-                'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
-                'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
-                'nomEvaluacion' => $row['nomEvaluacion'],
-                'nomPregunta' => $row['nomPregunta'],
-                'nomRespPreg' => $row['nomRespPreg'],
-            );
+    foreach ($respuestas as $item) {
+        $query = "CALL SP_insertarEddEvalProyResp(
+            $idEDDEvaluacion,
+            $idEDDProyEmpEvaluador,
+            '$fechaInicioExamen',
+            '$fechaFinExamen',
+            '$item->respuesta',
+            $isActive,
+            $idEDDProyEmpEvaluador,
+            $item->idEDDEvalPregunta,
+            $item->idEDDEvalRespPreg,
+            '$usuarioCreacion',
+            @p0,
+            @p1
+            )";
+
+        $result = mysqli_query($conection, $query);
+        if (!$result) {
+            die('Query Failed' . mysqli_error($conection));
         }
+        mysqli_next_result($conection);
     }
-    $jsonstring = json_encode($json);
-    echo $jsonstring;
+    echo json_encode("success");
 } else {
     echo json_encode("Error");
 }
