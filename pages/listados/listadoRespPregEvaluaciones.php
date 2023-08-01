@@ -27,7 +27,13 @@ if (isset($_GET['listadoRespPregEvaluaciones'])) {
             );
         } else {
             $json[] = array(
+                'nomEvaluacion' => $row['nomEvaluacion'],
+                'tipoEvaluacion' => $row['tipoEvaluacion'],
+                'descFormulario' => $row['descFormulario'],
+                'logoFormulario' => $row['logoFormulario'],
                 'ordenPregunta' => $row['ordenPregunta'],
+                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
                 'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
                 'nomPregunta' => $row['nomPregunta'],
                 'tipoResp' => $row['tipoResp'],
