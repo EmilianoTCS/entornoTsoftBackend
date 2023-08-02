@@ -11,9 +11,10 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listadoRespPregEvaluaciones'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idEvaluacion = $data->idEvaluacion;
-    $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
+    $idEmpleado = $data->idEmpleado;
+    $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
 
-    $query = "CALL SP_listadoRespPregEvaluaciones('$idEvaluacion', '$idEDDProyEmpEvaluador', @p0, @p1)";
+    $query = "CALL SP_listadoRespPregEvaluaciones('$idEvaluacion', '$idEmpleado', $idEDDProyEmpEvaluado, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
