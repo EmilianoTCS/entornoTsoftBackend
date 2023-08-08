@@ -14,11 +14,12 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
     $data->idEDDEvaluacion = "" || null ? $idEDDEvaluacion = null : $idEDDEvaluacion = $data->idEDDEvaluacion;
     $data->idEDDProyEmpEvaluador = "" || null ? $idEDDProyEmpEvaluador = null : $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
     $data->idEDDProyEmpEvaluado = "" || null ? $idEDDProyEmpEvaluado = null : $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
+    $data->idProyecto = "" || null ? $idProyecto = null : $idProyecto = $data->idProyecto;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEddEvalProyEmp('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEDDProyEmpEvaluador', '$idEDDProyEmpEvaluado')";
+    $query = "CALL SP_listadoEddEvalProyEmp('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEDDProyEmpEvaluador', '$idEDDProyEmpEvaluado', '$idProyecto')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
