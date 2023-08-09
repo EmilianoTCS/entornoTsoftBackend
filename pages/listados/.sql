@@ -9,7 +9,7 @@ BEGIN
                evalProyEmp.idEDDEvaluacion, 
                evalProyEmp.idEDDProyEmpEvaluador, 
                evalProyEmp.idEDDProyEmpEvaluado, 
-        
+               
                IF(evalProyEmp.evalRespondida = 1, "SÍ", "NO") as evalRespondida, 
                DATE_FORMAT(evalProyEmp.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaIni, 
                DATE_FORMAT(evalProyEmp.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFin,
@@ -20,7 +20,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -52,7 +55,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -84,7 +90,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -117,7 +126,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -156,7 +168,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -201,7 +216,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -241,7 +259,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -285,7 +306,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -326,7 +350,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -369,7 +396,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -414,7 +444,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -459,7 +492,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                 INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                 INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -505,7 +541,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -552,7 +591,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -598,7 +640,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -647,7 +692,10 @@ BEGIN
                UPPER(eval.nomEvaluacion) as nomEvaluacion,
                UPPER(proy.nomProyecto) as nomProyecto,
                UPPER(empEvaluador.nomEmpleado) as nomEmpleadoEvaluador,
-               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado
+               UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
+               DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
+               DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)

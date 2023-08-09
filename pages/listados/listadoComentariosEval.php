@@ -30,7 +30,7 @@ if (isset($_GET['listadoComentariosEval'])) {
                 'ordenDashboard' => '0 / vacío',
                 'respuesta' => '0 / vacío',
                 'codResp' => $row['out_codResp'],
-                'msjResp' => $row['out_codResp']
+                'msjResp' => $row['out_msjResp']
             );
         } else {
             $json[] = array(
