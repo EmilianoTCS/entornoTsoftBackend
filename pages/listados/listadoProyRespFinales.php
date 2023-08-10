@@ -39,6 +39,7 @@ if (isset($_GET['listadoProyRespFinales'])) {
                 'ordenPregunta' => $row['ordenPregunta'],
                 'nomEvaluado' => $row['nomEvaluado'],
                 'nomEvaluador' => $row['nomEvaluador'],
+                'nomEvaluacion' => $row['nomEvaluacion'],
             );
         }
     }
