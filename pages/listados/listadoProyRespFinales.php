@@ -36,7 +36,9 @@ if (isset($_GET['listadoProyRespFinales'])) {
                 'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                 'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
                 'pregunta' => $row['pregunta'],
-                'ordenPregunta' => $row['ordenPregunta']
+                'ordenPregunta' => $row['ordenPregunta'],
+                'nomEvaluado' => $row['nomEvaluado'],
+                'nomEvaluador' => $row['nomEvaluador'],
             );
         }
     }
