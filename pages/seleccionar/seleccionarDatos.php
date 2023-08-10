@@ -225,6 +225,8 @@ if (isset($_GET['seleccionarDatos'])) {
                         'ordenPregunta' => $row['ordenPregunta'],
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                         'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                        'tipoResp' => $row['tipoResp'],
+                        'preguntaObligatoria' => $row['preguntaObligatoria'],
                     );
                     break;
                 case 'eddevalproyresp':
