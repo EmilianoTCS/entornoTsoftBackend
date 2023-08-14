@@ -40,6 +40,7 @@ if (isset($_GET['listadoProyRespFinales'])) {
                 'nomEvaluado' => $row['nomEvaluado'],
                 'nomEvaluador' => $row['nomEvaluador'],
                 'nomEvaluacion' => $row['nomEvaluacion'],
+                'nomCompetencia' => $row['nomCompetencia'],
             );
         }
     }
