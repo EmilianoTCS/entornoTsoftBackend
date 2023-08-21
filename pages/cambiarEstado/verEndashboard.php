@@ -13,9 +13,11 @@ if (isset($_GET['verEnDashboard'])) {
     $idEDDEvalProyResp = $data->idEDDEvalProyResp;
     $verEnDashboard = $data->verEnDashboard;
     $ordenDashboard = $data->ordenDashboard;
+    $idEmpleado = $data->idEmpleado;
+    $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
+    $idEvaluacion = $data->idEvaluacion;
 
-
-    $query = "CALL SP_CambiarVerEnDashboard($idEDDEvalProyResp,'$verEnDashboard','$ordenDashboard', @p0, @p1)";
+    $query = "CALL SP_CambiarVerEnDashboard('$idEDDEvalProyResp','$verEnDashboard','$ordenDashboard',$idEmpleado, $idEDDProyEmpEvaluado, $idEvaluacion, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -23,11 +25,30 @@ if (isset($_GET['verEnDashboard'])) {
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
+        if ($row['OUT_CODRESULT'] != '00') {
+            $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT']
+            );
+        } else {
+            $json[] = array(
+                'idEDDEvalProyResp' => $row['idEDDEvalProyResp'],
+                'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                'idEDDProyEmp' => $row['idEDDProyEmp'],
+                'respuesta' => $row['respuesta'],
+                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
+                'pregunta' => $row['pregunta'],
+                'ordenPregunta' => $row['ordenPregunta'],
+                'nomEvaluado' => $row['nomEvaluado'],
+                'nomEvaluador' => $row['nomEvaluador'],
+                'nomEvaluacion' => $row['nomEvaluacion'],
+                'nomCompetencia' => $row['nomCompetencia'],
+                'verEnDashboard' => $row['verEnDashboard'],
+                'ordenDashboard' => $row['ordenDashboard'],
 
-        $json[] = array(
-            'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-            'OUT_MJERESULT' => $row['OUT_MJERESULT']
-        );
+            );
+        }
     }
     $jsonstring = json_encode($json);
     echo $jsonstring;

@@ -37,16 +37,22 @@ if (isset($_GET['editarEddEvalPregunta'])) {
             );
         } else {
             $json[] = array(
-                'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
-                'nomPregunta' => $row['nomPregunta'],
-                'ordenPregunta' => $row['ordenPregunta'],
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
+                'idEDDEvalProyResp' => $row['idEDDEvalProyResp'],
                 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                'idEDDProyEmp' => $row['idEDDProyEmp'],
+                'respuesta' => $row['respuesta'],
+                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
+                'pregunta' => $row['pregunta'],
+                'ordenPregunta' => $row['ordenPregunta'],
+                'nomEvaluado' => $row['nomEvaluado'],
+                'nomEvaluador' => $row['nomEvaluador'],
                 'nomEvaluacion' => $row['nomEvaluacion'],
                 'nomCompetencia' => $row['nomCompetencia'],
-                'tipoResp' => $row['tipoResp'],
-                'preguntaObligatoria' => $row['preguntaObligatoria'],
-
+                'verEnDashboard' => $row['verEnDashboard'],
+                'ordenDashboard' => $row['ordenDashboard'],
             );
         }
     }
