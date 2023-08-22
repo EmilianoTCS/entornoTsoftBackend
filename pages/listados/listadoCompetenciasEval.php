@@ -22,8 +22,9 @@ if (isset($_GET['listadoCompetenciasEval'])) {
     while ($row = mysqli_fetch_array($result)) {
         if ($row['out_codResp'] != '00') {
             $json[] = array(
-                'nomEmpleado' => '0 / vacío',
-                'nomCompetencia' => '0 / vacío',
+                'nomEvaluador' => 'vacío',
+                'nomEmpleado' => 'vacío',
+                'nomCompetencia' => 'vacío',
                 'cantPregComp' => '0 / vacío',
                 'cantRespOK' => '0 / vacío',
                 'porcAprobComp' => '0 / vacío',
@@ -32,6 +33,7 @@ if (isset($_GET['listadoCompetenciasEval'])) {
             );
         } else {
             $json[] = array(
+                'nomEvaluador' => $row['nomEvaluador'],
                 'nomEmpleado' => $row['nomEmpleado'],
                 'nomCompetencia' => $row['nomCompetencia'],
                 'cantPregComp' => $row['cantPregComp'],
