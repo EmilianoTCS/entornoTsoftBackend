@@ -15,9 +15,8 @@ if (isset($_GET['verEnDashboard'])) {
     $ordenDashboard = $data->ordenDashboard;
     $idEmpleado = $data->idEmpleado;
     $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
-    $idEvaluacion = $data->idEvaluacion;
 
-    $query = "CALL SP_CambiarVerEnDashboard('$idEDDEvalProyResp','$verEnDashboard','$ordenDashboard',$idEmpleado, $idEDDProyEmpEvaluado, $idEvaluacion, @p0, @p1)";
+    $query = "CALL SP_CambiarVerEnDashboard('$idEDDEvalProyResp','$verEnDashboard','$ordenDashboard',$idEmpleado, $idEDDProyEmpEvaluado, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

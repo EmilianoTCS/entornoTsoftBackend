@@ -41,6 +41,23 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
         $result = mysqli_query($conection, $query);
         if (!$result) {
             die('Query Failed' . mysqli_error($conection));
+        } else {
+            $json = array();
+            while ($row = mysqli_fetch_array($result)) {
+                if ($row['OUT_CODRESULT'] != '00') {
+                    $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT']
+                    );
+                } else {
+                    $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT']
+                    );
+                }
+            }
+            // $jsonstring = json_encode($json);
+            // echo $jsonstring;
         }
         mysqli_next_result($conection);
     }
