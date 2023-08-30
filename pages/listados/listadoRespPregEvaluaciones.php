@@ -44,6 +44,7 @@ if (isset($_GET['listadoRespPregEvaluaciones'])) {
                 'nomRespPreg' => $row['nomRespPreg'],
                 'preguntaObligatoria' => $row['preguntaObligatoria'],
                 'nomCompetencia' => $row['nomCompetencia'],
+                'logoFormulario' => "data:image/jpeg; base64, " . base64_encode($row['logoFormulario'])
             );
         }
     }

@@ -43,6 +43,7 @@ if (isset($_GET['listadoProyRespFinales'])) {
                 'nomCompetencia' => $row['nomCompetencia'],
                 'verEnDashboard' => $row['verEnDashboard'],
                 'ordenDashboard' => $row['ordenDashboard'],
+                'logoFormulario' => "data:image/jpeg; base64, " . base64_encode($row['logoFormulario'])
             );
         }
     }
