@@ -32,6 +32,7 @@ if (isset($_GET['listadoEddEvaluacion'])) {
                 'tipoEvaluacion' => $row['tipoEvaluacion'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
+                'disponibilidadEvaluacion' => $row['disponibilidadEvaluacion'],
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
@@ -48,7 +49,8 @@ if (isset($_GET['listadoEddEvaluacion'])) {
             'nomCurso' => 'empty / vacio',
             'tipoHH' => 'empty / vacio',
             'duracionCursoHH' => 'empty / vacio',
-            'cantSesionesCurso' => 'empty / vacio'
+            'cantSesionesCurso' => 'empty / vacio',
+            'disponibilidadEvaluacion' => 'empty / disponibilidadEvaluacion'
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
