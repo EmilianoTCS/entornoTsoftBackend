@@ -57,7 +57,7 @@ if (isset($_GET['listadoEddEvalPregunta'])) {
             'nomEvaluacion' => 'empty / vacio',
             'nomCompetencia' => 'empty / vacio',
             'tipoResp' => 'empty / vacio',
-                'preguntaObligatoria' => 'empty / vacio',
+            'preguntaObligatoria' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

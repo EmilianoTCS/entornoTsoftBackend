@@ -37,23 +37,17 @@ if (isset($_GET['editarEddEvalPregunta'])) {
             );
         } else {
             $json[] = array(
-                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idEDDEvalProyResp' => $row['idEDDEvalProyResp'],
-                'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDProyEmp' => $row['idEDDProyEmp'],
-                'respuesta' => $row['respuesta'],
-                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
-                'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
-                'pregunta' => $row['pregunta'],
-                'ordenPregunta' => $row['ordenPregunta'],
-                'nomEvaluado' => $row['nomEvaluado'],
-                'nomEvaluador' => $row['nomEvaluador'],
-                'nomEvaluacion' => $row['nomEvaluacion'],
-                'nomCompetencia' => $row['nomCompetencia'],
-                'verEnDashboard' => $row['verEnDashboard'],
-                'ordenDashboard' => $row['ordenDashboard'],
+                'idEDDEvalPregunta' => 'empty / vacio',
+                'nomPregunta' => 'empty / vacio',
+                'ordenPregunta' => 'empty / vacio',
+                'idEDDEvaluacion' => 'empty / vacio',
+                'idEDDEvalCompetencia' => 'empty / vacio',
+                'nomEvaluacion' => 'empty / vacio',
+                'nomCompetencia' => 'empty / vacio',
+                'tipoResp' => 'empty / vacio',
+                'preguntaObligatoria' => 'empty / vacio',
             );
+    
         }
     }
     $jsonstring = json_encode($json);
