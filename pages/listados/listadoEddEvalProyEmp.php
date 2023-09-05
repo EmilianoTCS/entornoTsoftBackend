@@ -45,6 +45,7 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
                 'fechaInicioPeriodoEvaluacion' => $row['fechaInicioPeriodoEvaluacion'],
                 'fechaFinPeriodoEvaluacion' => $row['fechaFinPeriodoEvaluacion'],
                 'disponibilidadEvaluacion' => $row['disponibilidadEvaluacion'],
+                'idEDDProyecto' => $row['idEDDProyecto'],
 
             );
 
