@@ -21,9 +21,11 @@ if (isset($_GET['insertarEmpleado'])) {
     $tipoUsuario = $data->tipoUsuario;
     $nomRol = $data->nomRol;
     $usuarioCreacion = $data->usuarioCreacion;
+    $idCliente = $data->idCliente;
 
 
-    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado', $idPais, $idArea, $idCargo, '$usuario','$password','$tipoUsuario','$usuarioCreacion', $nomRol, @p0, @p1)";
+
+    $query = "CALL SP_insertarEmpleado('$nomEmpleado','$correoEmpleado','$telefonoEmpleado', $idPais, $idArea, $idCargo, $idCliente, '$usuario','$password','$tipoUsuario','$usuarioCreacion', $nomRol, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

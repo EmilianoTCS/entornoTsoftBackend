@@ -38,7 +38,9 @@ if (isset($_GET['listadoEmpleados'])) {
                 'telefonoEmpleado' => $row['telefonoEmpleado'],
                 'nomArea' => $row['UPPER(ar.nomArea)'],
                 'nomPais' => $row['UPPER(pa.nomPais)'],
-                'nomCargo' => $row['UPPER(ca.nomCargo)']
+                'nomCargo' => $row['UPPER(ca.nomCargo)'],
+                'nomCliente' => $row['nomCliente'],
+
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
@@ -56,7 +58,8 @@ if (isset($_GET['listadoEmpleados'])) {
             'telefonoEmpleado' => 'empty / vacio',
             'nomArea' => 'empty / vacio',
             'nomPais' => 'empty / vacio',
-            'nomCargo' => 'empty / vacio'
+            'nomCargo' => 'empty / vacio',
+            'nomCliente' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
