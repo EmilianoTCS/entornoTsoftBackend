@@ -46,6 +46,7 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
                 'fechaFinPeriodoEvaluacion' => $row['fechaFinPeriodoEvaluacion'],
                 'disponibilidadEvaluacion' => $row['disponibilidadEvaluacion'],
                 'idEDDProyecto' => $row['idEDDProyecto'],
+                'cargoEnProy' => $row['cargoEnProy'],
 
             );
 
@@ -70,6 +71,9 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
             'nomEmpleadoEvaluador' => 'empty / vacio',
             'nomEmpleadoEvaluado' => 'empty / vacio',
             'tiempoTotalEnMin' => 'empty / vacio',
+            'idEDDProyecto' => 'empty / vacio',
+            'cargoEnProy' => 'empty / vacio',
+
 
         );
 
