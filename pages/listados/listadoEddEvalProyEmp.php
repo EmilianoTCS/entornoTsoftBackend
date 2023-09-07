@@ -10,12 +10,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['listadoEddEvalProyEmp'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->idEDDEvaluacion = "" || null ? $idEDDEvaluacion = null : $idEDDEvaluacion = $data->idEDDEvaluacion;
-    $data->idEDDProyEmpEvaluador = "" || null ? $idEDDProyEmpEvaluador = null : $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
-    $data->idEDDProyEmpEvaluado = "" || null ? $idEDDProyEmpEvaluado = null : $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
-    $data->idProyecto = "" || null ? $idProyecto = null : $idProyecto = $data->idProyecto;
-    $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
+    $data->num_boton = "" || null || 0 ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->idEDDEvaluacion = "" || null || 0 ? $idEDDEvaluacion = null : $idEDDEvaluacion = $data->idEDDEvaluacion;
+    $data->idEDDProyEmpEvaluador = "" || null || 0 ? $idEDDProyEmpEvaluador = null : $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
+    $data->idEDDProyEmpEvaluado = "" || null || 0 ? $idEDDProyEmpEvaluado = null : $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
+    $data->idProyecto = "" || null || 0 ? $idProyecto = null : $idProyecto = $data->idProyecto;
+    $data->cantidadPorPagina = "" || null || 0 ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
