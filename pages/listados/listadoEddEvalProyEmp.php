@@ -47,6 +47,12 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
                 'disponibilidadEvaluacion' => $row['disponibilidadEvaluacion'],
                 'idEDDProyecto' => $row['idEDDProyecto'],
                 'cargoEnProy' => $row['cargoEnProy'],
+                'fechaIniVigenciaEvalRef' => $row['fechaIniVigenciaEvalRef'],
+                'diasVigenciaEvalRef' => $row['diasVigenciaEvalRef'],
+                'CorreoLinkEnviadoRef' => $row['CorreoLinkEnviadoRef'],
+                'fechaIniVigenciaEvalColab' => $row['fechaIniVigenciaEvalColab'],
+                'diasVigenciaEvalRefColab' => $row['diasVigenciaEvalRefColab'],
+                'CorreoLinkEnviadoColab' => $row['CorreoLinkEnviadoColab'],
 
             );
 
@@ -73,6 +79,12 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
             'tiempoTotalEnMin' => 'empty / vacio',
             'idEDDProyecto' => 'empty / vacio',
             'cargoEnProy' => 'empty / vacio',
+            'fechaIniVigenciaEvalRef' => 'empty / vacio',
+            'diasVigenciaEvalRef' => 'empty / vacio',
+            'CorreoLinkEnviadoRef' => 'empty / vacio',
+            'fechaIniVigenciaEvalColab' => 'empty / vacio',
+            'diasVigenciaEvalRefColab' => 'empty / vacio',
+            'CorreoLinkEnviadoColab' => 'empty / vacio',
 
 
         );

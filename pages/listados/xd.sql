@@ -21,7 +21,15 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
+
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -55,7 +63,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -94,7 +108,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -134,7 +154,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -176,7 +202,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -223,7 +255,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -265,7 +303,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -311,7 +355,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -354,7 +404,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -398,7 +454,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -443,7 +505,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -489,7 +557,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                 INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                 INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -537,7 +611,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -585,7 +665,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -631,7 +717,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
@@ -681,7 +773,13 @@ BEGIN
                UPPER(empEvaluado.nomEmpleado) as nomEmpleadoEvaluado,
                DATE_FORMAT(eval.fechaIni, "%d/%m/%Y %H:%i:%s") as fechaInicioPeriodoEvaluacion,
                DATE_FORMAT(eval.fechaFin, "%d/%m/%Y %H:%i:%s") as fechaFinPeriodoEvaluacion,
-               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion
+               IF(eval.fechaIni < now() AND eval.fechaFin > now(), 1, 0) as disponibilidadEvaluacion,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalRef, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalRef,
+               evalProyEmp.diasVigenciaEvalRef,
+               IF(evalProyEmp.CorreoLinkEnviadoRef = 1, "SÍ", "NO") as CorreoLinkEnviadoRef,
+               DATE_FORMAT(evalProyEmp.fechaIniVigenciaEvalColab, "%d/%m/%Y %H:%i:%s") as fechaIniVigenciaEvalColab,
+               evalProyEmp.diasVigenciaEvalColab,
+               IF(evalProyEmp.CorreoLinkEnviadoColab = 1, "SÍ", "NO") as CorreoLinkEnviadoColab
                FROM eddevalproyemp evalProyEmp
                INNER JOIN eddevaluacion eval ON (evalProyEmp.idEDDEvaluacion = eval.idEDDEvaluacion)
                INNER JOIN eddproyemp proyEmpEvaluador ON (evalProyEmp.idEDDProyEmpEvaluador = proyEmpEvaluador.idEDDProyEmp)
