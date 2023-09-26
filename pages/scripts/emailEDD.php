@@ -19,6 +19,7 @@ if (isset($_GET['emailEDD'])) {
     $subTipoConfDato = $data->subTipoConfDato;
     $listContactos = $data->listContactos;
     $datosEmpleado = array();
+    $datosCambiarEstadoCorreo = array();
 
 
     //Obtengo el listado de empleados sin tener en cuenta el cargo (se usa referente por default)
@@ -110,6 +111,25 @@ if (isset($_GET['emailEDD'])) {
             );
         }
     }
+    mysqli_next_result($conection);
+    
+    $queryCambiarEstadoCorreo = "CALL SP_cambiarEstadoEnvCorreo('$cargoEnProy','$idProyecto', @p0, @p1)";
+    $resultCambiarEstadoCorreo = mysqli_query($conection, $queryCambiarEstadoCorreo);
+    if (!$resultCambiarEstadoCorreo) {
+        die('Query Failed' . mysqli_error($conection));
+    }
+    if (mysqli_num_rows($resultCambiarEstadoCorreo) > 0) {
+        while ($rowCambiarEstadoCorreo = mysqli_fetch_array($resultCambiarEstadoCorreo)) {
+            $datosCambiarEstadoCorreo[] = array(
+                'out_codResp' => $rowCambiarEstadoCorreo['out_codResp'],
+                'out_msjResp' => $rowCambiarEstadoCorreo['out_msjResp']
+            );
+        }
+    }
+    
+
+
+
 
     $datosEmpleadoColabDes = $datosEmpleadoColab;  //Copia del array obtenido en otra variable SIN ORDENAR POR EVALUADO
 
