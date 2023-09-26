@@ -47,6 +47,7 @@ if (isset($_GET['emailEDD'])) {
                 'fechaFin' => $rowEmpleados['fechaFin'],
                 'idEDDEvalProyEmp' => $rowEmpleados['idEDDEvalProyEmp'],
                 'idEDDProyEmpEvaluador' => $rowEmpleados['idEDDProyEmpEvaluador'],
+                'idEDDProyEmpEvaluado' => $rowEmpleados['idEDDProyEmpEvaluado'],
                 'evaluado' => $rowEmpleados['evaluado'],
                 'idEmpleadoEvaluado' => $rowEmpleados['idEmpleadoEvaluado'],
                 'nomClienteEvaluado' => $rowEmpleados['nomClienteEvaluado'],
@@ -82,6 +83,7 @@ if (isset($_GET['emailEDD'])) {
                 'fechaFin' => $rowEmpleadosColab['fechaFin'],
                 'idEDDEvalProyEmp' => $rowEmpleadosColab['idEDDEvalProyEmp'],
                 'idEDDProyEmpEvaluador' => $rowEmpleadosColab['idEDDProyEmpEvaluador'],
+                'idEDDProyEmpEvaluado' => $rowEmpleadosColab['idEDDProyEmpEvaluado'],
                 'evaluado' => $rowEmpleadosColab['evaluado'],
                 'idEmpleadoEvaluado' => $rowEmpleadosColab['idEmpleadoEvaluado'],
                 'nomClienteEvaluado' => $rowEmpleadosColab['nomClienteEvaluado'],
@@ -300,13 +302,14 @@ if (isset($_GET['emailEDD'])) {
 
                     if ($marcadorRefPers === 1) {
                         $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
-                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleado[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluador']}");
+                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleado[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluado']}");
                         $finalUrl = $baseURL . $getMethodEncoded;
                         $plantInicialRefPers = $datosConfig[$indexConfig]['datoNoVisible'];
                         $plantInicialRefPers = str_replace('%%(URL)%%', $finalUrl, $plantInicialRefPers);
                         $plantInicialRefPers = str_replace('%%(Fecha_ini)%%', $datosEmpleado[$indexEmpleado]['fechaIni'], $plantInicialRefPers);
                         $plantInicialRefPers = str_replace('%%(Fecha_fin)%%', $datosEmpleado[$indexEmpleado]['fechaFin'], $plantInicialRefPers);
 
+                        // print_r($datosEmpleado);
                         // $plantAux = $plantInicialRefPers;
                     }
 
@@ -459,11 +462,11 @@ if (isset($_GET['emailEDD'])) {
 
         // print_r($cuerpoCorreo);
         // loop de contactos recibidos
-        foreach ($listContactos as $itemContactos) {
-            $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
-            GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoColab);
-            $cuerpoCorreo = $plantillaInicial;
-        }
+        // foreach ($listContactos as $itemContactos) {
+        //     $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
+        //     GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoColab);
+        //     $cuerpoCorreo = $plantillaInicial;
+        // }
 
         for ($indexDest = 0; $indexDest < count($destinatarios); $indexDest++) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($destinatarios[$indexDest]['nomContacto']), $cuerpoCorreo);
@@ -498,7 +501,7 @@ if (isset($_GET['emailEDD'])) {
 
                     if ($marcadorColabPers === 1) {
                         $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
-                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleado[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={idEDDEvaluacion={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluador']}");
+                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}");
                         $finalUrl = $baseURL . $getMethodEncoded;
                         $plantInicialColabPers = $datosConfig[$indexConfig]['datoNoVisible'];
                         $plantInicialColabPers = str_replace('%%(URL)%%', $finalUrl, $plantInicialColabPers);
