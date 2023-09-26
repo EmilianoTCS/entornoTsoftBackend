@@ -42,7 +42,7 @@ if (mysqli_num_rows($resultAuthentication) > 0) {
         } else {
             if ($row['RESULT'] === '1') {
                 $encoded = base64_encode("{$idEDDEvaluacion},{$idEDDProyEmpEvaluado},{$idEDDProyEmpEvaluador}");
-                header("Location: http://localhost:3000/login?{$encoded}");
+                header("Location: http://localhost:3000/loginVerif?{$encoded}");
                 exit();
             } else {
                 // header("Location: http://localhost:3000/RedirectErrorMail");
