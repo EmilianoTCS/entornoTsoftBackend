@@ -30,7 +30,7 @@ if (isset($_GET['listadoEvaluadoEval'])) {
             $json[] = array(
                 'nomEvaluado' => $row['nomEvaluado'],
                 'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
-
+                'nomEvaluador' => $row['nomEvaluador'],
             );
         }
     }
