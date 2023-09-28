@@ -112,7 +112,7 @@ if (isset($_GET['emailEDD'])) {
         }
     }
     mysqli_next_result($conection);
-    
+
     $queryCambiarEstadoCorreo = "CALL SP_cambiarEstadoEnvCorreo('$cargoEnProy','$idProyecto', @p0, @p1)";
     $resultCambiarEstadoCorreo = mysqli_query($conection, $queryCambiarEstadoCorreo);
     if (!$resultCambiarEstadoCorreo) {
@@ -126,7 +126,7 @@ if (isset($_GET['emailEDD'])) {
             );
         }
     }
-    
+
 
 
 
@@ -140,7 +140,7 @@ if (isset($_GET['emailEDD'])) {
     }
 
     // Ordenar el array utilizando la función de comparación personalizada
-    usort($datosEmpleadoColab, 'compararPorEvaluadoAsc'); 
+    usort($datosEmpleadoColab, 'compararPorEvaluadoAsc');
 
     //Hago la separación y procesado del listado de destinatarios adjuntos y lo almaceno en un nuevo array ($destinatarios)
     $adjuntos = '';
@@ -244,7 +244,7 @@ if (isset($_GET['emailEDD'])) {
                         $plantillaInicial = str_replace('%%(Fecha_fin)%%', $datosEmpleado[$indexEmpleado]['fechaFin'], $plantillaInicial);
                     }
 
-                  //Genero la tabla que va incrustada en el correo de forma dinámica  
+                    //Genero la tabla que va incrustada en el correo de forma dinámica  
                     if (
                         $datosEmpleado[$indexEmpleado]['nomEmpleado'] !== $auxNomRef
                     ) {
@@ -276,21 +276,22 @@ if (isset($_GET['emailEDD'])) {
 
         $cuerpoCorreo = $plantillaInicial; //Copia de la plantilla original
 
-        
+
         //Envío los correos, primero se envían a los contactos que vienen desde el frontend, y luego se envían a los destinatarios procesados anteriormente
 
         // loop de contactos recibidos
-        // foreach ($listContactos as $itemContactos) {
-        //     $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
-        //     GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
-        //     $cuerpoCorreo = $plantillaInicial;
-        // }
+        foreach ($listContactos as $itemContactos) {
+            $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
+            // GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
+            GeneradorEmails('testRespuestasCorreosCoe@outlook.com', $cuerpoCorreo, $asuntoRef);
 
-        // for ($indexDest = 0; $indexDest < count($destinatarios); $indexDest++) {
-        //     $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($destinatarios[$indexDest]['nomContacto']), $cuerpoCorreo);
-        //     GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoRef);
-        //     $cuerpoCorreo = $plantillaInicial;
-        // }
+            if (!empty($itemContactos->correoContacto2)) {
+                // GeneradorEmails($itemContactos->correoContacto2, $cuerpoCorreo, $asuntoRef);
+            }
+
+            $cuerpoCorreo = $plantillaInicial;
+        }
+
 
 
         // ------------------------------------------------- REF PERSONALIZADO -------------------------------------------------
@@ -480,17 +481,10 @@ if (isset($_GET['emailEDD'])) {
 
         $cuerpoCorreo = $plantillaInicial;
 
-        // print_r($cuerpoCorreo);
-        // loop de contactos recibidos
-        // foreach ($listContactos as $itemContactos) {
-        //     $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
-        //     GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoColab);
-        //     $cuerpoCorreo = $plantillaInicial;
-        // }
 
         for ($indexDest = 0; $indexDest < count($destinatarios); $indexDest++) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($destinatarios[$indexDest]['nomContacto']), $cuerpoCorreo);
-            GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoRef);
+            GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoColab);
             $cuerpoCorreo = $plantillaInicial;
         }
 
@@ -539,7 +533,8 @@ if (isset($_GET['emailEDD'])) {
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
                             // print_r($plantAux);
-                            GeneradorEmails($datosEmpleadoColabDes[$indexEmpleado]['correoEmpleado'], $plantAux, $asuntoColab);
+                            // GeneradorEmails($datosEmpleadoColabDes[$indexEmpleado]['correoEmpleado'], $plantAux, $asuntoColab);
+                            GeneradorEmails('testRespuestasCorreosCoe@outlook.com', $plantAux, $asuntoColab);
 
                             $plantAux = '';
                             $auxFilaColabPers = '';
@@ -556,7 +551,7 @@ if (isset($_GET['emailEDD'])) {
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
                             // print_r($plantAux);
-                            GeneradorEmails($datosEmpleadoColabDes[$indexEmpleado]['correoEmpleado'], $plantAux, $asuntoColab);
+                            // GeneradorEmails($datosEmpleadoColabDes[$indexEmpleado]['correoEmpleado'], $plantAux, $asuntoColab);
 
                             $plantAux = '';
                             $auxFilaColabPers = '';
