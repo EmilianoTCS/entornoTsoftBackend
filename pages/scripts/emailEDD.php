@@ -113,6 +113,8 @@ if (isset($_GET['emailEDD'])) {
     }
     mysqli_next_result($conection);
 
+
+    //Actualizo la fecha de vigencia, los días y el estado de false a true para el envío de correos
     $queryCambiarEstadoCorreo = "CALL SP_cambiarEstadoEnvCorreo('$cargoEnProy','$idProyecto', @p0, @p1)";
     $resultCambiarEstadoCorreo = mysqli_query($conection, $queryCambiarEstadoCorreo);
     if (!$resultCambiarEstadoCorreo) {
@@ -126,9 +128,6 @@ if (isset($_GET['emailEDD'])) {
             );
         }
     }
-
-
-
 
 
     $datosEmpleadoColabDes = $datosEmpleadoColab;  //Copia del array obtenido en otra variable SIN ORDENAR POR EVALUADO
@@ -150,7 +149,6 @@ if (isset($_GET['emailEDD'])) {
         if ($datosConfig[$indexConfig]['subTipoConfDato'] === "DESTINATARIOS") {
             $adjuntos = $datosConfig[$indexConfig]['datoNoVisible'];
             $exploded = explode(';', $adjuntos);
-            // print_r($exploded);
             for ($i = 0; $i < count($exploded); $i++) {
                 $separated = explode(',', $exploded[$i]);
                 $aux =
@@ -171,6 +169,7 @@ if (isset($_GET['emailEDD'])) {
     if (strtoupper($cargoEnProy) === "REFERENTE") {
 
         // ------------------------------------------------- REF GENERAL -------------------------------------------------
+        //Plantillas para tablas
         $plantFilaRef =
             '
         <tr style="height: 16pt">
@@ -200,6 +199,9 @@ if (isset($_GET['emailEDD'])) {
             </td>
         </tr>
         ';
+        //----
+
+        //auxiliares
         $auxFilaRef = '';
         $auxFilaColab = '';
         $cont_ref = 0;
@@ -217,6 +219,7 @@ if (isset($_GET['emailEDD'])) {
             for ($indexEmpleado = 0; $indexEmpleado < count($datosEmpleado); $indexEmpleado++) {
 
                 //Genero el asunto del correo
+                //Si la conexión a la bdd falla, utilizo $plantillaAsuntoRef para redactar el asunto
                 if ($datosConfig[$indexConfig]['subTipoConfDato'] === "ASUNTO_REF" && $datosConfig[$indexConfig]['subTipoConfDato'] !== "" || null) {
                     if ($marcador2 === 1) {
                         $asuntoRef = $datosConfig[$indexConfig]['datoNoVisible'];
@@ -236,7 +239,6 @@ if (isset($_GET['emailEDD'])) {
                 }
 
                 //Genero las variables estáticas del correo
-
                 if ($datosConfig[$indexConfig]['subTipoConfDato'] === "REFERENTES_GRAL") {
                     if ($marcador === 1) {
                         $plantillaInicial = $datosConfig[$indexConfig]['datoNoVisible'];
@@ -253,10 +255,8 @@ if (isset($_GET['emailEDD'])) {
                         }
                         $cont_ref = 0;
                         $cont_colab = 0;
-
                         $auxFilaRef = $auxFilaRef . str_replace("%%(nom_referente)%%", $datosEmpleado[$indexEmpleado]['nomEmpleado'], $plantFilaRef);
                         $auxFilaRef =  str_replace('%%(nom_colab)%%', $datosEmpleado[$indexEmpleado]['evaluado'], $auxFilaRef);
-
                         $auxNomRef = $datosEmpleado[$indexEmpleado]['nomEmpleado'];
                         $cont_ref++;
                         $cont_colab++;
@@ -277,13 +277,11 @@ if (isset($_GET['emailEDD'])) {
         $cuerpoCorreo = $plantillaInicial; //Copia de la plantilla original
 
 
-        //Envío los correos, primero se envían a los contactos que vienen desde el frontend, y luego se envían a los destinatarios procesados anteriormente
+        //Envío los correos a los contactos que vienen desde el frontend
 
-        // loop de contactos recibidos
         foreach ($listContactos as $itemContactos) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
             GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
-            // GeneradorEmails('testRespuestasCorreosCoe@outlook.com', $cuerpoCorreo, $asuntoRef);
 
             if (!empty($itemContactos->correoContacto2)) {
                 GeneradorEmails($itemContactos->correoContacto2, $cuerpoCorreo, $asuntoRef);
@@ -330,7 +328,6 @@ if (isset($_GET['emailEDD'])) {
                         $plantInicialRefPers = str_replace('%%(URL)%%', $finalUrl, $plantInicialRefPers);
                         $plantInicialRefPers = str_replace('%%(Fecha_ini)%%', $datosEmpleado[$indexEmpleado]['fechaIni'], $plantInicialRefPers);
                         $plantInicialRefPers = str_replace('%%(Fecha_fin)%%', $datosEmpleado[$indexEmpleado]['fechaFin'], $plantInicialRefPers);
-
                     }
 
                     if (
@@ -339,12 +336,10 @@ if (isset($_GET['emailEDD'])) {
 
                         //Envío el correo antes de seguir con el ciclo
                         if ($auxNomRefPers !== '' && $auxNomCorreoRefPers !== '') {
-
                             $plantAux = $plantInicialRefPers;
                             $plantAux = str_replace('%%(auxFilaRef)%%', $auxFilaRefPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Referente)%%', $auxNomRefPers, $plantAux);
                             GeneradorEmails($auxNomCorreoRefPers, $plantAux, $asuntoRef);
-                            // GeneradorEmails("testRespuestasCorreosCoe@outlook.com", $plantAux, $asuntoRef);
                             $plantAux = '';
                             $auxFilaRefPers = '';
                             $auxNomCorreoRefPers = '';
@@ -355,18 +350,23 @@ if (isset($_GET['emailEDD'])) {
                         $auxNomRefPers = $datosEmpleado[$indexEmpleado]['nomEmpleado'];
                         $auxNomCorreoRefPers = $datosEmpleado[$indexEmpleado]['correoEmpleado'];
 
-                    } else {
-                        $auxFilaRefPers =  $auxFilaRefPers . str_replace('%%(nom_Colab)%%', $datosEmpleado[$indexEmpleado]['evaluado'], $plantFilaRefPers);
-
-                        //Verifica que se esté enviando el último elemento del array
+                        //Si es el último elemento del array, envía el correo
                         if ($indexEmpleado === count($datosEmpleado) - 1) {
-                            // print_r("entró \n");
-                            // print_r($auxNomRefPers . "\n");
-                            // print_r($auxNomCorreoRefPers . "\n");
                             $plantAux = $plantInicialRefPers;
                             $plantAux = str_replace('%%(auxFilaRef)%%', $auxFilaRefPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Referente)%%', $auxNomRefPers, $plantAux);
-
+                            GeneradorEmails($auxNomCorreoRefPers, $plantAux, $asuntoRef);
+                            $plantAux = '';
+                            $auxFilaRefPers = '';
+                            $auxNomCorreoRefPers = '';
+                        }
+                    } else {
+                        $auxFilaRefPers =  $auxFilaRefPers . str_replace('%%(nom_Colab)%%', $datosEmpleado[$indexEmpleado]['evaluado'], $plantFilaRefPers);
+                        //Verifica que se esté enviando el último elemento del array
+                        if ($indexEmpleado === count($datosEmpleado) - 1) {
+                            $plantAux = $plantInicialRefPers;
+                            $plantAux = str_replace('%%(auxFilaRef)%%', $auxFilaRefPers, $plantAux);
+                            $plantAux = str_replace('%%(nom_Referente)%%', $auxNomRefPers, $plantAux);
                             GeneradorEmails($auxNomCorreoRefPers, $plantAux, $asuntoRef);
                             $plantAux = '';
                             $auxFilaRefPers = '';
@@ -493,7 +493,7 @@ if (isset($_GET['emailEDD'])) {
 
         for ($indexDest = 0; $indexDest < count($destinatarios); $indexDest++) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($destinatarios[$indexDest]['nomContacto']), $cuerpoCorreo);
-            // GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoColab);
+            GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoColab);
             $cuerpoCorreo = $plantillaInicial;
         }
 
@@ -538,18 +538,13 @@ if (isset($_GET['emailEDD'])) {
                     if (
                         $datosEmpleadoColabDes[$indexEmpleado]['nomEmpleado'] !== $auxNomColabPers
                     ) {
-                        if ($auxNomColabPers !== '' && $auxCorreoColabPers !== '') {
+                        if ($auxNomColabPers !== '') {
 
-                            // print_r($auxNomColabPers . "\n");
-                            // print_r($auxCorreoColabPers . "\n");
 
                             $plantAux = $plantInicialColabPers;
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
-                            // print_r($plantAux);
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
-                            // GeneradorEmails('testRespuestasCorreosCoe@outlook.com', $plantAux, $asuntoColab);
-
                             $plantAux = '';
                             $auxFilaColabPers = '';
                         }
@@ -557,21 +552,24 @@ if (isset($_GET['emailEDD'])) {
                         $auxFilaColabPers =  $auxFilaColabPers . str_replace('%%(nom_Ref)%%', $datosEmpleadoColabDes[$indexEmpleado]['evaluado'], $plantFilaColabPers);
                         $auxNomColabPers = $datosEmpleadoColabDes[$indexEmpleado]['nomEmpleado'];
                         $auxCorreoColabPers = $datosEmpleadoColabDes[$indexEmpleado]['correoEmpleado'];
-                        // print_r($auxFilaRefPers);
-                    } else {
-                        $auxFilaColabPers =  $auxFilaColabPers . str_replace('%%(nom_Ref)%%', $datosEmpleadoColabDes[$indexEmpleado]['evaluado'], $plantFilaColabPers);
 
                         if ($indexEmpleado === count($datosEmpleadoColabDes) - 1) {
-                            // print_r("entró \n");
-                            // print_r($auxNomColabPers . "\n");
-                            // print_r($auxCorreoColabPers . "\n");
-
                             $plantAux = $plantInicialColabPers;
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
-                            // print_r($plantAux);
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
+                            $plantAux = '';
+                            $auxFilaColabPers = '';
+                        }
+                    } else {
 
+                        $auxFilaColabPers =  $auxFilaColabPers . str_replace('%%(nom_Ref)%%', $datosEmpleadoColabDes[$indexEmpleado]['evaluado'], $plantFilaColabPers);
+
+                        if ($indexEmpleado === count($datosEmpleadoColabDes) - 1) {
+                            $plantAux = $plantInicialColabPers;
+                            $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
+                            $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
+                            GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
                             $plantAux = '';
                             $auxFilaColabPers = '';
                         }

@@ -47,7 +47,7 @@ function GeneradorEmails($destinatario, $cuerpoCorreo, $asunto)
         $mail->AltBody = 'Evaluaciones de desempeño';
 
         $mail->send();
-        echo 'Message has been sent';
+        echo json_encode(['status' => 'Message has been sent']);
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
