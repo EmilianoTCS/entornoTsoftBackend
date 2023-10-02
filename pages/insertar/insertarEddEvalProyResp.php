@@ -30,7 +30,7 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
             '$fechaFinExamen',
             '$item->respuesta',
             $isActive,
-            $item->idEDDEvalProyEmp : evaluado(onChange),
+            $item->idEDDEvalProyEmp,
             $item->idEDDEvalPregunta,
             $item->idEDDEvalRespPreg,
             '$usuarioCreacion',
