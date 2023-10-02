@@ -32,7 +32,10 @@ if (isset($_GET['listadoRespPregEvaluacionesExt'])) {
                 'nomEvaluacion' => $row['nomEvaluacion'],
                 'tipoEvaluacion' => $row['tipoEvaluacion'],
                 'descFormulario' => $row['descFormulario'],
-                'logoFormulario' => $row['logoFormulario'],
+                // 'logoFormulario' => $row['logoFormulario'],
+                'logoFormulario' => 'data:image/jpeg;base64,'.base64_encode($row['logoFormulario']),
+                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
                 'ordenPregunta' => $row['ordenPregunta'],
                 'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
                 'nomPregunta' => $row['nomPregunta'],
@@ -42,7 +45,7 @@ if (isset($_GET['listadoRespPregEvaluacionesExt'])) {
                 'nomRespPreg' => $row['nomRespPreg'],
                 'preguntaObligatoria' => $row['preguntaObligatoria'],
                 'nomCompetencia' => $row['nomCompetencia'],
-                // 'logoFormulario' => 'data:image/jpeg;base64,'.base64_encode($row['logoFormulario'])
+                
             );
         }
     }
