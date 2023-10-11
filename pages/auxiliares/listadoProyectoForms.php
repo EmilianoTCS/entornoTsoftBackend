@@ -9,7 +9,10 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 if (isset($_GET['listados'])) {
-    $query = "CALL SP_AUX_listadoProyectoForms()";
+    $data = json_decode(file_get_contents("php://input"));
+    $idServicio = $data->idServicio;
+    
+    $query = "CALL SP_AUX_listadoProyectoForms($idServicio)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
