@@ -18,7 +18,7 @@ if (isset($_GET['listadoCompetenciasGeneralEval'])) {
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
 
-    $query = "CALL SP_COMPETENCIAS_GENERAL_EVAL($idCliente, $idServicio, $idProyecto, '$tipoComparacion', '$tipoCargo', '$fechaIni', '$fechaFin', @p0, @p1)";
+    $query = "CALL SP_COMPETENCIAS_GENERAL_EVAL('$idCliente', '$idServicio', '$idProyecto', '$tipoComparacion', '$tipoCargo', '$fechaIni', '$fechaFin', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
