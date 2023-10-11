@@ -11,8 +11,8 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listados'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idCliente = $data->idCliente;
-    
-    $query = "CALL SP_AUX_listadoServicioForms($idCliente)";
+
+    $query = "CALL SP_AUX_listadoServicioForms('$idCliente')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
