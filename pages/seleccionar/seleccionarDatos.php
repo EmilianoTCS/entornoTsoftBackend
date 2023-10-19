@@ -258,6 +258,8 @@ if (isset($_GET['seleccionarDatos'])) {
                         'evalRespondida' => $row['evalRespondida'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
+                        'idProyecto' => $row['idProyecto'],
+                        'nomProyecto' => $row['nomProyecto'],
                     );
                     break;
             }
