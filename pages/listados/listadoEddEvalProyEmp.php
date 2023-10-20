@@ -15,11 +15,12 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
     $data->idEDDProyEmpEvaluador = "" || null || 0 ? $idEDDProyEmpEvaluador = null : $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
     $data->idEDDProyEmpEvaluado = "" || null || 0 ? $idEDDProyEmpEvaluado = null : $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
     $data->idProyecto = "" || null || 0 ? $idProyecto = null : $idProyecto = $data->idProyecto;
+    $data->cicloEvaluacion = "" || null || 0 ? $cicloEvaluacion = null : $cicloEvaluacion = $data->cicloEvaluacion;
     $data->cantidadPorPagina = "" || null || 0 ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEddEvalProyEmp('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEDDProyEmpEvaluador', '$idEDDProyEmpEvaluado', '$idProyecto')";
+    $query = "CALL SP_listadoEddEvalProyEmp('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEDDProyEmpEvaluador', '$idEDDProyEmpEvaluado', '$idProyecto', '$cicloEvaluacion')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -34,6 +35,7 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
                 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                 'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
                 'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
+                'cicloEvaluacion' => $row['cicloEvaluacion'],
                 'evalRespondida' => $row['evalRespondida'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
@@ -69,6 +71,7 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
             'idEDDEvaluacion' => 'empty / vacio',
             'idEDDProyEmpEvaluador' => 'empty / vacio',
             'idEDDProyEmpEvaluado' => 'empty / vacio',
+            'cicloEvaluacion' => 'empty / vacio',
             'evalRespondida' => 'empty / vacio',
             'fechaIni' => 'empty / vacio',
             'fechaFin' => 'empty / vacio',
