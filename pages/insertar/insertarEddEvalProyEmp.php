@@ -13,12 +13,13 @@ if (isset($_GET['insertarEddEvalProyEmp'])) {
     $idEDDEvaluacion = $data->idEDDEvaluacion;
     $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
     $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
+    $cicloEvaluacion = $data->cicloEvaluacion;
     $evalRespondida = $data->evalRespondida;
     $isActive = $data->isActive;
     $usuarioCreacion = $data->usuarioCreacion;
 
 
-    $query = "CALL SP_insertarEddEvalProyEmp($idEDDEvaluacion, $idEDDProyEmpEvaluado, $idEDDProyEmpEvaluador, '$evalRespondida', '$isActive', '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarEddEvalProyEmp($idEDDEvaluacion, $idEDDProyEmpEvaluado, $idEDDProyEmpEvaluador,'$cicloEvaluacion', '$evalRespondida', '$isActive', '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -34,6 +35,8 @@ if (isset($_GET['insertarEddEvalProyEmp'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'], //00
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'], //SUCCESS
                 'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                 'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
