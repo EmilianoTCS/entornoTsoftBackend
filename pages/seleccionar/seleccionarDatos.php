@@ -255,6 +255,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                         'idEDDProyEmpEvaluador'=> $row['idEDDProyEmpEvaluador'],
                         'idEDDProyEmpEvaluado'=> $row['idEDDProyEmpEvaluado'],
+                        'cicloEvaluacion'=> $row['cicloEvaluacion'],
                         'evalRespondida' => $row['evalRespondida'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
