@@ -19,7 +19,7 @@ if (isset($_GET['listados'])) {
 
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'ciclosEvaluacion' => $row['ciclosEvaluacion']
+            'cicloEvaluacion' => $row['cicloEvaluacion']
         );
     }
     $jsonstring = json_encode(($json));

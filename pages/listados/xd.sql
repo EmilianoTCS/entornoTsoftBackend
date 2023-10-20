@@ -4,9 +4,6 @@ ADD COLUMN `cicloEvaluacion` INT NOT NULL AFTER `idEDDProyEmpEvaluado`;
 CREATE INDEX `ndx_eddEvalProyEmp_cicloEvaluacion` ON `entornotsoft`.`eddevalproyemp`(`cicloEvaluacion`);
 
 
-
-
-
 DROP PROCEDURE IF EXISTS `SP_listadoEddEvalProyEmp`;
 DELIMITER $$
 CREATE PROCEDURE `SP_listadoEddEvalProyEmp`(
@@ -299,7 +296,6 @@ BEGIN
                LIMIT IN_inicio, IN_cantidadPorPagina; 
     
 
-
     -- Si IN_idEDDEvaluacion y IN_idEDDProyEmpEvaluador no es nulo
     ELSEIF IN_idEDDEvaluacion != 0 AND IN_idEDDProyEmpEvaluador != 0 AND IN_idEDDProyEmpEvaluado = 0 AND IN_idProyecto = 0 AND IN_cicloEvaluacion = 0 THEN 
     
@@ -507,7 +503,6 @@ BEGIN
                ORDER BY eval.nomEvaluacion ASC
                LIMIT IN_inicio, IN_cantidadPorPagina; 
     
-
 
     -- Si IN_idEDDProyEmpEvaluador y IN_idEDDProyEmpEvaluado no es nulo
     ELSEIF IN_idEDDEvaluacion = 0 AND IN_idEDDProyEmpEvaluador != 0 AND IN_idEDDProyEmpEvaluado != 0 AND IN_idProyecto = 0 AND IN_cicloEvaluacion = 0 THEN 
