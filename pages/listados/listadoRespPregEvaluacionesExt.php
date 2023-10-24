@@ -13,8 +13,9 @@ if (isset($_GET['listadoRespPregEvaluacionesExt'])) {
     $idEvaluacion = $data->idEvaluacion;
     $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
     $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
+    $cicloEvaluacion = $data->cicloEvaluacion;
 
-    $query = "CALL SP_listadoRespPregEvaluacionesExt('$idEvaluacion',$idEDDProyEmpEvaluador, $idEDDProyEmpEvaluado, @p0, @p1)";
+    $query = "CALL SP_listadoRespPregEvaluacionesExt('$idEvaluacion',$idEDDProyEmpEvaluador, $idEDDProyEmpEvaluado, $cicloEvaluacion, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

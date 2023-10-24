@@ -17,13 +17,14 @@ if (isset($_GET['emailEDD'])) {
     $cargoEnProy = $data->cargoEnProy;
     $tipoConfDato = $data->tipoConfDato;
     $subTipoConfDato = $data->subTipoConfDato;
+    $cicloEvaluacion = $data->cicloEvaluacion;
     $listContactos = $data->listContactos === "" || null ? "" : $data->listContactos;
     $datosEmpleado = array();
     $datosCambiarEstadoCorreo = array();
 
 
     //Obtengo el listado de empleados sin tener en cuenta el cargo (se usa referente por default)
-    $queryEmpleados = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto', '', @p0, @p1)";
+    $queryEmpleados = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','', $cicloEvaluacion, @p0, @p1)";
     $resultEmpleados = mysqli_query($conection, $queryEmpleados);
     if (!$resultEmpleados) {
         die('Query Failed' . mysqli_error($conection));
@@ -52,6 +53,7 @@ if (isset($_GET['emailEDD'])) {
                 'evaluado' => $rowEmpleados['evaluado'],
                 'idEmpleadoEvaluado' => $rowEmpleados['idEmpleadoEvaluado'],
                 'nomClienteEvaluado' => $rowEmpleados['nomClienteEvaluado'],
+                'cicloEvaluacion' => $rowEmpleados['cicloEvaluacion'],
             );
         }
     }
@@ -59,7 +61,7 @@ if (isset($_GET['emailEDD'])) {
     mysqli_next_result($conection);
 
     //Obtengo el listado de empleados con el cargo colaborador
-    $queryEmpleadosColab = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto', 'colaborador', @p0, @p1)";
+    $queryEmpleadosColab = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','colaborador', $cicloEvaluacion, @p0, @p1)";
     $resultEmpleadosColab = mysqli_query($conection, $queryEmpleadosColab);
     if (!$resultEmpleadosColab) {
         die('Query Failed' . mysqli_error($conection));
@@ -88,6 +90,7 @@ if (isset($_GET['emailEDD'])) {
                 'evaluado' => $rowEmpleadosColab['evaluado'],
                 'idEmpleadoEvaluado' => $rowEmpleadosColab['idEmpleadoEvaluado'],
                 'nomClienteEvaluado' => $rowEmpleadosColab['nomClienteEvaluado'],
+                'cicloEvaluacion' => $rowEmpleadosColab['cicloEvaluacion'],
             );
         }
     }
@@ -115,7 +118,7 @@ if (isset($_GET['emailEDD'])) {
 
 
     //Actualizo la fecha de vigencia, los días y el estado de false a true para el envío de correos
-    $queryCambiarEstadoCorreo = "CALL SP_cambiarEstadoEnvCorreo('$cargoEnProy','$idProyecto', @p0, @p1)";
+    $queryCambiarEstadoCorreo = "CALL SP_cambiarEstadoEnvCorreo('$cargoEnProy','$idProyecto', $cicloEvaluacion, @p0, @p1)";
     $resultCambiarEstadoCorreo = mysqli_query($conection, $queryCambiarEstadoCorreo);
     if (!$resultCambiarEstadoCorreo) {
         die('Query Failed' . mysqli_error($conection));
@@ -322,7 +325,7 @@ if (isset($_GET['emailEDD'])) {
 
                     if ($marcadorRefPers === 1) {
                         $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
-                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleado[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluado']}");
+                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleado[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleado[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleado[$indexEmpleado]['cicloEvaluacion']}");
                         $finalUrl = $baseURL . $getMethodEncoded;
                         $plantInicialRefPers = $datosConfig[$indexConfig]['datoNoVisible'];
                         $plantInicialRefPers = str_replace('%%(URL)%%', $finalUrl, $plantInicialRefPers);
@@ -525,7 +528,7 @@ if (isset($_GET['emailEDD'])) {
 
                     if ($marcadorColabPers === 1) {
                         $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
-                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}");
+                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
                         $finalUrl = $baseURL . $getMethodEncoded;
                         $plantInicialColabPers = $datosConfig[$indexConfig]['datoNoVisible'];
                         $plantInicialColabPers = str_replace('%%(URL)%%', $finalUrl, $plantInicialColabPers);

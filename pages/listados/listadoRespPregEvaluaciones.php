@@ -13,8 +13,9 @@ if (isset($_GET['listadoRespPregEvaluaciones'])) {
     $idEvaluacion = $data->idEvaluacion;
     $idEmpleado = $data->idEmpleado;
     $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
+    $cicloEvaluacion = $data->cicloEvaluacion;
 
-    $query = "CALL SP_listadoRespPregEvaluaciones('$idEvaluacion', '$idEmpleado', $idEDDProyEmpEvaluado, @p0, @p1)";
+    $query = "CALL SP_listadoRespPregEvaluaciones('$idEvaluacion', '$idEmpleado', $idEDDProyEmpEvaluado, $cicloEvaluacion, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -32,7 +33,6 @@ if (isset($_GET['listadoRespPregEvaluaciones'])) {
                 'nomEvaluacion' => $row['nomEvaluacion'],
                 'tipoEvaluacion' => $row['tipoEvaluacion'],
                 'descFormulario' => $row['descFormulario'],
-                'logoFormulario' => $row['logoFormulario'],
                 'ordenPregunta' => $row['ordenPregunta'],
                 'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                 'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],

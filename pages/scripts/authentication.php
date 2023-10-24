@@ -17,6 +17,7 @@ $idProyecto = ($result[1]['idProyecto']);
 $cargoEnProy = ($result[2]['cargoEnProy']);
 $idEDDProyEmpEvaluador = ($result[3]['idEDDProyEmpEvaluador']);
 $idEDDProyEmpEvaluado = ($result[4]['idEDDProyEmpEvaluado']);
+$cicloEvaluacion = ($result[5]['cicloEvaluacion']);
 
 // print_r($params);
 
@@ -25,7 +26,7 @@ $idEDDProyEmpEvaluado = ($result[4]['idEDDProyEmpEvaluado']);
 //validar evalrespondida = 0, reconocer cargo, validad fechas vigencia x cargo, dias vigencia x cargo, email enviado = 0
 //validar fechas 
 
-$queryAuthentication = "CALL SP_authenticationEmail($idEDDEvaluacion, $idProyecto, '$cargoEnProy', $idEDDProyEmpEvaluador, @p0, @p1)";
+$queryAuthentication = "CALL SP_authenticationEmail( $idEDDEvaluacion, $idProyecto, '$cargoEnProy', $cicloEvaluacion, $idEDDProyEmpEvaluador, @p0, @p1)";
 $resultAuthentication = mysqli_query($conection, $queryAuthentication);
 if (!$resultAuthentication) {
     die('Query Failed' . mysqli_error($conection));
@@ -41,7 +42,7 @@ if (mysqli_num_rows($resultAuthentication) > 0) {
             echo json_encode($json);
         } else {
             if ($row['RESULT'] === '1') {
-                $encoded = base64_encode("{$idEDDEvaluacion},{$idEDDProyEmpEvaluado},{$idEDDProyEmpEvaluador}");
+                $encoded = base64_encode("{$idEDDEvaluacion},{$idEDDProyEmpEvaluado},{$idEDDProyEmpEvaluador},{$cicloEvaluacion}");
                 header("Location: http://localhost:3000/loginVerif?{$encoded}");
                 exit();
             } else {

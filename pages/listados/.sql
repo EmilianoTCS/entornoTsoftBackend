@@ -59,8 +59,8 @@ BEGIN
                     UPPER(ser.nomServicio) nomServicio,
                     pe.idProyecto,
                     UPPER(proy.nomProyecto) nomProyecto,
-                    DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                    DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                    DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                    DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
                     sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -74,13 +74,14 @@ BEGIN
                     INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                     INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                     INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                     WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia
                     ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto ) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN  
@@ -109,8 +110,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -124,13 +125,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente, ser.nomServicio, ec.nomCompetencia 
                         ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;
@@ -165,8 +167,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -180,13 +182,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente, ser.nomServicio, ec.nomCompetencia
                         ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto  ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;
@@ -215,8 +218,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -230,13 +233,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia,
                     YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni) ;
 
@@ -268,8 +272,8 @@ BEGIN
                             UPPER(ser.nomServicio) nomServicio,
                             pe.idProyecto,
                             UPPER(proy.nomProyecto) nomProyecto,
-                            DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                            DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                            DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                            DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                             count(*) cantPregComp,
                             sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                             sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -283,13 +287,14 @@ BEGIN
                             INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                             INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                             INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                            INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                            INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                             INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                             WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                             ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                         GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni);
                 END IF;   
 
@@ -325,8 +330,8 @@ BEGIN
                             UPPER(ser.nomServicio) nomServicio,
                             pe.idProyecto,
                             UPPER(proy.nomProyecto) nomProyecto,
-                            DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                            DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                            DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                            DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                             count(*) cantPregComp,
                             sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                             sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -340,13 +345,14 @@ BEGIN
                             INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                             INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                             INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                            INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                            INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                             INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                             WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                             ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                         GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;
@@ -375,8 +381,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -390,13 +396,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN 
@@ -427,8 +434,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -442,13 +449,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;
@@ -484,8 +492,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -499,13 +507,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;
@@ -549,13 +558,14 @@ BEGIN
                     INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                     INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                     INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                     WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, ec.nomCompetencia
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
             
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN
@@ -585,8 +595,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -600,13 +610,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;
@@ -642,8 +653,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -657,13 +668,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;   
@@ -693,8 +705,8 @@ BEGIN
                     UPPER(ser.nomServicio) nomServicio,
                     pe.idProyecto,
                     UPPER(proy.nomProyecto) nomProyecto,
-                    DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                    DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                    DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                    DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
                     sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -708,13 +720,14 @@ BEGIN
                     INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                     INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                     INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                     WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;  
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN
@@ -745,8 +758,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -760,13 +773,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;  
                 END IF;
             
@@ -801,8 +815,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -816,13 +830,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;  
 
                 END IF;
@@ -851,8 +866,8 @@ BEGIN
                     UPPER(ser.nomServicio) nomServicio,
                     pe.idProyecto,
                     UPPER(proy.nomProyecto) nomProyecto,
-                    DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                    DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                    DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                    DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                     count(*) cantPregComp,
                     sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -866,13 +881,14 @@ BEGIN
                     INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                     INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                     INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
             
                     WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;  
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN
@@ -903,8 +919,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -918,7 +934,7 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
                 
 
@@ -926,6 +942,7 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;  
 
                 END IF;
@@ -962,8 +979,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -977,13 +994,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
                 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;  
 
                 END IF;
@@ -1013,8 +1031,8 @@ BEGIN
                     UPPER(ser.nomServicio) nomServicio,
                     pe.idProyecto,
                     UPPER(proy.nomProyecto) nomProyecto,
-                    DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                    DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                    DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                    DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
                     sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1028,13 +1046,14 @@ BEGIN
                     INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                     INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                     INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                     WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, ec.nomCompetencia
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN
@@ -1065,8 +1084,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1080,13 +1099,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
                 END IF;    
 
@@ -1122,8 +1142,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1137,13 +1157,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
 
@@ -1174,8 +1195,8 @@ BEGIN
                     UPPER(ser.nomServicio) nomServicio,
                     pe.idProyecto,
                     UPPER(proy.nomProyecto) nomProyecto,
-                    DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                    DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                    DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                    DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
                     sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1189,13 +1210,14 @@ BEGIN
                     INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                     INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                     INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                     WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio,pe.idProyecto, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN
@@ -1225,8 +1247,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1241,13 +1263,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio,pe.idProyecto, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
                 END IF;
 
@@ -1283,8 +1306,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1298,13 +1321,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio,pe.idProyecto, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia;
 
                 END IF;
@@ -1333,8 +1357,8 @@ BEGIN
                     UPPER(ser.nomServicio) nomServicio,
                     pe.idProyecto,
                     UPPER(proy.nomProyecto) nomProyecto,
-                    DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                    DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                    DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                    DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                     count(*) cantPregComp,
                     sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1348,13 +1372,14 @@ BEGIN
                     INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                     INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                     INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                    INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                     WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia; 
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN
@@ -1385,8 +1410,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1400,13 +1425,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia; 
 
 
@@ -1444,8 +1470,8 @@ BEGIN
                         UPPER(ser.nomServicio) nomServicio,
                         pe.idProyecto,
                         UPPER(proy.nomProyecto) nomProyecto,
-                        DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
-                        DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
+                        DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
+                        DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
                         sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
@@ -1459,13 +1485,14 @@ BEGIN
                         INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
-                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta and ep.isActive = 1)
+                        INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
+                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia; 
 
                 END IF;
