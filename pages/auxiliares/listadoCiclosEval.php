@@ -11,7 +11,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listados'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idProyecto = $data->idProyecto;
-    $query = "CALL SP_AUX_listadoCiclosEval($idProyecto)";
+    $query = "CALL SP_AUX_listadoCiclosEval('$idProyecto')";
     
     $result = mysqli_query($conection, $query);
     if (!$result) {
