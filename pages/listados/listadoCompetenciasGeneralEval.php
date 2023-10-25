@@ -46,6 +46,7 @@ if (isset($_GET['listadoCompetenciasGeneralEval'])) {
                 'cantRespOK' => '0 / vacío',
                 'porcAprobComp' => '0 / vacío',
                 'nomCompetencia' => '0 / vacío',
+                'cicloEvaluacion' => '0 / vacío',
                 'codResp' => $row['out_codResp'],
                 'msjResp' => $row['out_msjResp']
             );
@@ -69,8 +70,7 @@ if (isset($_GET['listadoCompetenciasGeneralEval'])) {
                 'cantRespOK' => $row['cantRespOK'],
                 'porcAprobComp' => $row['porcAprobComp'],
                 'nomCompetencia' => $row['nomCompetencia'],
-
-                
+                'cicloEvaluacion' => $row['cicloEvaluacion']
             );
         }
     }
