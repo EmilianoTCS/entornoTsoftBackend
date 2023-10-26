@@ -79,13 +79,14 @@ BEGIN
                     INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                     WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
-                    GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                    ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto ) a
+                    GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion , ec.nomCompetencia
+                    ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia 
+                ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
-            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND cicloEvaluacion = 0 THEN  
+            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN  
 
                 IF FN_validarMultiIDS(IN_idServicio) = 0 THEN
                 SET out_codResp = '03';
@@ -131,15 +132,17 @@ BEGIN
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
-                        GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion 
-                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto ) a
+                        GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia
+                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
+                    ;
 
                 END IF;
 
-            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND cicloEvaluacion != 0 THEN  
+            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion != 0 THEN  
 
                 IF FN_validarMultiIDS(IN_idServicio) = 0 THEN
                 SET out_codResp = '03';
@@ -185,15 +188,17 @@ BEGIN
                         INNER JOIN eddEvalCompetencia ec ON (ec.idEDDEvalCompetencia = ep.idEDDEvalCompetencia and ec.isActive = 1)
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
-                        GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion 
-                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto ) a
+                        GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia
+                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
+                    ;
 
                 END IF;
             
-            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND cicloEvaluacion = 0 THEN  
+            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND IN_cicloEvaluacion = 0 THEN  
 
                 IF FN_validarMultiIDS(IN_idServicio) = 0 THEN
                     SET out_codResp = '03';
@@ -244,14 +249,15 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto  ) a
+                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
             
-            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND cicloEvaluacion != 0 THEN  
+            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND IN_cicloEvaluacion != 0 THEN  
 
                 IF FN_validarMultiIDS(IN_idServicio) = 0 THEN
                     SET out_codResp = '03';
@@ -302,10 +308,11 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto  ) a
+                        ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia  ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
             
@@ -355,13 +362,14 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion,
-                    YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni) ;
+                    YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni)
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
-            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' THEN 
+            ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN 
 
                 IF FN_validarMultiIDS(IN_idServicio) = 0 THEN
                     SET out_codResp = '03';
@@ -410,10 +418,11 @@ BEGIN
 
                             WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
-                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni), a.cicloEvaluacion;
+                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni), a.cicloEvaluacion
+                        ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;   
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = ''  AND IN_cicloEvaluacion != 0 THEN 
@@ -465,10 +474,11 @@ BEGIN
 
                             WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
-                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni), a.cicloEvaluacion;
+                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni), a.cicloEvaluacion
+                        ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;   
     
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND IN_cicloEvaluacion = 0 THEN 
@@ -524,10 +534,11 @@ BEGIN
 
                             WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
-                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                        ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
             
@@ -584,10 +595,11 @@ BEGIN
 
                             WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
-                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                            ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                        GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                        ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;    
              
@@ -637,10 +649,11 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN 
 
@@ -691,10 +704,11 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia,pe.idProyecto, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
 
@@ -747,10 +761,11 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia,pe.idProyecto, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
 
@@ -806,10 +821,11 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
             
@@ -865,15 +881,15 @@ BEGIN
 
                         WHERE epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
               
             END IF;
-
 
         ELSEIF TRIM(UPPER(IN_tipoComparacion)) = 'GENERAL' AND TRIM(UPPER(IN_tipoCargo)) = 'REFERENTE' THEN
 
@@ -919,10 +935,11 @@ BEGIN
 
                     WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
             
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN 
 
@@ -972,10 +989,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
             
@@ -1027,10 +1045,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
            
@@ -1086,10 +1105,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;   
 
@@ -1145,14 +1165,15 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
-                END IF;       
+                    END IF;       
 
-            END IF;
+             END IF;
 
         ELSEIF TRIM(UPPER(IN_tipoComparacion)) = 'MES' AND TRIM(UPPER(IN_tipoCargo)) = 'REFERENTE' THEN
 
@@ -1198,10 +1219,11 @@ BEGIN
 
                     WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN
 
@@ -1252,10 +1274,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
                 END IF;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion != 0 THEN
@@ -1307,10 +1330,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
                 END IF;    
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND IN_cicloEvaluacion = 0 THEN 
@@ -1365,10 +1389,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
                 END IF;
             
@@ -1424,16 +1449,14 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
                 END IF;
-            
-            
-            
-            
+                    
             END IF;
 
         ELSEIF TRIM(UPPER(IN_tipoComparacion)) = 'AÑO' AND TRIM(UPPER(IN_tipoCargo)) = 'REFERENTE' THEN
@@ -1480,10 +1503,11 @@ BEGIN
             
                     WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN
 
@@ -1535,10 +1559,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
                 END IF;
 
@@ -1592,10 +1617,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
                 END IF;
 
@@ -1652,10 +1678,11 @@ BEGIN
                 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
                 END IF;
 
@@ -1712,15 +1739,15 @@ BEGIN
                 
                         WHERE pe.cargoEnProy IN ('REFERENTE') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a 
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;  
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
                 END IF;
 
             END IF;   
-
 
         ELSEIF TRIM(UPPER(IN_tipoComparacion)) = 'GENERAL' AND TRIM(UPPER(IN_tipoCargo)) = 'COLABORADOR' THEN
 
@@ -1766,10 +1793,11 @@ BEGIN
 
                     WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN
 
@@ -1820,10 +1848,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;    
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion != 0 THEN
@@ -1867,7 +1896,7 @@ BEGIN
                         INNER JOIN cliente cli ON (FIND_IN_SET (cli.idCliente , IN_idCliente) AND cli.isActive = 1)
                         INNER JOIN servicio ser ON (FIND_IN_SET (ser.idServicio , IN_idServicio) AND ser.idCliente = cli.idCliente AND ser.isActive = 1)
                         INNER JOIN eddproyecto proy ON (proy.idServicio = ser.idServicio AND proy.isActive = 1)
-                        INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1, epe.cicloEvaluacion = IN_cicloEvaluacion)
+                        INNER JOIN eddevalproyemp epe ON (pe.idProyecto = proy.idEDDProyecto  AND epe.idEDDProyEmpEvaluado = pe.idEDDProyEmp AND pe.isActive = 1 AND epe.cicloEvaluacion = IN_cicloEvaluacion)
                         INNER JOIN eddEvalProyResp epr ON (epr.idEDDEvalProyEmp = epe.idEDDEvalProyEmp AND epe.evalRespondida = 1 AND epe.isActive = 1)  
                         INNER JOIN eddEvalRespPreg erp ON (erp.idEDDEvalRespPreg = epr.idEDDEvalRespPreg AND epr.isActive = 1)
                         INNER JOIN eddEvalPregunta ep ON (ep.idEDDEvalPregunta = erp.idEDDEvalPregunta AND ep.tipoResp = 'A' AND ep.isActive = 1)
@@ -1875,10 +1904,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;    
          
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND IN_cicloEvaluacion = 0 THEN 
@@ -1934,10 +1964,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
 
                 END IF;
@@ -1995,10 +2026,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
 
                 END IF;
@@ -2049,10 +2081,11 @@ BEGIN
 
                     WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio,pe.idProyecto, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN
 
@@ -2102,10 +2135,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion != 0 THEN
@@ -2156,10 +2190,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;
         
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) != '' AND IN_cicloEvaluacion = 0 THEN 
@@ -2215,10 +2250,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
             
@@ -2275,10 +2311,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion;
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion 
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
                 END IF;
             
@@ -2328,10 +2365,11 @@ BEGIN
 
                     WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                    ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion; 
+                GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
             ELSEIF TRIM(IN_idServicio) != '' AND TRIM(IN_idProyecto) = '' AND IN_cicloEvaluacion = 0 THEN
 
@@ -2382,10 +2420,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion; 
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
 
                 END IF;
@@ -2439,10 +2478,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion; 
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
 
                 END IF;
@@ -2500,10 +2540,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion; 
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
                 END IF;
 
@@ -2560,10 +2601,11 @@ BEGIN
 
                         WHERE pe.cargoEnProy IN ('COLABORADOR') AND epe.fechaIni BETWEEN IN_fechaIni AND IN_fechaFin
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
-                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto) a
+                        ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
                     WHERE a.porcAprobComp != '0.00'
-                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion; 
+                    GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
+                    ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
                 END IF;
 
