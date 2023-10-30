@@ -528,7 +528,6 @@ if (isset($_GET['emailEDD'])) {
 
                     if ($marcadorColabPers === 1) {
                         $plantInicialColabPers = $datosConfig[$indexConfig]['datoNoVisible'];
-                        $plantInicialColabPers = str_replace('%%(URL)%%', $finalUrl, $plantInicialColabPers);
                         $plantInicialColabPers = str_replace('%%(Fecha_ini)%%', $datosEmpleadoColabDes[$indexEmpleado]['fechaIni'], $plantInicialColabPers);
                         $plantInicialColabPers = str_replace('%%(Fecha_fin)%%', $datosEmpleadoColabDes[$indexEmpleado]['fechaFin'], $plantInicialColabPers);
 
@@ -562,6 +561,7 @@ if (isset($_GET['emailEDD'])) {
                             $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
                             $finalUrl = $baseURL . $getMethodEncoded;
 
+                            $plantInicialColabPers = str_replace('%%(URL)%%', $finalUrl, $plantAux);
 
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
                             $plantAux = '';
@@ -580,6 +580,8 @@ if (isset($_GET['emailEDD'])) {
                             $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
                             $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
                             $finalUrl = $baseURL . $getMethodEncoded;
+                            $plantInicialColabPers = str_replace('%%(URL)%%', $finalUrl, $plantAux);
+
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
                             $plantAux = '';
                             $auxFilaColabPers = '';
