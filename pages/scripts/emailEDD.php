@@ -496,7 +496,7 @@ if (isset($_GET['emailEDD'])) {
 
         for ($indexDest = 0; $indexDest < count($destinatarios); $indexDest++) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($destinatarios[$indexDest]['nomContacto']), $cuerpoCorreo);
-            GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoColab);
+            // GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoColab);
             $cuerpoCorreo = $plantillaInicial;
         }
 
@@ -526,24 +526,19 @@ if (isset($_GET['emailEDD'])) {
             for ($indexEmpleado = 0; $indexEmpleado < count($datosEmpleadoColabDes); $indexEmpleado++) {
                 if ($datosConfig[$indexConfig]['subTipoConfDato'] === "COLAB_PERS") {
 
-                    // if ($marcadorColabPers === 1) {
-                        $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
-                        $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
-                        $finalUrl = $baseURL . $getMethodEncoded;
+                    if ($marcadorColabPers === 1) {
                         $plantInicialColabPers = $datosConfig[$indexConfig]['datoNoVisible'];
                         $plantInicialColabPers = str_replace('%%(URL)%%', $finalUrl, $plantInicialColabPers);
                         $plantInicialColabPers = str_replace('%%(Fecha_ini)%%', $datosEmpleadoColabDes[$indexEmpleado]['fechaIni'], $plantInicialColabPers);
                         $plantInicialColabPers = str_replace('%%(Fecha_fin)%%', $datosEmpleadoColabDes[$indexEmpleado]['fechaFin'], $plantInicialColabPers);
 
-                        // $plantAux = $plantInicialRefPers;
-                    // }
+                        $plantAux = $plantInicialRefPers;
+                    }
 
                     if (
                         $datosEmpleadoColabDes[$indexEmpleado]['nomEmpleado'] !== $auxNomColabPers
                     ) {
                         if ($auxNomColabPers !== '') {
-
-
                             $plantAux = $plantInicialColabPers;
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
@@ -556,10 +551,18 @@ if (isset($_GET['emailEDD'])) {
                         $auxNomColabPers = $datosEmpleadoColabDes[$indexEmpleado]['nomEmpleado'];
                         $auxCorreoColabPers = $datosEmpleadoColabDes[$indexEmpleado]['correoEmpleado'];
 
+
+
                         if ($indexEmpleado === count($datosEmpleadoColabDes) - 1) {
                             $plantAux = $plantInicialColabPers;
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
+
+                            $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
+                            $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
+                            $finalUrl = $baseURL . $getMethodEncoded;
+
+
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
                             $plantAux = '';
                             $auxFilaColabPers = '';
@@ -572,6 +575,11 @@ if (isset($_GET['emailEDD'])) {
                             $plantAux = $plantInicialColabPers;
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
+
+
+                            $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
+                            $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
+                            $finalUrl = $baseURL . $getMethodEncoded;
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
                             $plantAux = '';
                             $auxFilaColabPers = '';
