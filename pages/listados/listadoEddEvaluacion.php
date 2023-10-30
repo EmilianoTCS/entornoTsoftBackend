@@ -33,6 +33,7 @@ if (isset($_GET['listadoEddEvaluacion'])) {
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
                 'disponibilidadEvaluacion' => $row['disponibilidadEvaluacion'],
+                'descFormulario' => $row['descFormulario'],
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);

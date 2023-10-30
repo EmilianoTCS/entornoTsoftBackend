@@ -190,6 +190,67 @@ if (isset($_GET['cambiarEstado'])) {
                         'nomSubsistema' => $row['nomSubsistema'],
                     );
                     break;
+                case 'eddevalcompetencia':
+                    $json[] = array(
+                        'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                        'nomCompetencia' => $row['nomCompetencia']
+                    );
+                    break;
+                case 'eddevalresppreg':
+                    $json[] = array(
+                        'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
+                        'nomRespPreg' => $row['nomRespPreg'],
+                    );
+                    break;
+
+                case 'eddevalpregunta':
+                    $json[] = array(
+                        'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
+                        'idEmpSubsist' => $row['idEmpSubsist'],
+                        'nomPregunta' => $row['nomPregunta'],
+                        'ordenPregunta' => $row['ordenPregunta'],
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                        'tipoResp' => $row['tipoResp'],
+                        'preguntaObligatoria' => $row['preguntaObligatoria'],
+                    );
+                    break;
+                case 'eddevalproyresp':
+                    $json[] = array(
+                        'idEDDEvalProyResp' => $row['idEDDEvalProyResp'],
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'idEDDProyEmp' => $row['idEDDProyEmp    '],
+                        'respuesta' => $row['respuesta'],
+                        'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                        'nomSubsistema' => $row['nomSubsistema'],
+                        'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
+                        'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
+                    );
+                    break;
+                case 'eddevaluacion':
+                    $json[] = array(
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'nomEvaluacion' => $row['nomEvaluacion'],
+                        'tipoEvaluacion' => $row['tipoEvaluacion'],
+                        'fechaIni' => $row['fechaIni'],
+                        'fechaFin' => $row['fechaFin'],
+                        'descFormulario' => $row['descFormulario'],
+                    );
+                    break;
+                case 'eddevalproyemp':
+                    $json[] = array(
+                        'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                        'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                        'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
+                        'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
+                        'cicloEvaluacion' => $row['cicloEvaluacion'],
+                        'evalRespondida' => $row['evalRespondida'],
+                        'fechaIni' => $row['fechaIni'],
+                        'fechaFin' => $row['fechaFin'],
+                        'idProyecto' => $row['idProyecto'],
+                        'nomProyecto' => $row['nomProyecto'],
+                    );
+                    break;
             }
         }
     }
