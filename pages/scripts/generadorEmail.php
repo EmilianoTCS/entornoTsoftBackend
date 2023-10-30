@@ -21,7 +21,15 @@ function GeneradorEmails($destinatario, $cuerpoCorreo, $asunto)
         $mail->SMTPAuth   = true;
         $mail->Username   = 'testCorreosCoe@outlook.com';
         $mail->Password   = 'examplepassword12345';
-        $mail->Port       = 587;                                   //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+        $mail->Port       = 587;
+        $mail->SMTPOptions = array(
+            'ssl' => array(
+                'verify_peer' => false,
+                'verify_peer_name' => false,
+                'allow_self_signed' => true
+            )
+        );
+        //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
         // $mail->setFrom('from@example.com', 'Mailer');
