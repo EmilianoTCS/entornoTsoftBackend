@@ -19,12 +19,23 @@ $idEDDProyEmpEvaluador = ($result[3]['idEDDProyEmpEvaluador']);
 $idEDDProyEmpEvaluado = ($result[4]['idEDDProyEmpEvaluado']);
 $cicloEvaluacion = ($result[5]['cicloEvaluacion']);
 
-// print_r($params);
+
+echo json_encode([
+    'idEDDEvaluacion' => $idEDDEvaluacion,
+    'idProyecto' => $idProyecto,
+    'cargoEnProy' => $cargoEnProy,
+    'idEDDProyEmpEvaluador' => $idEDDProyEmpEvaluador,
+    'idEDDProyEmpEvaluado' => $idEDDProyEmpEvaluado,
+    'cicloEvaluacion' => $cicloEvaluacion,
+]);
 
 //crear sp enviandole los parámetros recibidos, retornando true o false dependiendo si coinciden
 //idEvaluacion, idProyecto, cargoEnProy, idEDDProyEmpEvaluador
 //validar evalrespondida = 0, reconocer cargo, validad fechas vigencia x cargo, dias vigencia x cargo, email enviado = 0
 //validar fechas 
+
+
+
 
 $queryAuthentication = "CALL SP_authenticationEmail( $idEDDEvaluacion, $idProyecto, '$cargoEnProy', $cicloEvaluacion, $idEDDProyEmpEvaluador, @p0, @p1)";
 $resultAuthentication = mysqli_query($conection, $queryAuthentication);

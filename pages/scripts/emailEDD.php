@@ -144,6 +144,7 @@ if (isset($_GET['emailEDD'])) {
     // Ordenar el array utilizando la función de comparación personalizada
     usort($datosEmpleadoColab, 'compararPorEvaluadoAsc');
 
+
     //Hago la separación y procesado del listado de destinatarios adjuntos y lo almaceno en un nuevo array ($destinatarios)
     $adjuntos = '';
     $aux = '';
@@ -521,6 +522,7 @@ if (isset($_GET['emailEDD'])) {
         $auxNomColabPers = '';
         $auxCorreoColabPers = '';
         $auxNomEvaluado = '';
+        $auxidEDDProyEmpEvaluador = '';
         $plantAux = '';
         for ($indexConfig = 0; $indexConfig < count($datosConfig); $indexConfig++) {
             for ($indexEmpleado = 0; $indexEmpleado < count($datosEmpleadoColabDes); $indexEmpleado++) {
@@ -545,7 +547,7 @@ if (isset($_GET['emailEDD'])) {
 
 
                             $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
-                            $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
+                            $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$auxidEDDProyEmpEvaluador}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
                             $finalUrl = $baseURL . $getMethodEncoded;
                             $plantAux = str_replace('%%(URL)%%', $finalUrl, $plantAux);
 
@@ -557,6 +559,8 @@ if (isset($_GET['emailEDD'])) {
                         $auxFilaColabPers =  $auxFilaColabPers . str_replace('%%(nom_Ref)%%', $datosEmpleadoColabDes[$indexEmpleado]['evaluado'], $plantFilaColabPers);
                         $auxNomColabPers = $datosEmpleadoColabDes[$indexEmpleado]['nomEmpleado'];
                         $auxCorreoColabPers = $datosEmpleadoColabDes[$indexEmpleado]['correoEmpleado'];
+                        $auxidEDDProyEmpEvaluador = $datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador'];
+
 
                         if ($indexEmpleado === count($datosEmpleadoColabDes) - 1) {
                             $plantAux = $plantInicialColabPers;
@@ -572,11 +576,15 @@ if (isset($_GET['emailEDD'])) {
                             $plantAux = '';
                             $auxFilaColabPers = '';
                         }
+                        $marcadorColabPers++;
                     } else {
 
                         $auxFilaColabPers =  $auxFilaColabPers . str_replace('%%(nom_Ref)%%', $datosEmpleadoColabDes[$indexEmpleado]['evaluado'], $plantFilaColabPers);
 
                         if ($indexEmpleado === count($datosEmpleadoColabDes) - 1) {
+                            print_r("auxNomColabPers " . $auxNomColabPers . "\n");
+                            print_r("idEDDProyEmpEvaluador " . $datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador'] . "\n");
+
                             $plantAux = $plantInicialColabPers;
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Colab)%%', $auxNomColabPers, $plantAux);
@@ -585,6 +593,7 @@ if (isset($_GET['emailEDD'])) {
                             $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
                             $finalUrl = $baseURL . $getMethodEncoded;
                             $plantAux = str_replace('%%(URL)%%', $finalUrl, $plantAux);
+
 
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
                             $plantAux = '';
