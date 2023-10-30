@@ -526,7 +526,7 @@ if (isset($_GET['emailEDD'])) {
             for ($indexEmpleado = 0; $indexEmpleado < count($datosEmpleadoColabDes); $indexEmpleado++) {
                 if ($datosConfig[$indexConfig]['subTipoConfDato'] === "COLAB_PERS") {
 
-                    if ($marcadorColabPers === 1) {
+                    // if ($marcadorColabPers === 1) {
                         $baseURL = 'http://localhost/entornoTsoft/pages/scripts/authentication.php?';
                         $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador']}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['cicloEvaluacion']}");
                         $finalUrl = $baseURL . $getMethodEncoded;
@@ -536,7 +536,7 @@ if (isset($_GET['emailEDD'])) {
                         $plantInicialColabPers = str_replace('%%(Fecha_fin)%%', $datosEmpleadoColabDes[$indexEmpleado]['fechaFin'], $plantInicialColabPers);
 
                         // $plantAux = $plantInicialRefPers;
-                    }
+                    // }
 
                     if (
                         $datosEmpleadoColabDes[$indexEmpleado]['nomEmpleado'] !== $auxNomColabPers
