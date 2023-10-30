@@ -114,15 +114,13 @@ BEGIN
     -- Primero valida si el proyecto está vigente, si es así, verifica que hayan transcurrido 6 meses desde el anterior ciclo y por último si el ciclo es 0, es decir, no se realizó ninguna evaluación, actualiza el valor a 1, si no continúa con otro ciclo.
     IF tinyint_vigenciaProyecto = 1 THEN -- Proyecto vigente?
       IF DATE_ADD(DATE(date_fechaIniVigenciaProyecto), INTERVAL (num_cantDiasIntervalo * int_nuevoCicloEvaluacion) DAY) = CURDATE() THEN -- Pasaron 6 meses?
-        IF int_nuevoCicloEvaluacion <= 1 THEN -- Ya se inició un ciclo?
-            SELECT "IF";
-        
-            -- CALL `SP_editarEddEvalProyEmp`(int_idEDDEvalProyEmp, int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, 1, 0, 1, 'admin_SYSTEM', @p0,@p1);
+        IF int_nuevoCicloEvaluacion < 1 THEN -- Ya se inició un ciclo?
+
+             CALL `SP_editarEddEvalProyEmp`(int_idEDDEvalProyEmp, int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, 1, 0, 1, 'admin_SYSTEM', @p0,@p1);
+
         ELSEIF int_nuevoCicloEvaluacion > 1 THEN
-        	
-            SELECT "ELSE";
-        
-            -- CALL `SP_insertarEddEvalProyEmp`(int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, int_nuevoCicloEvaluacion, 0, 1, 'admin_SYSTEM', @p0,@p1);
+             CALL `SP_insertarEddEvalProyEmp`(int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, int_nuevoCicloEvaluacion, 0, 1, 'admin_SYSTEM', @p0,@p1);
+
         END IF;
       END IF;
     END IF;

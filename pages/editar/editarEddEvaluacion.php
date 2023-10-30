@@ -16,10 +16,11 @@ if (isset($_GET['editarEddEvaluacion'])) {
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
     $isActive = $data->isActive;
+    $descFormulario = $data->descFormulario;
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarEddEvaluacion( $idEDDEvaluacion, '$nomEvaluacion','$tipoEvaluacion', '$fechaIni','$fechaFin', $isActive, '$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_editarEddEvaluacion( $idEDDEvaluacion, '$nomEvaluacion','$tipoEvaluacion', '$fechaIni','$fechaFin','$descFormulario', $isActive, '$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -40,6 +41,7 @@ if (isset($_GET['editarEddEvaluacion'])) {
                 'tipoEvaluacion' => $row['tipoEvaluacion'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
+                'descFormulario' => $row['descFormulario'],
             );
         }
     }

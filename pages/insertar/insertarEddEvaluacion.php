@@ -16,9 +16,10 @@ if (isset($_GET['insertarEddEvaluacion'])) {
     $fechaFin = $data->fechaFin;
     $isActive = $data->isActive;
     $usuarioCreacion = $data->usuarioCreacion;
+    $descFormulario = $data->descFormulario;
 
 
-    $query = "CALL SP_insertarEddEvaluacion('$nomEvaluacion','$tipoEvaluacion', '$fechaIni','$fechaFin', $isActive, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarEddEvaluacion('$nomEvaluacion','$tipoEvaluacion', '$fechaIni','$fechaFin','$descFormulario', $isActive, '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -39,6 +40,8 @@ if (isset($_GET['insertarEddEvaluacion'])) {
                 'tipoEvaluacion' => $row['tipoEvaluacion'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
+                'descFormulario' => $row['descFormulario'],
+
             );
         }
     }
