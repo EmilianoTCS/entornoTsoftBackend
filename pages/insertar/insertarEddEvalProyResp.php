@@ -23,20 +23,7 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
 
 
     foreach ($respuestas as $item) {
-        $query = "CALL SP_insertarEddEvalProyResp(
-            $idEDDEvaluacion,
-            $item->idEDDProyEmpEvaluador,
-            '$fechaInicioExamen',
-            '$fechaFinExamen',
-            '$item->respuesta',
-            $isActive,
-            $item->idEDDEvalProyEmp,
-            $item->idEDDEvalPregunta,
-            $item->idEDDEvalRespPreg,
-            '$usuarioCreacion',
-            @p0,
-            @p1
-            )";
+        $query = "CALL SP_insertarEddEvalProyResp($idEDDEvaluacion, $item->idEDDProyEmpEvaluador,'$fechaInicioExamen','$fechaFinExamen','$item->respuesta', $isActive, $item->idEDDEvalProyEmp,$item->idEDDEvalPregunta, $item->idEDDEvalRespPreg, '$usuarioCreacion', @p0, @p1)";
 
         $result = mysqli_query($conection, $query);
         if (!$result) {
@@ -47,7 +34,7 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
                 if ($row['OUT_CODRESULT'] != '00') {
                     $json[] = array(
                         'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                        'OUT_MJERESULT' => $row['OUT_MJERESULT']
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                     );
                 } else {
                     $json[] = array(

@@ -12,8 +12,9 @@ if (isset($_GET['listadoCompetenciasEval'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idEvaluacion = $data->idEvaluacion;
     $idProyecto = $data->idProyecto;
+    $cicloEvaluacion = $data->cicloEvaluacion;
 
-    $query = "CALL SP_COMPETENCIAS_EVAL($idEvaluacion, $idProyecto, @p0, @p1)";
+    $query = "CALL SP_COMPETENCIAS_EVAL($idEvaluacion, $idProyecto, $cicloEvaluacion, @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

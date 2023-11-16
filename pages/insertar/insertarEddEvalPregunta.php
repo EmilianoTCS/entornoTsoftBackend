@@ -36,6 +36,8 @@ if (isset($_GET['insertarEddEvalPregunta'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
                 'nomPregunta' => $row['nomPregunta'],
                 'ordenPregunta' => $row['ordenPregunta'],

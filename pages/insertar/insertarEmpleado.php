@@ -41,6 +41,8 @@ if (isset($_GET['insertarEmpleado'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idEmpleado' => $row['idEmpleado'],
                 'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
                 'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],

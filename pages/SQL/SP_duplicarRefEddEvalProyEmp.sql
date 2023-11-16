@@ -35,6 +35,9 @@ BEGIN
   DECLARE date_fechaIniVigenciaProyecto DATE;
   DECLARE int_nuevoCicloEvaluacion INT;
   DECLARE tinyint_vigenciaProyecto TINYINT;
+  DECLARE int_idProyecto INT;
+  DECLARE varchar_cargoEnProy VARCHAR(50);
+  
   
   DECLARE done INT;
   DECLARE num_contadorResp INT;
@@ -51,6 +54,8 @@ BEGIN
   epe.idEDDProyEmpEvaluado, 
   MAX(epe.cicloEvaluacion) cicloEvaluacion,
   p.fechaInicio fechaIniProyecto,
+  p.idEDDProyecto idEDDProyecto,
+  UPPER(ed.cargoEnProy) cargoEnProy,
   IF(p.fechaFin is not null,
       IF(DATE(p.fechaInicio) < CURRENT_DATE() AND CURRENT_DATE < DATE(p.fechaFin), 1, 0), -- fecha fin definida. Se verifica que la fecha actual esté entre el periodo establecido
       1 -- fecha fin indefinida, se considera como proyecto vigente
@@ -89,6 +94,15 @@ BEGIN
 
     END;
 
+     -- DROP TABLE IF EXISTS tmpComentarios;
+  CREATE TEMPORARY TABLE tmpCiclosEval (
+    numCicloEval INT,
+    idProyecto INT,
+    cargoEnProy VARCHAR(50)
+  ) Engine=InnoDB;
+
+
+
   -- Obtiene cantidad de dias de intervalo entre ciclos 
   SELECT datoNoVisible INTO num_cantDiasIntervalo 
   FROM confDatos WHERE tipoConfDato = 'EDD' AND subTipoConfDato = 'INTERVALO_EVALUACIONES' AND isActive = 1;
@@ -97,7 +111,7 @@ BEGIN
   OPEN cur1;
   loop_duplicarRegistros:LOOP
     
-    FETCH cur1 INTO int_idEDDEvalProyEmp, int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, int_cicloEvaluacion, date_fechaIniVigenciaProyecto, tinyint_vigenciaProyecto;
+    FETCH cur1 INTO int_idEDDEvalProyEmp, int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, int_cicloEvaluacion, date_fechaIniVigenciaProyecto, int_idProyecto, varchar_cargoEnProy, tinyint_vigenciaProyecto;
     
     -- Si no encuentra más registros, sale del loop.
     IF done = 1 OR done = 2 THEN
@@ -115,15 +129,21 @@ BEGIN
     IF tinyint_vigenciaProyecto = 1 THEN -- Proyecto vigente?
       IF DATE_ADD(DATE(date_fechaIniVigenciaProyecto), INTERVAL (num_cantDiasIntervalo * int_nuevoCicloEvaluacion) DAY) = CURDATE() THEN -- Pasaron 6 meses?
         IF int_nuevoCicloEvaluacion < 1 THEN -- Ya se inició un ciclo?
-
-             CALL `SP_editarEddEvalProyEmp`(int_idEDDEvalProyEmp, int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, 1, 0, 1, 'admin_SYSTEM', @p0,@p1);
+              
+          INSERT INTO tmpCiclosEval (numCicloEval, idProyecto, cargoEnProy) VALUES (int_nuevoCicloEvaluacion, int_idProyecto, varchar_cargoEnProy);
+          CALL `SP_editarEddEvalProyEmp`(int_idEDDEvalProyEmp, int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, 1, 0, 1, 'admin_SYSTEM', @p0,@p1);
 
         ELSEIF int_nuevoCicloEvaluacion > 1 THEN
-             CALL `SP_insertarEddEvalProyEmp`(int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, int_nuevoCicloEvaluacion, 0, 1, 'admin_SYSTEM', @p0,@p1);
+
+          INSERT INTO tmpCiclosEval (numCicloEval, idProyecto, cargoEnProy) VALUES (int_nuevoCicloEvaluacion, int_idProyecto, varchar_cargoEnProy);
+          CALL `SP_insertarEddEvalProyEmp`(int_idEDDEvaluacion, int_idEDDProyEmpEvaluador, int_idEDDProyEmpEvaluado, int_nuevoCicloEvaluacion, 0, 1, 'admin_SYSTEM', @p0,@p1);
 
         END IF;
       END IF;
     END IF;
+
+
+
 
    
   END LOOP;
@@ -133,7 +153,9 @@ BEGIN
   IF done = 2 THEN
     SET out_codResp = '00';
     SET out_msjResp = 'Success';
-    SELECT out_codResp, out_msjResp;
+    SELECT *, out_codResp, out_msjResp from tmpCiclosEval;
+
+    DROP TABLE IF EXISTS tmpCiclosEval;
   END IF;
 
 END$$

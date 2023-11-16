@@ -34,6 +34,8 @@ if (isset($_GET['editarContacto'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idContacto' => $row['idContacto'],
                 'nomContacto' => $row['UPPER(con.nomContacto)'],
                 'correoContacto' => $row['UPPER(con.correoContacto)'],

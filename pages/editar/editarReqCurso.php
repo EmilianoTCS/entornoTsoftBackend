@@ -33,6 +33,8 @@ if (isset($_GET['editarReqCurso'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idReqCurso' => $row['idReqCurso'],
                 'nomCurso' => $row['UPPER(cur.nomCurso)'],
                 'requisitoCurso' => $row['requisitoCurso']

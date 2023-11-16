@@ -33,6 +33,8 @@ if (isset($_GET['insertarEddEvalRespPreg'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
                 'nomRespPreg' => $row['nomRespPreg'],
                 'ordenRespPreg' => $row['ordenRespPreg'],

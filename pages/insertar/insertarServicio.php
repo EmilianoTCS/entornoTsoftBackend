@@ -30,6 +30,8 @@ if (isset($_GET['insertarServicio'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idServicio' => $row['idServicio'],
                 'nomServicio' => $row['UPPER(serv.nomServicio)'],
                 'nomCliente' => $row['UPPER(cli.nomCliente)'],

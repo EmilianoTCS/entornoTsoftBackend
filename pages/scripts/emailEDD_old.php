@@ -1,16 +1,26 @@
 <?php
 
+include("../../model/conexion.php");
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET,POST");
+header("Content-Type: application/json; charset=UTF-8");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+require('../scripts/generadorEmail.php');
+include '../../Funciones_aux/sort_asc.php';
 
 
+if (isset($_GET['emailEDD'])) {
 
-function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $tipoConfDato)
-{
-    include("../../model/conexion.php");
-    require('../scripts/generadorEmail.php');
-    include '../../Funciones_aux/sort_asc.php';
-
+    //Declaración de variables
+    $data = json_decode(file_get_contents("php://input"));
+    $idProyecto = $data->idProyecto;
+    $cargoEnProy = $data->cargoEnProy;
+    $tipoConfDato = $data->tipoConfDato;
+    $subTipoConfDato = $data->subTipoConfDato;
+    $cicloEvaluacion = $data->cicloEvaluacion;
+    $listContactos = $data->listContactos === "" || null ? "" : $data->listContactos;
     $datosEmpleado = array();
-    $datosEmpleadoColab = array();
     $datosCambiarEstadoCorreo = array();
 
 

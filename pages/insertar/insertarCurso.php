@@ -34,6 +34,8 @@ if (isset($_GET['insertarCurso'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idCurso' => $row['idCurso'],
                 'codCurso' => $row['UPPER(cur.codCurso)'],
                 'nomCurso' => $row['UPPER(cur.nomCurso)'],

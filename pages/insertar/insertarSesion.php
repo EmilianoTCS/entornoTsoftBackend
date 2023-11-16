@@ -35,6 +35,8 @@ if (isset($_GET['insertarSesion'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idSesion' => $row['idSesion'],
                 'nroSesion' => $row['nroSesion'],
                 'nomSesion' => $row['UPPER(se.nomSesion)'],

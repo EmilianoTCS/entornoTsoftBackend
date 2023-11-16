@@ -1,21 +1,26 @@
 <?php
 
-
-
-
-function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $tipoConfDato)
+function compararPorEvaluadoAscendente($a, $b)
 {
-    include("../../model/conexion.php");
-    require('../scripts/generadorEmail.php');
-    include '../../Funciones_aux/sort_asc.php';
+    return strcmp($a['evaluado'], $b['evaluado']);
+}
 
+function emailEDD_auto($idProyecto, $cargoEnProy, $cicloEvaluacion)
+{
+
+    include("../../model/conexion.php");
+    require_once('../scripts/generadorEmail.php');
+    // include '../../Funciones_aux/sort_asc.php';
+
+
+    //Declaración de variables
     $datosEmpleado = array();
     $datosEmpleadoColab = array();
     $datosCambiarEstadoCorreo = array();
-
-
+    $tipoConfDato = 'EMAIL';
+    $listContactos = array();
     //Obtengo el listado de empleados sin tener en cuenta el cargo (se usa referente por default)
-    $queryEmpleados = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','', $cicloEvaluacion,@p0, @p1)";
+    $queryEmpleados = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','',$cicloEvaluacion, @p0, @p1)";
     $resultEmpleados = mysqli_query($conection, $queryEmpleados);
     if (!$resultEmpleados) {
         die('Query Failed' . mysqli_error($conection));
@@ -50,6 +55,9 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
     }
 
     mysqli_next_result($conection);
+
+
+
 
     //Obtengo el listado de empleados con el cargo colaborador
     $queryEmpleadosColab = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','colaborador',$cicloEvaluacion, @p0, @p1)";
@@ -87,6 +95,32 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
     }
     mysqli_next_result($conection);
 
+
+
+
+    //Obtengo el listado de contactos desde la base de datos
+    $queryContactos = "CALL SP_AUX_listadoContactosProy('$idProyecto', @p0, @p1)";
+    $resultContactos = mysqli_query($conection, $queryContactos);
+    if (!$resultContactos) {
+        die('Query Failed' . mysqli_error($conection));
+    }
+    while ($rowContactos = mysqli_fetch_array($resultContactos)) {
+        $listContactos[] = array(
+            'idEDDProyecto' => $rowContactos['idEDDProyecto'],
+            'nomProyecto' => $rowContactos['nomProyecto'],
+            'idServicio' => $rowContactos['idServicio'],
+            'nomServicio' => $rowContactos['nomServicio'],
+            'idContacto' => $rowContactos['idContacto'],
+            'nomContacto' => $rowContactos['nomContacto'],
+            'correoContacto1' => $rowContactos['correoContacto1'],
+            'correoContacto2' => $rowContactos['correoContacto2']
+        );
+    }
+    mysqli_next_result($conection);
+
+
+
+
     //Obtengo las configuraciones de email desde la base de datos
     $queryConfig = "CALL SP_listadoConfigDatos('$tipoConfDato','', @p0, @p1)";
     $resultConfig = mysqli_query($conection, $queryConfig);
@@ -108,7 +142,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
     mysqli_next_result($conection);
 
 
-    //Actualizo la fecha de vigencia, los días y el estado de false a true para el envío de correos
+    // Actualizo la fecha de vigencia, los días y el estado de false a true para el envío de correos
     $queryCambiarEstadoCorreo = "CALL SP_cambiarEstadoEnvCorreo('$cargoEnProy','$idProyecto', $cicloEvaluacion, @p0, @p1)";
     $resultCambiarEstadoCorreo = mysqli_query($conection, $queryCambiarEstadoCorreo);
     if (!$resultCambiarEstadoCorreo) {
@@ -128,7 +162,8 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
 
 
     // Ordenar el array utilizando la función de comparación personalizada
-    usort($datosEmpleadoColab, 'compararPorEvaluadoAsc');
+    usort($datosEmpleadoColab, 'compararPorEvaluadoAscendente');
+
 
 
     //Hago la separación y procesado del listado de destinatarios adjuntos y lo almaceno en un nuevo array ($destinatarios)
@@ -139,6 +174,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
         if ($datosConfig[$indexConfig]['subTipoConfDato'] === "DESTINATARIOS") {
             $adjuntos = $datosConfig[$indexConfig]['datoNoVisible'];
             $exploded = explode(';', $adjuntos);
+
             for ($i = 0; $i < count($exploded); $i++) {
                 $separated = explode(',', $exploded[$i]);
                 $aux =
@@ -152,12 +188,9 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
         }
     }
 
-
-
     // -----------------------------------------------------------------------GENERADORES-----------------------------------------------------------------------
 
     if (strtoupper($cargoEnProy) === "REFERENTE") {
-
         // ------------------------------------------------- REF GENERAL -------------------------------------------------
         //Plantillas para tablas
         $plantFilaRef =
@@ -203,7 +236,6 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
         $asuntoRef = '';
         $plantillaAsuntoRef = '[EDD_REF] - %%(nomEval)%% - %%(Fecha_ini)%% - %%(Fecha_fin)%%';
         $marcador2 = 1;
-
 
         for ($indexConfig = 0; $indexConfig < count($datosConfig); $indexConfig++) {
             for ($indexEmpleado = 0; $indexEmpleado < count($datosEmpleado); $indexEmpleado++) {
@@ -269,9 +301,9 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
 
         //Envío los correos a los contactos que vienen desde el frontend
 
-        foreach ($listContactos as $itemContactos) {
-            $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
-            GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
+        for ($i = 0; $i < count($listContactos); $i++) {
+
+            $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($listContactos[$i]['nomContacto']), $cuerpoCorreo);
 
             if (!empty($itemContactos->correoContacto2)) {
                 GeneradorEmails($itemContactos->correoContacto2, $cuerpoCorreo, $asuntoRef);
@@ -330,6 +362,8 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
                             $plantAux = str_replace('%%(auxFilaRef)%%', $auxFilaRefPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Referente)%%', $auxNomRefPers, $plantAux);
                             GeneradorEmails($auxNomCorreoRefPers, $plantAux, $asuntoRef);
+
+
                             $plantAux = '';
                             $auxFilaRefPers = '';
                             $auxNomCorreoRefPers = '';
@@ -346,6 +380,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
                             $plantAux = str_replace('%%(auxFilaRef)%%', $auxFilaRefPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Referente)%%', $auxNomRefPers, $plantAux);
                             GeneradorEmails($auxNomCorreoRefPers, $plantAux, $asuntoRef);
+
                             $plantAux = '';
                             $auxFilaRefPers = '';
                             $auxNomCorreoRefPers = '';
@@ -358,6 +393,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
                             $plantAux = str_replace('%%(auxFilaRef)%%', $auxFilaRefPers, $plantAux);
                             $plantAux = str_replace('%%(nom_Referente)%%', $auxNomRefPers, $plantAux);
                             GeneradorEmails($auxNomCorreoRefPers, $plantAux, $asuntoRef);
+
                             $plantAux = '';
                             $auxFilaRefPers = '';
                             $auxNomCorreoRefPers = '';
@@ -484,6 +520,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
         for ($indexDest = 0; $indexDest < count($destinatarios); $indexDest++) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($destinatarios[$indexDest]['nomContacto']), $cuerpoCorreo);
             GeneradorEmails($destinatarios[$indexDest]['correoContacto'], $cuerpoCorreo, $asuntoColab);
+
             $cuerpoCorreo = $plantillaInicial;
         }
 
@@ -538,6 +575,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
                             $plantAux = str_replace('%%(URL)%%', $finalUrl, $plantAux);
 
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
+
                             $plantAux = '';
                             $auxFilaColabPers = '';
                         }
@@ -559,6 +597,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
                             $plantAux = str_replace('%%(URL)%%', $finalUrl, $plantAux);
 
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
+
                             $plantAux = '';
                             $auxFilaColabPers = '';
                         }
@@ -568,8 +607,6 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
                         $auxFilaColabPers =  $auxFilaColabPers . str_replace('%%(nom_Ref)%%', $datosEmpleadoColabDes[$indexEmpleado]['evaluado'], $plantFilaColabPers);
 
                         if ($indexEmpleado === count($datosEmpleadoColabDes) - 1) {
-                            ("auxNomColabPers " . $auxNomColabPers . "\n");
-                            ("idEDDProyEmpEvaluador " . $datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluador'] . "\n");
 
                             $plantAux = $plantInicialColabPers;
                             $plantAux = str_replace('%%(auxFilaColab)%%', $auxFilaColabPers, $plantAux);
@@ -582,6 +619,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
 
 
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
+
                             $plantAux = '';
                             $auxFilaColabPers = '';
                         }

@@ -37,6 +37,8 @@ if (isset($_GET['editarEddEvalPregunta'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idEDDEvalPregunta' => 'empty / vacio',
                 'nomPregunta' => 'empty / vacio',
                 'ordenPregunta' => 'empty / vacio',

@@ -14,8 +14,9 @@ if (isset($_GET['listadoProyRespFinales'])) {
     $idEmpleado = $data->idEmpleado;
     $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
     $cicloEvaluacion = $data->cicloEvaluacion;
+    $nomRol = $data->nomRol;
 
-    $query = "CALL SP_listadoProyRespFinales('$idEvaluacion', '$idEmpleado', '$idEDDProyEmpEvaluado',$cicloEvaluacion, @p0, @p1)";
+    $query = "CALL SP_listadoProyRespFinales('$idEvaluacion', '$idEmpleado', '$idEDDProyEmpEvaluado',$cicloEvaluacion,'$nomRol', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

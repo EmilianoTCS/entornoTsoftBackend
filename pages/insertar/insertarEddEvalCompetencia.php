@@ -31,6 +31,8 @@ if (isset($_GET['insertarEddEvalCompetencia'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
                 'nomCompetencia' => $row['nomCompetencia'],
 

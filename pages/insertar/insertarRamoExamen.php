@@ -31,6 +31,8 @@ if (isset($_GET['insertarRamoExamen'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idRamoExamen' => $row['idRamoExamen'],
                 'nomExamen' => $row['UPPER(ramEx.nomExamen)'],
                 'fechaExamen' => $row['fechaExamen'],

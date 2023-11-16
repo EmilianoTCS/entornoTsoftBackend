@@ -182,7 +182,8 @@ if (isset($_GET['seleccionarDatos'])) {
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
                         'nomServicio' => $row['nomServicio'],
-                        'idServicio' => $row['idServicio']
+                        'idServicio' => $row['idServicio'],
+                        'tipoProyecto' => $row['tipoProyecto'],
                     );
                     break;
                 case 'eddproyemp':

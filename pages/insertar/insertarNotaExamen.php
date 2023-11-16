@@ -34,6 +34,8 @@ if (isset($_GET['insertarNotaExamen'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idNotaExamen' => $row['idNotaExamen'],
                 'notaExamen' => $row['notaExamen'],
                 'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],

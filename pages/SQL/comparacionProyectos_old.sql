@@ -47,10 +47,11 @@ BEGIN
                 SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin, a.nomCompetencia,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
-                a.cantRespRefOK, a.cantRespColabOK, a.nomCompetencia,
-                a.cantPregComp, a.cantRespOK, a.porcAprobComp, a.cicloEvaluacion
+                round((a.cantRespRefOK * 100) / SUM(a.cantResp), 2) porcAprobRef,
+                round((a.cantRespColabOK * 100) / SUM(a.cantResp), 2) porcAprobColab,
+                a.cantRespRefOK, a.cantRespColabOK,
+                a.cantPregComp, SUM(a.cantResp), 
+                a.cicloEvaluacion
                 FROM (
                     SELECT
                     cli.idCliente,
@@ -62,10 +63,9 @@ BEGIN
                     DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                     DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
-                    sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                    sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                     sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                    round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                     UPPER(ec.nomCompetencia) nomCompetencia,
                     epe.cicloEvaluacion
                     FROM eddproyemp pe
@@ -82,7 +82,6 @@ BEGIN
                     GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion , ec.nomCompetencia
                     ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia 
                 ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -97,13 +96,13 @@ BEGIN
 
                     SET out_codResp = '00';
                     SET out_msjResp = 'Success'; 
-                    SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
+                    SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin, a.nomCompetencia,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
-                    a.cantRespRefOK, a.cantRespColabOK, a.nomCompetencia,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp, a.cicloEvaluacion
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
+                    a.cantRespRefOK, a.cantRespColabOK,
+                    a.cantPregComp, SUM(a.cantResp), a.cicloEvaluacion
                     FROM (
                         SELECT
                         cli.idCliente,
@@ -115,10 +114,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -135,7 +133,6 @@ BEGIN
                         GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia
                         ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
                     ;
@@ -153,13 +150,13 @@ BEGIN
 
                     SET out_codResp = '00';
                     SET out_msjResp = 'Success'; 
-                    SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
+                    SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin, a.nomCompetencia,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
-                    a.cantRespRefOK, a.cantRespColabOK, a.nomCompetencia,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp, a.cicloEvaluacion
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
+                    a.cantRespRefOK, a.cantRespColabOK,
+                    a.cantPregComp, SUM(a.cantResp), a.cicloEvaluacion
                     FROM (
                         SELECT
                         cli.idCliente,
@@ -171,10 +168,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -191,7 +187,6 @@ BEGIN
                         GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia
                         ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
                     ;
@@ -213,13 +208,13 @@ BEGIN
 
                     SET out_codResp = '00';
                     SET out_msjResp = 'Success'; 
-                    SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
+                    SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin, a.nomCompetencia,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
-                    a.cantRespRefOK, a.cantRespColabOK, a.nomCompetencia,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp, a.cicloEvaluacion
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
+                    a.cantRespRefOK, a.cantRespColabOK,
+                    a.cantPregComp, SUM(a.cantResp), a.cicloEvaluacion
                     FROM (
                         SELECT
                         cli.idCliente,
@@ -231,10 +226,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -251,7 +245,6 @@ BEGIN
                         GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -275,10 +268,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK, a.nomCompetencia,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp, a.cicloEvaluacion
+                    a.cantPregComp, SUM(a.cantResp), a.cicloEvaluacion
                     FROM (
                         SELECT
                         cli.idCliente,
@@ -290,10 +283,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -310,7 +302,6 @@ BEGIN
                         GROUP BY cli.nomCliente, ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente, ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia  ) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -328,10 +319,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -344,10 +335,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -364,7 +354,6 @@ BEGIN
                         GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion,
                     YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni)
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
@@ -384,10 +373,10 @@ BEGIN
                         SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                        round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                        round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                        round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                        round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                         a.cantRespRefOK, a.cantRespColabOK,
-                        a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                        a.cantPregComp, SUM(a.cantResp),
                         a.nomCompetencia, a.cicloEvaluacion
                         FROM (
                             SELECT
@@ -400,10 +389,9 @@ BEGIN
                             DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                             DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                             count(*) cantPregComp,
-                            sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                             sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                             sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                            round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                             UPPER(ec.nomCompetencia) nomCompetencia,
                             epe.cicloEvaluacion
                             FROM eddproyemp pe
@@ -420,7 +408,6 @@ BEGIN
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
                             ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                         GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni), a.cicloEvaluacion
                         ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;   
@@ -440,10 +427,10 @@ BEGIN
                         SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                        round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                        round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                        round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                        round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                         a.cantRespRefOK, a.cantRespColabOK,
-                        a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                        a.cantPregComp, SUM(a.cantResp), 
                         a.nomCompetencia, a.cicloEvaluacion
                         FROM (
                             SELECT
@@ -456,10 +443,9 @@ BEGIN
                             DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                             DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                             count(*) cantPregComp,
-                            sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                            sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                             sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                             sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                            round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                             UPPER(ec.nomCompetencia) nomCompetencia,
                             epe.cicloEvaluacion
                             FROM eddproyemp pe
@@ -476,7 +462,6 @@ BEGIN
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
                             ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                         GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, YEAR(a.epeFechaIni)*100 + MONTH(a.epeFechaIni), a.cicloEvaluacion
                         ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;   
@@ -500,10 +485,10 @@ BEGIN
                         SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                        round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                        round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                        round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                        round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                         a.cantRespRefOK, a.cantRespColabOK,
-                        a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                        a.cantPregComp, SUM(a.cantResp),
                         a.nomCompetencia, a.cicloEvaluacion
                         FROM (
                             SELECT
@@ -516,10 +501,9 @@ BEGIN
                             DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                             DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                             count(*) cantPregComp,
-                            sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                            sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                             sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                             sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                            round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                             UPPER(ec.nomCompetencia) nomCompetencia,
                             epe.cicloEvaluacion
                             FROM eddproyemp pe
@@ -536,7 +520,6 @@ BEGIN
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
                             ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                         GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                         ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -561,10 +544,10 @@ BEGIN
                         SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                         SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                        round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                        round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                        round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                        round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                         a.cantRespRefOK, a.cantRespColabOK,
-                        a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                        a.cantPregComp, SUM(a.cantResp),
                         a.nomCompetencia, a.cicloEvaluacion
                         FROM (
                             SELECT
@@ -577,10 +560,9 @@ BEGIN
                             DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                             DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                             count(*) cantPregComp,
-                            sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                             sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                             sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                            round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                             UPPER(ec.nomCompetencia) nomCompetencia,
                             epe.cicloEvaluacion
                             FROM eddproyemp pe
@@ -597,7 +579,6 @@ BEGIN
                             GROUP BY cli.nomCliente, ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
                             ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                         INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                         GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                         ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -615,10 +596,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -631,10 +612,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -651,7 +631,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia, pe.idProyecto, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -670,10 +649,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp), a.porcAprobComp,
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -686,10 +665,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -706,7 +684,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia,pe.idProyecto, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -727,10 +704,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -743,10 +720,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -763,7 +739,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), ec.nomCompetencia,pe.idProyecto, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -787,10 +762,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp), a.porcAprobComp,
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -803,10 +778,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -823,7 +797,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -847,10 +820,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -863,10 +836,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -883,7 +855,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -901,10 +872,10 @@ BEGIN
                 SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                 a.cantRespRefOK, a.cantRespColabOK,
-                a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                a.cantPregComp, SUM(a.cantResp),
                 a.nomCompetencia, a.cicloEvaluacion
                 FROM (
                     SELECT
@@ -917,10 +888,9 @@ BEGIN
                     DATE_FORMAT(epe.fechaIni, "%d/%m/%Y %H:%i:%s") as epeFechaIni, 
                     DATE_FORMAT(epe.fechaFin, "%d/%m/%Y %H:%i:%s") as epeFechaFin,
                     count(*) cantPregComp,
-                    sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                     sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                    round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                     UPPER(ec.nomCompetencia) nomCompetencia,
                     epe.cicloEvaluacion
                     FROM eddproyemp pe
@@ -937,7 +907,6 @@ BEGIN
                     GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                 ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
             
@@ -955,10 +924,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -971,10 +940,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -991,7 +959,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -1011,10 +978,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1027,10 +994,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1047,7 +1013,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -1071,10 +1036,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1087,10 +1052,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1107,7 +1071,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -1131,10 +1094,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1147,10 +1110,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1167,7 +1129,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -1185,10 +1146,10 @@ BEGIN
                 SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                 a.cantRespRefOK, a.cantRespColabOK,
-                a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                a.cantPregComp, SUM(a.cantResp),
                 a.nomCompetencia, a.cicloEvaluacion
                 FROM (
                     SELECT
@@ -1201,10 +1162,9 @@ BEGIN
                     DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                     DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
-                    sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                     sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                    round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                     UPPER(ec.nomCompetencia) nomCompetencia,
                     epe.cicloEvaluacion
                     FROM eddproyemp pe
@@ -1221,7 +1181,6 @@ BEGIN
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                 ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1240,10 +1199,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1256,10 +1215,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1276,7 +1234,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
                 END IF;
@@ -1296,10 +1253,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1312,10 +1269,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1332,7 +1288,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
                 END IF;    
@@ -1355,10 +1310,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1371,10 +1326,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1391,7 +1345,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1415,10 +1368,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1431,10 +1384,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1451,7 +1403,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1469,10 +1420,10 @@ BEGIN
                 SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                 a.cantRespRefOK, a.cantRespColabOK,
-                a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                a.cantPregComp, SUM(a.cantResp),
                 a.nomCompetencia, a.cicloEvaluacion
                 FROM (
                     SELECT
@@ -1485,10 +1436,9 @@ BEGIN
                     DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                     DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                     count(*) cantPregComp,
-                    sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                     sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                    round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                     UPPER(ec.nomCompetencia) nomCompetencia,
                     epe.cicloEvaluacion
                     FROM eddproyemp pe
@@ -1505,7 +1455,6 @@ BEGIN
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                 ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1524,10 +1473,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1540,10 +1489,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1561,7 +1509,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1582,10 +1529,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1598,10 +1545,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1619,7 +1565,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1644,10 +1589,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp), 
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1660,10 +1605,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1680,7 +1624,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1705,10 +1648,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1721,10 +1664,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1741,7 +1683,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a 
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;  
 
@@ -1759,10 +1700,10 @@ BEGIN
                 SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                 a.cantRespRefOK, a.cantRespColabOK,
-                a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                a.cantPregComp, SUM(a.cantResp),
                 a.nomCompetencia, a.cicloEvaluacion
                 FROM (
                     SELECT
@@ -1775,10 +1716,9 @@ BEGIN
                     DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                     DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
-                    sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                     sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                    round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                     UPPER(ec.nomCompetencia) nomCompetencia,
                     epe.cicloEvaluacion
                     FROM eddproyemp pe
@@ -1795,7 +1735,6 @@ BEGIN
                     GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                 ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -1814,10 +1753,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1830,10 +1769,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1850,7 +1788,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;    
@@ -1870,10 +1807,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1886,10 +1823,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1906,7 +1842,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;    
@@ -1930,10 +1865,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp), 
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -1946,10 +1881,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -1966,7 +1900,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -1992,10 +1925,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2008,10 +1941,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2028,7 +1960,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -2047,10 +1978,10 @@ BEGIN
                 SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                 a.cantRespRefOK, a.cantRespColabOK,
-                a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                a.cantPregComp, SUM(a.cantResp),
                 a.nomCompetencia, a.cicloEvaluacion
                 FROM (
                     SELECT
@@ -2063,10 +1994,9 @@ BEGIN
                     DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                     DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                     count(*) cantPregComp,
-                    sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                     sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                    round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                     UPPER(ec.nomCompetencia) nomCompetencia,
                     epe.cicloEvaluacion
                     FROM eddproyemp pe
@@ -2083,7 +2013,6 @@ BEGIN
                     GROUP BY cli.nomCliente,ser.nomServicio,pe.idProyecto, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                 ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -2101,10 +2030,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2117,10 +2046,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2137,7 +2065,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;
@@ -2156,10 +2083,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2172,10 +2099,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2192,7 +2118,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
                 END IF;
@@ -2216,10 +2141,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2232,10 +2157,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2252,7 +2176,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -2277,10 +2200,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2293,10 +2216,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%m/%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%m/%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2313,7 +2235,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni)*100 + MONTH(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion 
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia;
 
@@ -2331,10 +2252,10 @@ BEGIN
                 SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                 SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                 a.cantRespRefOK, a.cantRespColabOK,
-                a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                a.cantPregComp, SUM(a.cantResp),
                 a.nomCompetencia, a.cicloEvaluacion
                 FROM (
                     SELECT
@@ -2347,10 +2268,9 @@ BEGIN
                     DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                     DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                     count(*) cantPregComp,
-                    sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                     sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                     sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                    round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                     UPPER(ec.nomCompetencia) nomCompetencia,
                     epe.cicloEvaluacion
                     FROM eddproyemp pe
@@ -2367,7 +2287,6 @@ BEGIN
                     GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                     ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                 INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                 GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                 ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
@@ -2386,10 +2305,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2402,10 +2321,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2422,7 +2340,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
@@ -2444,10 +2361,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2460,10 +2377,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2480,7 +2396,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
@@ -2506,10 +2421,10 @@ BEGIN
                     SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp),
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2522,10 +2437,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2542,7 +2456,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 
@@ -2564,13 +2477,13 @@ BEGIN
                     SET out_codResp = '00';
                     SET out_msjResp = 'Success'; 
 
-                    SELECT out_codResp, out_msjResp,a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
+                    SELECT out_codResp, out_msjResp, a.idCliente, a.nomCliente, a.idServicio, a.nomServicio, a.idProyecto, a.nomProyecto, a.epeFechaIni, a.epeFechaFin,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('REFERENTE','REFERENTES'), 1,0 )) cantReferentes,
                     SUM(IF(UPPER(pe2.cargoEnProy) IN ('COLABORADOR','COLABORADORES'), 1,0 )) cantColaboradores,
-                    round((a.cantRespRefOK * 100) /a.cantRespOK, 2) porcAprobRef,
-                    round((a.cantRespColabOK * 100) /a.cantRespOK, 2) porcAprobColab,
+                    round((a.cantRespRefOK * 100) /SUM(a.cantResp), 2) porcAprobRef,
+                    round((a.cantRespColabOK * 100) /SUM(a.cantResp), 2) porcAprobColab,
                     a.cantRespRefOK, a.cantRespColabOK,
-                    a.cantPregComp, a.cantRespOK, a.porcAprobComp,
+                    a.cantPregComp, SUM(a.cantResp), 
                     a.nomCompetencia, a.cicloEvaluacion
                     FROM (
                         SELECT
@@ -2583,10 +2496,9 @@ BEGIN
                         DATE_FORMAT(epe.fechaIni, "%Y") as epeFechaIni, 
                         DATE_FORMAT(epe.fechaFin, "%Y") as epeFechaFin,
                         count(*) cantPregComp,
-                        sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespOK,
+                        sum(IF(erp.nomRespPreg IN ('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO', 'NO SATISFACTORIO', 'MEDIO'), 1, 0)) cantResp,
                         sum(IF(pe.cargoEnProy = 'REFERENTE' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespRefOK,
                         sum(IF(pe.cargoEnProy = 'COLABORADOR' AND erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) cantRespColabOK,
-                        round(sum(IF(erp.nomRespPreg IN('BUENA', 'BUENO', 'MUY BUENA', 'MUY BUENO'), 1, 0)) * 100 / count(*), 2) porcAprobComp,
                         UPPER(ec.nomCompetencia) nomCompetencia,
                         epe.cicloEvaluacion
                         FROM eddproyemp pe
@@ -2603,7 +2515,6 @@ BEGIN
                         GROUP BY cli.nomCliente,ser.nomServicio, YEAR(epe.fechaIni), pe.idProyecto, ec.nomCompetencia, epe.cicloEvaluacion
                         ORDER BY cli.nomCliente,ser.nomServicio, pe.idProyecto, epe.cicloEvaluacion, ec.nomCompetencia) a
                     INNER JOIN eddProyEmp pe2 ON (pe2.idProyecto = a.idProyecto)
-                    WHERE a.porcAprobComp != '0.00'
                     GROUP BY a.nomCliente, a.nomServicio, a.idProyecto, a.nomCompetencia, a.cicloEvaluacion
                     ORDER BY a.nomCliente, a.nomServicio, a.idProyecto, a.cicloEvaluacion, a.nomCompetencia; 
 

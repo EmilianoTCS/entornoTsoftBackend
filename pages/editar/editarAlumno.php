@@ -32,10 +32,12 @@ if (isset($_GET['editarAlumno'])) {
         if ($row['OUT_CODRESULT'] != '00') {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                'OUT_MJERESULT' => $row['OUT_MJERESULT']
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idAlumno' => $row['idAlumno'],
                 'nomAlumno' => $row['UPPER(alum.nomAlumno)'],
                 'correoAlumno' => $row['UPPER(alum.correoAlumno)'],

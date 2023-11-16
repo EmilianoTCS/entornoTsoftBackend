@@ -41,6 +41,8 @@ if (isset($_GET['insertarCursoAlumnoSesion'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],

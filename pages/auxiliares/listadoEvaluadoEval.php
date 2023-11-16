@@ -13,8 +13,9 @@ if (isset($_GET['listadoEvaluadoEval'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idEvaluacion = $data->idEvaluacion;
     $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
+    $cicloEvaluacion = $data->cicloEvaluacion;
 
-    $query = "CALL SP_AUX_listadoEvaluadoEval('$idEvaluacion','$idEDDProyEmpEvaluador',  @p0, @p1)";
+    $query = "CALL SP_AUX_listadoEvaluadoEval('$idEvaluacion','$idEDDProyEmpEvaluador','$cicloEvaluacion',  @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

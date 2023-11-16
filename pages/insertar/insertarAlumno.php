@@ -40,6 +40,8 @@ if (isset($_GET['insertarAlumno'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idAlumno' => $row['idAlumno'],
                 'nomAlumno' => $row['UPPER(alum.nomAlumno)'],
                 'correoAlumno' => $row['UPPER(alum.correoAlumno)'],

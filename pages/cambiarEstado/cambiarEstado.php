@@ -31,6 +31,8 @@ if (isset($_GET['cambiarEstado'])) {
             switch ($nombreTabla) {
                 case 'alumno':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idAlumno' => $row['idAlumno'],
                         'nomAlumno' => $row['nomAlumno'],
                         'correoAlumno' => $row['correoAlumno'],
@@ -43,6 +45,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'cliente':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idCliente' => $row['idCliente'],
                         'nomCliente' => $row['UPPER(cli.nomCliente)'],
                         'direccionCliente' => $row['UPPER(cli.direccionCliente)'],
@@ -51,6 +55,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'contacto':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idContacto' => $row['idContacto'],
                         'nomContacto' => $row['UPPER(con.nomContacto)'],
                         'correoContacto' => $row['UPPER(con.correoContacto)'],
@@ -61,6 +67,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'curso':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idCurso' => $row['idCurso'],
                         'codCurso' => $row['UPPER(cur.codCurso)'],
                         'nomCurso' => $row['UPPER(cur.nomCurso)'],
@@ -71,6 +79,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'cursoalumno':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idCursoAlumno' => $row['idCursoAlumno'],
                         'fechaIni' => $row['fechaIni'],
                         'horaIni' => $row['horaIni'],
@@ -87,6 +97,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'cursoalumno_sesion':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
@@ -98,6 +110,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'empleado':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEmpleado' => $row['idEmpleado'],
                         'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
                         'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
@@ -109,6 +123,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'notaexamen':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idNotaExamen' => $row['idNotaExamen'],
                         'notaExamen' => $row['notaExamen'],
                         'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
@@ -118,6 +134,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'ramoexamen':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idRamoExamen' => $row['idRamoExamen'],
                         'nomExamen' => $row['UPPER(ramEx.nomExamen)'],
                         'fechaExamen' => $row['fechaExamen'],
@@ -126,6 +144,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'relatorramo':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idRelatorRamo' => $row['idRelatorRamo'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
@@ -135,6 +155,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'reqcurso':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idReqCurso' => $row['idReqCurso'],
                         'nomCurso' => $row['UPPER(cur.nomCurso)'],
                         'requisitoCurso' => $row['requisitoCurso']
@@ -142,6 +164,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'servicio':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idServicio' => $row['idServicio'],
                         'nomServicio' => $row['UPPER(serv.nomServicio)'],
                         'nomCliente' => $row['UPPER(cli.nomCliente)'],
@@ -149,6 +173,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'sesion':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idSesion' => $row['idSesion'],
                         'nroSesion' => $row['nroSesion'],
                         'nomSesion' => $row['UPPER(se.nomSesion)'],
@@ -160,6 +186,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'eddproyecto':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDProyecto' => $row['idEDDProyecto'],
                         'nomProyecto' => $row['nomProyecto'],
                         'fechaIni' => $row['fechaIni'],
@@ -170,6 +198,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'eddproyemp':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDProyEmp' => $row['idEDDProyEmp'],
                         'nomProyecto' => $row['nomProyecto'],
                         'nomEmpleado' => $row['nomEmpleado'],
@@ -178,6 +208,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'emptipoperfil':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEmpTipoPerfil' => $row['idEmpTipoPerfil'],
                         'nomEmpleado' => $row['nomEmpleado'],
                         'nomTipoPerfil' => $row['nomTipoPerfil'],
@@ -185,6 +217,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'empsubsist':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEmpSubsist' => $row['idEmpSubsist'],
                         'nomEmpleado' => $row['nomEmpleado'],
                         'nomSubsistema' => $row['nomSubsistema'],
@@ -192,12 +226,16 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'eddevalcompetencia':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
                         'nomCompetencia' => $row['nomCompetencia']
                     );
                     break;
                 case 'eddevalresppreg':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDEvalRespPreg' => $row['idEDDEvalRespPreg'],
                         'nomRespPreg' => $row['nomRespPreg'],
                     );
@@ -205,6 +243,8 @@ if (isset($_GET['cambiarEstado'])) {
 
                 case 'eddevalpregunta':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
                         'idEmpSubsist' => $row['idEmpSubsist'],
                         'nomPregunta' => $row['nomPregunta'],
@@ -217,6 +257,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'eddevalproyresp':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDEvalProyResp' => $row['idEDDEvalProyResp'],
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                         'idEDDProyEmp' => $row['idEDDProyEmp    '],
@@ -229,6 +271,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'eddevaluacion':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                         'nomEvaluacion' => $row['nomEvaluacion'],
                         'tipoEvaluacion' => $row['tipoEvaluacion'],
@@ -239,6 +283,8 @@ if (isset($_GET['cambiarEstado'])) {
                     break;
                 case 'eddevalproyemp':
                     $json[] = array(
+                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                         'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                         'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],

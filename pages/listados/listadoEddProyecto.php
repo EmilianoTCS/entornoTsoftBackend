@@ -32,6 +32,7 @@ if (isset($_GET['listadoEddProyecto'])) {
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
                 'nomServicio' => $row['nomServicio'],
+                'tipoProyecto' => $row['tipoProyecto'],
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
@@ -48,6 +49,7 @@ if (isset($_GET['listadoEddProyecto'])) {
             'fechaIni' => 'empty / vacio',
             'fechaFin' => 'empty / vacio',
             'nomServicio' => 'empty / vacio',
+            'tipoProyecto' => 'empty / vacio'
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

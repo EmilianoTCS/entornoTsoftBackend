@@ -32,6 +32,8 @@ if (isset($_GET['editarCliente'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idCliente' => $row['idCliente'],
                 'nomCliente' => $row['UPPER(cli.nomCliente)'],
                 'direccionCliente' => $row['UPPER(cli.direccionCliente)'],

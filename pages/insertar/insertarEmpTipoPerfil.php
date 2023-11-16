@@ -32,6 +32,8 @@ if (isset($_GET['insertarEmpTipoPerfil'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idEmpTipoPerfil' => $row['idEmpTipoPerfil'],
                 'nomTipoPerfil' => $row['UPPER(tp.nomTipoPerfil)'],
                 'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],

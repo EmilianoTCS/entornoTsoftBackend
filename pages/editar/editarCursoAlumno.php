@@ -42,6 +42,8 @@ if (isset($_GET['editarCursoAlumno'])) {
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idCursoAlumno' => $row['idCursoAlumno'],
                 'fechaIni' => $row['fechaIni'],
                 'horaIni' => $row['horaIni'],
