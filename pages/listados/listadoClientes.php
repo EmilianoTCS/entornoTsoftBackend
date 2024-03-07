@@ -30,6 +30,7 @@ if (isset($_GET['listadoClientes'])) {
                 'nomCliente' => $row['UPPER(cli.nomCliente)'],
                 'direccionCliente' => $row['UPPER(cli.direccionCliente)'],
                 'nomPais' => $row['UPPER(pa.nomPais)'],
+                'idPais' => $row['idPais'],
             );
                 $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
         

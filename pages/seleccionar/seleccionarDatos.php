@@ -254,14 +254,78 @@ if (isset($_GET['seleccionarDatos'])) {
                     $json[] = array(
                         'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                        'idEDDProyEmpEvaluador'=> $row['idEDDProyEmpEvaluador'],
-                        'idEDDProyEmpEvaluado'=> $row['idEDDProyEmpEvaluado'],
-                        'cicloEvaluacion'=> $row['cicloEvaluacion'],
+                        'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
+                        'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
+                        'cicloEvaluacion' => $row['cicloEvaluacion'],
                         'evalRespondida' => $row['evalRespondida'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
                         'idProyecto' => $row['idProyecto'],
                         'nomProyecto' => $row['nomProyecto'],
+                    );
+                    break;
+
+                case 'ihhacop':
+                    $json[] = array(
+                        'idAcop' => $row['idAcop'],
+                        'idProyecto' => $row['idProyecto'],
+                        'presupuestoTotal' => $row['presupuestoTotal'],
+                        'cantTotalMeses' => $row['cantTotalMeses'],
+                    );
+                    break;
+
+                case 'ihhelementoimp':
+                    $json[] = array(
+                        'idElementoImp' => $row['idElementoImp'],
+                        'idTipoElemento' => $row['idTipoElemento'],
+                        'nomElemento' => $row['nomElemento'],
+                        'descripcion' => $row['descripcion'],
+                    );
+                    break;
+
+                case 'ihhimpugnacionemp':
+                    $json[] = array(
+                        'idImpugnacionEmp' => $row['idImpugnacionEmp'],
+                        'idEmpleado' => $row['idEmpleado'],
+                        'idElemento' => $row['idElemento'],
+                        'idPeriodo' => $row['idPeriodo'],
+                        'cantHorasPeriodo' => $row['cantHorasPeriodo'],
+                        'cantHorasExtra' => $row['cantHorasExtra'],
+                        'factor' => $row['factor'],
+                        'idAcop' => $row['idAcop'],
+                    );
+                    break;
+
+                case 'ihhperiodo':
+                    $json[] = array(
+                        'idPeriodo' => $row['idPeriodo'],
+                        'idTipoPeriodo' => $row['idTipoPeriodo'],
+                        'nomPeriodo' => $row['nomPeriodo'],
+                        'descripcion' => $row['descripcion'],
+
+                    );
+                    break;
+                case 'ihhtipoelemento':
+                    $json[] = array(
+                        'idTipoElemento' => $row['idTipoElemento'],
+                        'nomTipoElemento' => $row['nomTipoElemento'],
+                        'descripcion' => $row['descripcion'],
+                    );
+                    break;
+
+                case 'ihhtipoperiodo':
+                    $json[] = array(
+                        'idTipoPeriodo' => $row['idTipoPeriodo'],
+                        'nomTipoPeriodo' => $row['nomTipoPeriodo'],
+                        'dias' => $row['dias'],
+                        'descripcion' => $row['descripcion'],
+                    );
+                    break;
+                case 'ihhnotaimpugnacion':
+                    $json[] = array(
+                        'idNotaImpugnacion' => $row['idNotaImpugnacion'],
+                        'idImpugnacionEmp' => $row['idImpugnacionEmp'],
+                        'nota' => $row['nota'],
                     );
                     break;
             }

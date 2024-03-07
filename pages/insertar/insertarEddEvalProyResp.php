@@ -43,8 +43,8 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
                     );
                 }
             }
-            // $jsonstring = json_encode($json);
-            // echo $jsonstring;
+            $jsonstring = json_encode($json);
+            echo $jsonstring;
         }
         mysqli_next_result($conection);
     }

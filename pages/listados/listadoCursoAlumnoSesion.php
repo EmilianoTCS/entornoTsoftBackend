@@ -12,11 +12,12 @@ if (isset($_GET['listadoCursoAlumnoSesion'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->idSesion = "" || null ? $idSesion = null : $idSesion = $data->idSesion;
+    $data->idEmpleado = "" || null ? $idEmpleado = null : $idEmpleado = $data->idEmpleado;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoCursoAlumnoSesion('$inicio', '$cantidadPorPagina', '$idSesion')";
+    $query = "CALL SP_listadoCursoAlumnoSesion('$inicio', '$cantidadPorPagina', '$idSesion', '$idEmpleado')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -35,7 +36,8 @@ if (isset($_GET['listadoCursoAlumnoSesion'])) {
                 'asistencia' => $row['asistencia'],
                 'participacion' => $row['participacion'],
                 'nomSesion' => $row['UPPER(se.nomSesion)'],
-                'idCursoAlumno' => $row['idCursoAlumno']
+                'idCursoAlumno' => $row['idCursoAlumno'],
+                'nomEmpleado' => $row['nomEmpleado']
             );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
@@ -53,7 +55,8 @@ if (isset($_GET['listadoCursoAlumnoSesion'])) {
             'asistencia' => 'empty / vacio',
             'participacion' => 'empty / vacio',
             'nomSesion' => 'empty / vacio',
-            'idCursoAlumno' => 'empty / vacio'
+            'idCursoAlumno' => 'empty / vacio',
+            'nomEmpleado' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

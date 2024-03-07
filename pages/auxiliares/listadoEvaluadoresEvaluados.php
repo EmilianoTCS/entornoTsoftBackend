@@ -20,6 +20,7 @@ if (isset($_GET['listadoEvaluadoresEvaluados'])) {
                 'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
                 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                 'nomEmpleado' => $row['nomEmpleado'],
+                'idEmpleadoEvaluado' => $row['idEmpleadoEvaluado'],
             );
         }
     }
@@ -36,6 +37,8 @@ if (isset($_GET['listadoEvaluadoresEvaluados'])) {
                 'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
                 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                 'nomEmpleado' => $row['nomEmpleado'],
+                'idEmpleadoEvaluador' => $row['idEmpleadoEvaluador'],
+
             );
         }
     }

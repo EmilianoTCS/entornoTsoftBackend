@@ -12,15 +12,15 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null || 0 ? $num_boton = 1 : $num_boton = $data->num_boton;
     $data->idEDDEvaluacion = "" || null || 0 ? $idEDDEvaluacion = null : $idEDDEvaluacion = $data->idEDDEvaluacion;
-    $data->idEDDProyEmpEvaluador = "" || null || 0 ? $idEDDProyEmpEvaluador = null : $idEDDProyEmpEvaluador = $data->idEDDProyEmpEvaluador;
-    $data->idEDDProyEmpEvaluado = "" || null || 0 ? $idEDDProyEmpEvaluado = null : $idEDDProyEmpEvaluado = $data->idEDDProyEmpEvaluado;
+    $data->idEmpleadoEvaluador = "" || null || 0 ? $idEmpleadoEvaluador = null : $idEmpleadoEvaluador = $data->idEmpleadoEvaluador;
+    $data->idEmpleadoEvaluado = "" || null || 0 ? $idEmpleadoEvaluado = null : $idEmpleadoEvaluado = $data->idEmpleadoEvaluado;
     $data->idProyecto = "" || null || 0 ? $idProyecto = null : $idProyecto = $data->idProyecto;
     $data->cicloEvaluacion = "" || null || 0 ? $cicloEvaluacion = null : $cicloEvaluacion = $data->cicloEvaluacion;
     $data->cantidadPorPagina = "" || null || 0 ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoEddEvalProyEmp('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEDDProyEmpEvaluador', '$idEDDProyEmpEvaluado', '$idProyecto', '$cicloEvaluacion')";
+    $query = "CALL SP_listadoEddEvalProyEmp('$inicio', '$cantidadPorPagina', '$idEDDEvaluacion', '$idEmpleadoEvaluador', '$idEmpleadoEvaluado', '$idProyecto', '$cicloEvaluacion')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
