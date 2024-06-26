@@ -14,6 +14,7 @@ if (isset($_GET['editarEmpleado'])) {
     $nomEmpleado = $data->nomEmpleado;
     $correoEmpleado = $data->correoEmpleado;
     $telefonoEmpleado = $data->telefonoEmpleado;
+    $valorHH = $data->valorHH;
     $idPais = $data->idPais;
     $idArea = $data->idArea;
     $idCargo = $data->idCargo;
@@ -21,7 +22,7 @@ if (isset($_GET['editarEmpleado'])) {
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarEmpleado($idEmpleado,'$nomEmpleado','$correoEmpleado','$telefonoEmpleado',$idPais,$idArea,$idCargo, $idCliente,'$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_editarEmpleado($idEmpleado,'$nomEmpleado','$correoEmpleado','$telefonoEmpleado','$valorHH',$idPais,$idArea,$idCargo, $idCliente,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

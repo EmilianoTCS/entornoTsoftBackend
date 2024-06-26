@@ -48,6 +48,9 @@ if (isset($_GET['ihh_editarImpugnacionEmp'])) {
                 'cantHorasExtra' => $row['cantHorasExtra'],
                 'factor' => $row['factor'],
                 'idAcop' => $row['idAcop'],
+                'nomProyecto' => $row['nomProyecto'],
+                'idPeriodo' => $row['idPeriodo'],
+                'nomPeriodo' => $row['nomPeriodo'],
             );
         }
     }

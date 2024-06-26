@@ -11,11 +11,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['ihh_listadoElementoImp'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->idElementoImp === "" || null ? $idElementoImp = null : $idElementoImp = $data->idElementoImp;
     $data->idTipoElemento === "" || null ? $idTipoElemento = null : $idTipoElemento = $data->idTipoElemento;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
-    $query = "CALL SP_ihh_listadoElementoImp('$idTipoElemento','$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_ihh_listadoElementoImp('$idElementoImp','$idTipoElemento','$inicio', '$cantidadPorPagina')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -30,7 +31,8 @@ if (isset($_GET['ihh_listadoElementoImp'])) {
                 'idTipoElemento' => $row['idTipoElemento'],
                 'nomTipoElemento' => $row['nomTipoElemento'],
                 'nomElemento' => $row['nomElemento'],
-                'descripcion' => $row['descripcion']
+                'descripcion' => $row['descripcion'],
+                'randomID' => uniqid()
             );
 
             $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);

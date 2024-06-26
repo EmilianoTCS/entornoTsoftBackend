@@ -20,10 +20,11 @@ if (isset($_GET['listados'])) {
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
             'idEmpleado' => $row['idEmpleado'],
-            'nomEmpleado' => $row['UPPER(nomEmpleado)']
+            'nomEmpleado' => $row['UPPER(nomEmpleado)'],
+            'valorHH' => $row['valorHH']
         );
     }
-    $jsonstring = json_encode(($json)); 
+    $jsonstring = json_encode(($json));
     echo $jsonstring;
     mysqli_close($conection);
 } else {

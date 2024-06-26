@@ -1,0 +1,2 @@
+nombre Cliente;direccion Cliente;pais Cliente;servicio Cliente;nombre contacto cliente;telefono contacto;correo contacto 1 cliente;correo contacto 2 cliente;fecha inicio vigencia contacto;fecha fin vigencia contacto;nombre Proyecto;fecha Inicio proyecto;fecha fin proyecto;tipo de proyecto (llave en mano o eshopping);presupuesto total;nombre colaborador;Lider proyecto (si o no);correo colaborador;telefono colaborador (opcional);pais del colaborador;cargo colaborador;area colaborador;valor hh colaborador;monetizado
+;;;;;;;;;;;;;;;;;;;;;;;

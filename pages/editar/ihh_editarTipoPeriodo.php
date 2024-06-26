@@ -38,6 +38,7 @@ if (isset($_GET['ihh_editarTipoPeriodo'])) {
                 'idTipoPeriodo' => $row['idTipoPeriodo'],
                 'nomTipoPeriodo' => $row['nomTipoPeriodo'],
                 'descripcion' => $row['descripcion'],
+                'dias' => $row['dias'],
             );
         }
     }

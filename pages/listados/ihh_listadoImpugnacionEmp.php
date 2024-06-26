@@ -32,13 +32,16 @@ if (isset($_GET['ihh_listadoImpugnacionEmp'])) {
                 'idImpugnacionEmp' => $row['idImpugnacionEmp'],
                 'idEmpleado' => $row['idEmpleado'],
                 'nomEmpleado' => $row['nomEmpleado'],
+                'idPeriodo' => $row['idPeriodo'],
+                'nomPeriodo' => $row['nomPeriodo'],
                 'idElemento' => $row['idElemento'],
                 'nomElemento' => $row['nomElemento'],
                 'cantHorasPeriodo' => $row['cantHorasPeriodo'],
                 'cantHorasExtra' => $row['cantHorasExtra'],
-                'factor' => $row['factor'],
                 'idAcop' => $row['idAcop'],
                 'nomProyecto' => $row['nomProyecto'],
+                'idProyecto' => $row['idProyecto'],
+                'valorHH' => $row['valorHH'],
             );
 
             $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);
@@ -60,6 +63,7 @@ if (isset($_GET['ihh_listadoImpugnacionEmp'])) {
             'factor' => 'empty / vacio',
             'idAcop' => 'empty / vacio',
             'nomProyecto' => 'empty / vacio',
+            'idProyecto' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);

@@ -11,11 +11,12 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['ihh_listadoPeriodo'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
+    $data->idPeriodo = "" || null ? $idPeriodo = null : $idPeriodo = $data->idPeriodo;
     $data->idTipoPeriodo = "" || null ? $idTipoPeriodo = null : $idTipoPeriodo = $data->idTipoPeriodo;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
-    $query = "CALL SP_ihh_listadoPeriodo('$idTipoPeriodo', '$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_ihh_listadoPeriodo('$idPeriodo','$idTipoPeriodo', '$inicio', '$cantidadPorPagina')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

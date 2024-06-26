@@ -35,6 +35,7 @@ if (isset($_GET['ihh_insertarPeriodo'])) {
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idPeriodo' => $row['idPeriodo'],
+                'nomPeriodo' => $row['nomPeriodo'],
                 'idTipoPeriodo' => $row['idTipoPeriodo'],
                 'nomTipoPeriodo' => $row['nomTipoPeriodo'],
                 'descripcion' => $row['descripcion'],

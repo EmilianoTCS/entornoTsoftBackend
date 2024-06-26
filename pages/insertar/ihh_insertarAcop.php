@@ -31,16 +31,30 @@ if (isset($_GET['ihh_insertarAcop'])) {
                 'OUT_MJERESULT' => $row['OUT_MJERESULT']
             );
         } else {
+            $hoy = new DateTime();
+            $hoyFormat = $hoy->format('d-m-Y');
+            $fechaFin = new DateTime($row['fechaFinProy']);
+            $fechaFinFormat = $fechaFin->format('d-m-Y');
+
+            if ($hoy < $fechaFin && $row['fechaFinProy'] !== null) {
+                $apiUrl = 'https://mindicador.cl/api/uf/' . $hoyFormat;
+                $jsonUF = json_decode(file_get_contents($apiUrl));
+            } else {
+                $apiUrl = 'https://mindicador.cl/api/uf/' . $fechaFinFormat;
+                $jsonUF = json_decode(file_get_contents($apiUrl));
+            }
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idProyecto' => $row['idProyecto'],
+                'idAcop' => $row['idAcop'],
                 'nomProyecto' => $row['nomProyecto'],
                 'fechaIniProy' => $row['fechaIniProy'],
                 'fechaFinProy' => $row['fechaFinProy'],
                 'presupuestoTotal' => $row['presupuestoTotal'],
                 'presupuestoMen' => $row['presupuestoMen'],
-                'cantTotalMeses' => $row['cantTotalMeses']
+                'cantTotalMeses' => $row['cantTotalMeses'],
+                'valorUF' => $jsonUF->serie[0]->valor
             );
         }
     }

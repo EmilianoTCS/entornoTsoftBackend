@@ -37,6 +37,7 @@ if (isset($_GET['ihh_insertarTipoPeriodo'])) {
                 'idTipoPeriodo' => $row['idTipoPeriodo'],
                 'nomTipoPeriodo' => $row['nomTipoPeriodo'],
                 'descripcion' => $row['descripcion'],
+                'dias' => $row['dias'],
             );
         }
     }

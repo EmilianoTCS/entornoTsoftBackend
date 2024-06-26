@@ -38,6 +38,7 @@ if (isset($_GET['editarCliente'])) {
                 'nomCliente' => $row['UPPER(cli.nomCliente)'],
                 'direccionCliente' => $row['UPPER(cli.direccionCliente)'],
                 'nomPais' => $row['UPPER(pa.nomPais)'],
+                'idPais' => $row['idPais'],
 
             );
         }

@@ -21,9 +21,23 @@ if (isset($_GET['ihh_listadoAcop'])) {
     }
 
     $json = array();
+    $jsonUF = array();
 
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_array($result)) {
+            // $hoy = new DateTime();
+            // $hoyFormat = $hoy->format('d-m-Y');
+            // $fechaFin = new DateTime($row['fechaFinProy']);
+            // $fechaFinFormat = $fechaFin->format('d-m-Y');
+
+            // if ($hoy < $fechaFin && $row['fechaFinProy'] !== null) {
+            //     $apiUrl = 'https://mindicador.cl/api/uf/' . $hoyFormat;
+            //     $jsonUF = json_decode(file_get_contents($apiUrl));
+            // } else {
+            //     $apiUrl = 'https://mindicador.cl/api/uf/' . $fechaFinFormat;
+            //     $jsonUF = json_decode(file_get_contents($apiUrl));
+            // }
+
             $json[] = array(
                 'idAcop' => $row['idAcop'],
                 'idProyecto' => $row['idProyecto'],
@@ -32,12 +46,15 @@ if (isset($_GET['ihh_listadoAcop'])) {
                 'fechaFinProy' => $row['fechaFinProy'],
                 'presupuestoTotal' => $row['presupuestoTotal'],
                 'presupuestoMen' => $row['presupuestoMen'],
-                'cantTotalMeses' => $row['cantTotalMeses']
+                'cantTotalMeses' => $row['cantTotalMeses'],
+                'mesesRevisados' => $row['mesesRevisados'],
+                'mesesActualRevisado' => $row['mesesActualRevisado'],
+                'saldoRestante' => $row['saldoRestante'],
+                // 'valorUF' => $jsonUF->serie[0]->valor
             );
             $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);
         }
 
-        // Mueve la llamada a cantPaginas fuera del bucle while
         $jsonstring = json_encode([
             'datos' => $json,
             'paginador' => $FN_cantPaginas
@@ -51,7 +68,10 @@ if (isset($_GET['ihh_listadoAcop'])) {
             'fechaFinProy' => 'empty / vacio',
             'presupuestoTotal' => 'empty / vacio',
             'presupuestoMen' => 'empty / vacio',
-            'cantTotalMeses' => 'empty / vacio'
+            'cantTotalMeses' => 'empty / vacio',
+            'mesesRevisados' => 'empty / vacio',
+            'saldoRestante' => 'empty / vacio',
+            'mesesActualRevisado' => 'empty / vacio'
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
@@ -62,4 +82,3 @@ if (isset($_GET['ihh_listadoAcop'])) {
         echo $jsonstring;
     }
 }
-?>
