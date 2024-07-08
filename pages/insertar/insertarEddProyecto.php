@@ -15,12 +15,13 @@ if (isset($_GET['insertarEddProyecto'])) {
     $fechaFin = $data->fechaFin;
     $isActive = $data->isActive;
     $presupuestoTotal = $data->presupuestoTotal;
+    $valorUSD = $data->valorUSD;
     $idServicio = $data->idServicio;
     $usuarioCreacion = $data->usuarioCreacion;
     $tipoProyecto = $data->tipoProyecto;
 
 
-    $query = "CALL SP_insertarEddProyecto('$nomProyecto','$fechaIni','$fechaFin','$tipoProyecto','$presupuestoTotal', $isActive, $idServicio, '$usuarioCreacion', @p0, @p1)";
+    $query = "CALL SP_insertarEddProyecto('$nomProyecto','$fechaIni','$fechaFin','$tipoProyecto','$presupuestoTotal', $isActive, $idServicio,'$valorUSD', '$usuarioCreacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -45,7 +46,8 @@ if (isset($_GET['insertarEddProyecto'])) {
                 'nomServicio' => $row['nomServicio'],
                 'idresumenperproy' => $row['idresumenperproy'],
                 'mes' => $row['mes'],
-                'presupuestoMensual' => $row['presupuestoMensual'],
+                'presupuestoMensualUSD' => $row['presupuestoMensualUSD'],
+                'presupuestoMensualpesos' => $row['presupuestoMensualpesos'],
                 'presupuestoTotal' => $row['presupuestoTotal'],
             );
         }

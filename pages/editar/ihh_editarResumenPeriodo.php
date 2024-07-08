@@ -16,8 +16,8 @@ if (isset($_GET['ihh_editarResumenPeriodo'])) {
 
     foreach ($presupuestosCambiados as $item) {
         $query = "CALL SP_ihh_editarResumenProyectoManual(
-            '$item->idResumenPerProy',
-            '$item->presupuestoMensual',
+            '$item->idresumenperproy',
+            '$item->presupuestoMensualUSD',
             '$usuarioModificacion',
             @p0, 
             @p1)";
