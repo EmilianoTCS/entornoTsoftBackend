@@ -11,21 +11,31 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['ihh_editarAcop'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idAcop = $data->idAcop;
-    $idProyecto = $data->idProyecto;
+    $nomAcop = $data->nomAcop;
     $presupuestoTotal = $data->presupuestoTotal;
-    $cantTotalMeses = $data->cantTotalMeses;
+    $fechaIni = $data->fechaIni;
+    $fechaFin = $data->fechaFin;
+    $valorUSD = $data->valorUSD;
     $isActive = $data->isActive;
-    $usuarioModificacion = $data->usuarioCreacion;
+    $usuarioModificacion = $data->usuarioModificacion;
 
-    $query = "CALL SP_ihh_editarAcop($idAcop, '$idProyecto','$presupuestoTotal','$cantTotalMeses', '$isActive', '$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_ihh_editarAcop(
+    '$idAcop',
+    '$nomAcop',
+    '$fechaIni', 
+    '$fechaFin',
+    '$valorUSD',
+    '$presupuestoTotal',
+    '$isActive', 
+    '$usuarioModificacion', @p0, @p1)";
+
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
 
-    $json = array();
-    $jsonUF = array();
 
+    $json = array();
     while ($row = mysqli_fetch_array($result)) {
         if ($row['OUT_CODRESULT'] != '00') {
             $json[] = array(
@@ -33,38 +43,22 @@ if (isset($_GET['ihh_editarAcop'])) {
                 'OUT_MJERESULT' => $row['OUT_MJERESULT']
             );
         } else {
-            $hoy = new DateTime();
-            $hoyFormat = $hoy->format('d-m-Y');
-            $fechaFin = new DateTime($row['fechaFinProy']);
-            $fechaFinFormat = $fechaFin->format('d-m-Y');
-            if ($hoy < $fechaFin && $row['fechaFinProy'] !== null) {
-                $apiUrl = 'https://mindicador.cl/api/uf/' . $hoyFormat;
-                $jsonUF = json_decode(file_get_contents($apiUrl));
-            } else {
-                $apiUrl = 'https://mindicador.cl/api/uf/' . $fechaFinFormat;
-                $jsonUF = json_decode(file_get_contents($apiUrl));
-            }
+
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idAcop' => $row['idAcop'],
-                'idProyecto' => $row['idProyecto'],
-                'nomProyecto' => $row['nomProyecto'],
-                'fechaIniProy' => $row['fechaIniProy'],
-                'fechaFinProy' => $row['fechaFinProy'],
                 'presupuestoTotal' => $row['presupuestoTotal'],
-                'presupuestoMen' => $row['presupuestoMen'],
-                'cantTotalMeses' => $row['cantTotalMeses'],
-                'mesesRevisados' => $row['mesesRevisados'],
-                'mesesActualRevisado' => $row['mesesActualRevisado'],
-                'saldoRestante' => $row['saldoRestante'],
-                'valorUF' => $jsonUF->serie[0]->valor
+                'idacopmes' => $row['idacopmes'],
+                'nomAcop' => $row['nomAcop'],
+                'mes' => $row['mes'],
+                'presupuestoMensual' => $row['presupuestoMensual'],
+                'valorUSD' => $row['valorUSD']
             );
         }
-
-        $jsonstring = json_encode($json);
-        echo $jsonstring;
     }
+    $jsonstring = json_encode($json);
+    echo $jsonstring;
 } else {
     echo json_encode("Error");
 }

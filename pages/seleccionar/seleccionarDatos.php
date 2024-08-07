@@ -246,6 +246,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idEDDEvaluacion' => $row['idEDDEvaluacion'],
                         'nomEvaluacion' => $row['nomEvaluacion'],
                         'tipoEvaluacion' => $row['tipoEvaluacion'],
+                        'descFormulario' => $row['descFormulario'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
                     );

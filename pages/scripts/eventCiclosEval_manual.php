@@ -20,7 +20,6 @@ if (isset($_GET['eventCiclosEval_manual'])) {
     $listContactos = $data->listContactos === "" || null ? "" : $data->listContactos;
 
 
-
     $query = "CALL SP_duplicarRefEddEvalProyEmp_manual('$idProyecto', '$cargoEnProy', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
@@ -35,15 +34,17 @@ if (isset($_GET['eventCiclosEval_manual'])) {
                 'out_msjResp' => $row['out_msjResp']
             );
         } else {
+            $datos[] = array(
+                'out_codResp' => $row['out_codResp'],
+                'out_msjResp' => $row['out_msjResp']
+            );
             $cicloEvaluacion = $row['numCicloEval'];
         }
     }
-    // $jsonstring = json_encode(($json));
-    // echo $jsonstring;
     mysqli_close($conection);
+    echo json_encode($datos);
 
-    // print_r($datos);
-    print_r($cicloEvaluacion);
-
-    emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $tipoConfDato);
+    if ($cicloEvaluacion != null || $cicloEvaluacion != '') {
+        emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $tipoConfDato);
+    }
 }

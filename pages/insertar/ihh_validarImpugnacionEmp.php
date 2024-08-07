@@ -15,7 +15,6 @@ if (isset($_GET['ihh_validarImpugnacionEmp'])) {
     $elementosEliminados = $data->elementosEliminados;
 
     $isActive = $data->isActive;
-    $idAcop = $data->idAcop;
     $usuarioCreacion = $data->usuarioCreacion;
     $json = array();
     $codResult = '';
@@ -69,7 +68,6 @@ if (isset($_GET['ihh_validarImpugnacionEmp'])) {
             '$item->cantHorasPeriodo',
             '$item->cantHorasExtra',
             '$item->valorHH',
-            '$idAcop',
             '$isActive',
             '$usuarioCreacion',
             @p0, 

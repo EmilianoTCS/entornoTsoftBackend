@@ -7,13 +7,11 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['ihh_listadoAcop'])) {
+if (isset($_GET['ihh_listadoMesesAcop'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
-    $inicio = ($num_boton - 1) * $cantidadPorPagina;
+    $data->idAcop = "" || null ? $idAcop = 0 : $idAcop = $data->idAcop;
 
-    $query = "CALL SP_ihh_listadoAcop('$inicio', '$cantidadPorPagina')";
+    $query = "CALL SP_ihh_listadoMesesAcop('$idAcop')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -23,39 +21,39 @@ if (isset($_GET['ihh_listadoAcop'])) {
 
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_array($result)) {
-
             $json[] = array(
                 'idAcop' => $row['idAcop'],
-                'nomAcop' => $row['nomAcop'],
+                'idAcopMes' => $row['idAcopMes'],
+                'mes' => $row['mes'],
+                'presupuestoMensualUSD' => $row['presupuestoMensualUSD'],
+                'presupuestoMensualPesos' => $row['presupuestoMensualPesos'],
                 'valorUSD' => $row['valorUSD'],
+                'nomAcop' => $row['nomAcop'],
+                'presupuestoTotalUSD' => $row['presupuestoTotalUSD'],
+                'presupuestoTotalPesos' => $row['presupuestoTotalPesos'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
-                'presupuestoTotal' => $row['presupuestoTotal'],
-                'presupuestoTotalPesos' => $row['presupuestoTotalPesos'],
             );
-            $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);
         }
 
-        $jsonstring = json_encode([
-            'datos' => $json,
-            'paginador' => $FN_cantPaginas
-        ]);
+        $jsonstring = json_encode($json);
         echo $jsonstring;
     } else {
         $json[] = array(
             'idAcop' => 'empty / vacio',
+            'idAcopMes' => 'empty / vacio',
+            'mes' => 'empty / vacio',
+            'presupuestoMensualUSD' => 'empty / vacio',
+            'presupuestoMensualPesos' => 'empty / vacio',
+            'valorUSD' => 'empty / vacio',
             'nomAcop' => 'empty / vacio',
-            'valorUSD' => '0',
+            'presupuestoTotalUSD' => 'empty / vacio',
+            'presupuestoTotalPesos' => 'empty / vacio',
             'fechaIni' => 'empty / vacio',
             'fechaFin' => 'empty / vacio',
-            'presupuestoTotal' => 'empty / vacio'
-        );
 
-        $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
-        $jsonstring = json_encode([
-            'datos' => $json,
-            'paginador' => $FN_cantPaginas
-        ]);
+        );
+        $jsonstring = json_encode($json);
         echo $jsonstring;
     }
 }

@@ -2,7 +2,6 @@
 
 
 
-
 function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $tipoConfDato)
 {
     include("../../model/conexion.php");
@@ -13,9 +12,8 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
     $datosEmpleadoColab = array();
     $datosCambiarEstadoCorreo = array();
 
-
     //Obtengo el listado de empleados sin tener en cuenta el cargo (se usa referente por default)
-    $queryEmpleados = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','', $cicloEvaluacion,@p0, @p1)";
+    $queryEmpleados = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','', $cicloEvaluacion, @p0, @p1)";
     $resultEmpleados = mysqli_query($conection, $queryEmpleados);
     if (!$resultEmpleados) {
         die('Query Failed' . mysqli_error($conection));
@@ -23,6 +21,8 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
     if (mysqli_num_rows($resultEmpleados) > 0) {
         while ($rowEmpleados = mysqli_fetch_array($resultEmpleados)) {
             $datosEmpleado[] = array(
+                'OUT_CODRESULT' => $rowEmpleados['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $rowEmpleados['OUT_MJERESULT'],
                 'idEDDProyEmp' => $rowEmpleados['idEDDProyEmp'],
                 'idEDDProyecto' => $rowEmpleados['idEDDProyecto'],
                 'nomProyecto' => $rowEmpleados['nomProyecto'],
@@ -49,10 +49,11 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
         }
     }
 
+
     mysqli_next_result($conection);
 
     //Obtengo el listado de empleados con el cargo colaborador
-    $queryEmpleadosColab = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','colaborador',$cicloEvaluacion, @p0, @p1)";
+    $queryEmpleadosColab = "CALL SP_AUX_listadoEmpCargoProy('$idProyecto','colaborador', $cicloEvaluacion, @p0, @p1)";
     $resultEmpleadosColab = mysqli_query($conection, $queryEmpleadosColab);
     if (!$resultEmpleadosColab) {
         die('Query Failed' . mysqli_error($conection));
@@ -60,6 +61,8 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
     if (mysqli_num_rows($resultEmpleadosColab) > 0) {
         while ($rowEmpleadosColab = mysqli_fetch_array($resultEmpleadosColab)) {
             $datosEmpleadoColab[] = array(
+                'OUT_CODRESULT' => $rowEmpleadosColab['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $rowEmpleadosColab['OUT_MJERESULT'],
                 'idEDDProyEmp' => $rowEmpleadosColab['idEDDProyEmp'],
                 'idEDDProyecto' => $rowEmpleadosColab['idEDDProyecto'],
                 'nomProyecto' => $rowEmpleadosColab['nomProyecto'],
@@ -85,6 +88,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
             );
         }
     }
+
     mysqli_next_result($conection);
 
     //Obtengo las configuraciones de email desde la base de datos
@@ -271,10 +275,10 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
 
         foreach ($listContactos as $itemContactos) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
-            GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
+            // GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
 
             if (!empty($itemContactos->correoContacto2)) {
-                GeneradorEmails($itemContactos->correoContacto2, $cuerpoCorreo, $asuntoRef);
+                // GeneradorEmails($itemContactos->correoContacto2, $cuerpoCorreo, $asuntoRef);
             }
 
             $cuerpoCorreo = $plantillaInicial;
@@ -536,6 +540,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
                             $getMethodEncoded = base64_encode("idEDDEvaluacion={$datosEmpleadoColabDes[$indexEmpleado]['idEDDEvaluacion']}&idProyecto={$idProyecto}&cargoEnProy={$cargoEnProy}&idEDDProyEmpEvaluador={$auxidEDDProyEmpEvaluador}&idEDDProyEmpEvaluado={$datosEmpleadoColabDes[$indexEmpleado]['idEDDProyEmpEvaluado']}&cicloEvaluacion={$cicloEvaluacion}");
                             $finalUrl = $baseURL . $getMethodEncoded;
                             $plantAux = str_replace('%%(URL)%%', $finalUrl, $plantAux);
+
 
                             GeneradorEmails($auxCorreoColabPers, $plantAux, $asuntoColab);
                             $plantAux = '';

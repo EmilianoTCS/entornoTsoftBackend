@@ -8,28 +8,19 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarEddProyecto'])) {
+if (isset($_GET['ihh_editarAcopProy'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $nomProyecto = $data->nomProyecto;
-    $fechaIni = $data->fechaIni;
-    $fechaFin = $data->fechaFin;
-    $isActive = $data->isActive;
-    $idAcops = $data->idAcops;
-    $idServicio = $data->idServicio;
-    $usuarioCreacion = $data->usuarioCreacion;
-    $tipoProyecto = $data->tipoProyecto;
+    $idAcop = $data->idAcop;
+    $idProyecto = $data->idProyecto;
+    $idAcopProy = $data->idAcopProy;
+    $usuarioModificacion = $data->usuarioModificacion;
 
+    $query = "CALL SP_ihh_editarAcopProy(
+    '$idAcop',
+    '$idProyecto',
+    '$idAcopProy', 
+    '$usuarioModificacion', @p0, @p1)";
 
-    $query = "CALL SP_insertarEddProyecto(
-    '$nomProyecto',
-    '$fechaIni',
-    '$fechaFin',
-    '$tipoProyecto',
-    '$isActive',
-    '$idServicio',
-    '$idAcops',
-    '$usuarioCreacion', 
-     @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -41,18 +32,13 @@ if (isset($_GET['insertarEddProyecto'])) {
         if ($row['OUT_CODRESULT'] != '00') {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT']
             );
         } else {
+
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idEDDProyecto' => $row['idEDDProyecto'],
-                'nomProyecto' => $row['nomProyecto'],
-                'fechaIni' => $row['fechaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'nomServicio' => $row['nomServicio'],
-                'tipoProyecto' => $row['tipoProyecto'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT']
             );
         }
     }

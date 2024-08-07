@@ -25,9 +25,9 @@ if (isset($_GET['listados'])) {
             'nomProyecto' => $row['nomProyecto'],
             'fechaIni' => $row['fechaIni'],
             'fechaFin' => $row['fechaFin'],
-            'presupuestoTotal' => $row['presupuestoTotal'],
+            // 'presupuestoTotal' => $row['presupuestoTotal'],
             'condicion' => $row['condicion'],
-            'idAcop' => $row['idAcop']
+            // 'idAcop' => $row['idAcop']
         );
     }
     $jsonstring = json_encode(($json));

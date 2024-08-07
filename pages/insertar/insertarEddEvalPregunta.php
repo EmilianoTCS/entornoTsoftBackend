@@ -47,7 +47,6 @@ if (isset($_GET['insertarEddEvalPregunta'])) {
                 'nomCompetencia' => $row['nomCompetencia'],
                 'tipoResp' => $row['tipoResp'],
                 'preguntaObligatoria' => $row['preguntaObligatoria'],
-
             );
         }
     }
