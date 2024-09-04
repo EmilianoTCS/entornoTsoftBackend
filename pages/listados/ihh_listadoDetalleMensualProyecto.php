@@ -33,28 +33,42 @@ if (isset($_GET['ihh_listadoDetalleMensualProyecto'])) {
                 'valorHH' => $row['valorHH'],
                 'idElemento' => $row['idElemento'],
                 'nomElemento' => $row['nomElemento'],
+                'tipoHHEE' => $row['tipoHHEE'],
+                'numAcop' => $row['numAcop'],
+                'nomTipoElemento' => $row['nomTipoElemento'],
+                'nomAcop' => $row['nomAcop'],
                 'idPeriodo' => 1,
                 // 'idAcop' => $row['idAcop'],
                 'idRandom' => uniqid(),
+                'idNotaImpugnacion' => $row['idNotaImpugnacion'],
+                'nota' => $row['nota'],
             );
             $datosResumen[] = array(
                 'idProyecto' => $row['idProyecto'],
                 'nomProyecto' => $row['nomProyecto'],
                 'presupuestoTotal' => $row['presupuestoTotal'],
+                'presupuestoTotalMiscelaneo' => $row['presupuestoTotalMiscelaneo'],
                 // 'cantTotalMeses' => $row['cantTotalMeses'],
                 'fechaIniProy' => $row['fechaIniProy'],
                 'fechaFinProy' => $row['fechaFinProy'],
                 // 'idAcop' => $row['idAcop'],
                 'presupuestoMensual' => $row['presupuestoMensual'],
+                'presupuestoMensualMiscelaneo' => $row['presupuestoMensualMiscelaneo'],
                 'presupuestoAcumulado' => $row['presupuestoAcumulado'],
+                'presupuestoAcumuladoMiscelaneo' => $row['presupuestoAcumuladoMiscelaneo'],
                 'costoMensual' => $row['costoMensual'],
+                'costoMensualMiscelaneo' => $row['costoMensualMiscelaneo'],
                 'saldoMensual' => $row['saldoMensual'],
+                'saldoMensualMiscelaneo' => $row['saldoMensualMiscelaneo'],
                 'saldoPresupuesto' => $row['saldoPresupuesto'],
+                'saldoPresupuestoMiscelaneo' => $row['saldoPresupuestoMiscelaneo'],
                 'idresumenperproy' => $row['idresumenperproy'],
                 'mes' => $row['mes'],
+                'diasLaborables' => $row['diasLaborables'],
+
             );
         }
- 
+
         $jsonstring = json_encode([
             'datosResumen' => $datosResumen,
             'datosTabla' => $datosTabla
@@ -87,6 +101,8 @@ if (isset($_GET['ihh_listadoDetalleMensualProyecto'])) {
             'idresumenperproy' => $row['idresumenperproy'],
             'mes' => $row['mes'],
             'idPeriodo' => 1,
+            'idNotaImpugnacion' => $row['idNotaImpugnacion'],
+            'nota' => $row['nota'],
         );
     }
     $jsonstring = json_encode([

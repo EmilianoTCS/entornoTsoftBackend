@@ -9,19 +9,21 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 if (isset($_GET['listados'])) {
-    $query = "CALL SP_ihh_aux_listadoElementos(@p0, @p1)";
+    $data = json_decode(file_get_contents("php://input"));
+    $fechaIni = $data->fechaIni;
+    $fechaFin = $data->fechaFin;
+    $query = "CALL SP_ihh_aux_cantDiasNoLaborables('$fechaIni', '$fechaFin', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
-    $json = array();
+    $json = array();    
 
 
     while ($row = mysqli_fetch_array($result)) {
         $json[] = array(
-            'idElementoImp' => $row['idElementoImp'],
-            'nomElemento' => $row['nomElemento'],
-            'nomTipoElemento' => $row['nomTipoElemento']
+            'cantDias' => $row['cantDias'],
+            'mes' => $row['mes'],
         );
     }
     $jsonstring = json_encode(($json)); 

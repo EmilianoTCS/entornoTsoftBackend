@@ -14,37 +14,47 @@ if (isset($_GET['insertarEddEvalProyResp'])) {
     $datosExtra = $data->datosExtra;
     $respuestas = $data->respuestas;
 
-
-    $idEDDEvaluacion = $datosExtra->idEDDEvaluacion;
+    $idEDDEvaluacion = intval($datosExtra->idEDDEvaluacion);
     $fechaInicioExamen = date('Y-m-d H:i:s', strtotime($datosExtra->fechaInicioExamen));
     $fechaFinExamen = date('Y-m-d H:i:s', strtotime($datosExtra->fechaFinExamen));
-    $usuarioCreacion = $datosExtra->usuarioCreacion;
-    $isActive = true;
-
+    $usuarioCreacion = mysqli_real_escape_string($conection, $datosExtra->usuarioCreacion);
+    $isActive = 1; // Asumo que `true` en PHP es equivalente a 1 en SQL.
 
     foreach ($respuestas as $item) {
-        $query = "CALL SP_insertarEddEvalProyResp($idEDDEvaluacion, $item->idEDDProyEmpEvaluador,'$fechaInicioExamen','$fechaFinExamen','$item->respuesta', $isActive, $item->idEDDEvalProyEmp,$item->idEDDEvalPregunta, $item->idEDDEvalRespPreg, '$usuarioCreacion', @p0, @p1)";
+        $idEDDProyEmpEvaluador = intval($item->idEDDProyEmpEvaluador);
+        $respuesta = mysqli_real_escape_string($conection, $item->respuesta);
+        $idEDDEvalProyEmp = intval($item->idEDDEvalProyEmp);
+        $idEDDEvalPregunta = intval($item->idEDDEvalPregunta);
+        $idEDDEvalRespPreg = intval($item->idEDDEvalRespPreg);
+
+        $query = "CALL SP_insertarEddEvalProyResp(
+            $idEDDEvaluacion,
+            $idEDDProyEmpEvaluador,
+            '$fechaInicioExamen',
+            '$fechaFinExamen',
+            '$respuesta',
+            $isActive,
+            $idEDDEvalProyEmp,
+            $idEDDEvalPregunta,
+            $idEDDEvalRespPreg,
+            '$usuarioCreacion',
+            @p0,
+            @p1
+        )";
 
         $result = mysqli_query($conection, $query);
+
         if (!$result) {
-            die('Query Failed' . mysqli_error($conection));
+            die('Query Failed: ' . mysqli_error($conection));
         } else {
             $json = array();
             while ($row = mysqli_fetch_array($result)) {
-                if ($row['OUT_CODRESULT'] != '00') {
-                    $json[] = array(
-                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                        'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                    );
-                } else {
-                    $json[] = array(
-                        'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                        'OUT_MJERESULT' => $row['OUT_MJERESULT']
-                    );
-                }
+                $json[] = array(
+                    'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                    'OUT_MJERESULT' => $row['OUT_MJERESULT'],
+                );
             }
-            $jsonstring = json_encode($json);
-            echo $jsonstring;
+            echo json_encode($json);
         }
         mysqli_next_result($conection);
     }

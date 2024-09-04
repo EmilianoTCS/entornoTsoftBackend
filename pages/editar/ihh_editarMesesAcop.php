@@ -13,12 +13,13 @@ if (isset($_GET['ihh_editarMesesAcop'])) {
     $presupuestosCambiados = $data->presupuestosCambiados;
     $usuarioModificacion = $data->usuarioModificacion;
     $codResult = "";
-    
     foreach ($presupuestosCambiados as $item) {
         $query = "CALL SP_ihh_editarMesAcop(
             '$item->idacopmes',
             '$item->presupuestoMensual',
-            '$usuarioModificacion',
+            '$item->presupuestoMensualMiscelaneo',
+            '$item->observaciones',
+            '$usuarioModificacion', 
             @p0, 
             @p1)";
         $result = mysqli_query($conection, $query);

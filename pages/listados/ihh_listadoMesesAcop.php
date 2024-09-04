@@ -26,13 +26,16 @@ if (isset($_GET['ihh_listadoMesesAcop'])) {
                 'idAcopMes' => $row['idAcopMes'],
                 'mes' => $row['mes'],
                 'presupuestoMensualUSD' => $row['presupuestoMensualUSD'],
+                'presupuestoMensualMiscelaneoUSD' => $row['presupuestoMensualMiscelaneoUSD'],
                 'presupuestoMensualPesos' => $row['presupuestoMensualPesos'],
+                'presupuestoMensualMiscelaneoPesos' => $row['presupuestoMensualMiscelaneoPesos'],
                 'valorUSD' => $row['valorUSD'],
                 'nomAcop' => $row['nomAcop'],
                 'presupuestoTotalUSD' => $row['presupuestoTotalUSD'],
                 'presupuestoTotalPesos' => $row['presupuestoTotalPesos'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
+                'fechaValorUSD' => $row['fechaValorUSD'],
             );
         }
 
@@ -44,7 +47,9 @@ if (isset($_GET['ihh_listadoMesesAcop'])) {
             'idAcopMes' => 'empty / vacio',
             'mes' => 'empty / vacio',
             'presupuestoMensualUSD' => 'empty / vacio',
+            'presupuestoMensualMiscelaneoUSD' => 'empty / vacio',
             'presupuestoMensualPesos' => 'empty / vacio',
+            'presupuestoMensualMiscelaneoPesos' => 'empty / vacio',
             'valorUSD' => 'empty / vacio',
             'nomAcop' => 'empty / vacio',
             'presupuestoTotalUSD' => 'empty / vacio',

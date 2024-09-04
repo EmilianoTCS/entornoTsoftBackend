@@ -10,18 +10,24 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['ihh_insertarAcop'])) {
     $data = json_decode(file_get_contents("php://input"));
+    $numAcop = $data->numAcop;
     $nomAcop = $data->nomAcop;
+    $valorUSD = $data->valorUSD;
+    $presupuestoGeneral = $data->presupuestoGeneral;
     $presupuestoTotal = $data->presupuestoTotal;
+    $fechaValorUSD = $data->fechaValorUSD;
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
-    $valorUSD = $data->valorUSD;
     $isActive = $data->isActive;
     $usuarioCreacion = $data->usuarioCreacion;
 
     $query = "CALL SP_ihh_insertarAcop(
+    '$numAcop',
     '$nomAcop',
     '$valorUSD',
+    '$presupuestoGeneral',
     '$presupuestoTotal',
+    '$fechaValorUSD', 
     '$fechaIni', 
     '$fechaFin',
     '$isActive', 
@@ -41,17 +47,28 @@ if (isset($_GET['ihh_insertarAcop'])) {
                 'OUT_MJERESULT' => $row['OUT_MJERESULT']
             );
         } else {
-           
+
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idAcop' => $row['idAcop'],
                 'nomAcop' => $row['nomAcop'],
-                'presupuestoTotalPesos' => $row['presupuestoTotal'],
+                'numAcop' => $row['nomAcop'],
+                'presupuestoHH' => $row['presupuestoHH'],
+                'presupuestoTotal' => $row['presupuestoTotal'],
+                'presupuestoMiscelaneo' => $row['presupuestoMiscelaneo'],
                 'idacopmes' => $row['idacopmes'],
                 'mes' => $row['mes'],
                 'presupuestoMensual' => $row['presupuestoMensual'],
-                'valorUSD' => $row['valorUSD']
+                'presupuestoMensualMiscelaneo' => $row['presupuestoMensualMiscelaneo'],
+                'valorUSD' => $row['valorUSD'],
+                'fechaValorUSD' => $row['fechaValorUSD'],
+                'fechaIni' => $row['fechaIni'],
+                'fechaFin' => $row['fechaFin'],
+                'fechaIniFormat' => $row['fechaIniFormat'],
+                'fechaFinFormat' => $row['fechaFinFormat'],
+                'observaciones' => $row['observaciones'],
+
             );
         }
     }

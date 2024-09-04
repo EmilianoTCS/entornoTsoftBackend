@@ -27,11 +27,17 @@ if (isset($_GET['ihh_listadoAcop'])) {
             $json[] = array(
                 'idAcop' => $row['idAcop'],
                 'nomAcop' => $row['nomAcop'],
+                'numAcop' => $row['numAcop'],
                 'valorUSD' => $row['valorUSD'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
+                'fechaValorUSD' => $row['fechaValorUSD'],
                 'presupuestoTotal' => $row['presupuestoTotal'],
                 'presupuestoTotalPesos' => $row['presupuestoTotalPesos'],
+                'presupuestoGeneral' => $row['presupuestoGeneral'],
+                'presupuestoGeneralPesos' => $row['presupuestoGeneralPesos'],
+                'presupuestoMiscelaneo' => $row['presupuestoMiscelaneo'],
+                'presupuestoMiscelaneoPesos' => $row['presupuestoMiscelaneoPesos'],
             );
             $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);
         }
