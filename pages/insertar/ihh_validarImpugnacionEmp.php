@@ -71,6 +71,7 @@ if (isset($_GET['ihh_validarImpugnacionEmp'])) {
             '$item->valorHH',
             '$item->idNotaImpugnacion',
             '$item->nota',
+            '$item->monetizado',
             '$isActive',
             '$usuarioCreacion',
             @p0, 

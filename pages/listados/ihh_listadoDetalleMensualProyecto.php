@@ -22,11 +22,11 @@ if (isset($_GET['ihh_listadoDetalleMensualProyecto'])) {
     $datosResumen = array();
     $datosTabla = array();
     if (mysqli_num_rows($result) > 0) {
-
         while ($row = mysqli_fetch_array($result)) {
             $datosTabla[] = array(
                 'idImpugnacionEmp' => $row['idImpugnacionEmp'],
                 'idEmpleado' => $row['idEmpleado'],
+                'nomCargo' => $row['nomCargo'],
                 'cantHorasPeriodo' => $row['cantHorasPeriodo'],
                 'cantHorasExtra' => $row['cantHorasExtra'],
                 'nomEmpleado' => $row['nomEmpleado'],
@@ -42,6 +42,7 @@ if (isset($_GET['ihh_listadoDetalleMensualProyecto'])) {
                 'idRandom' => uniqid(),
                 'idNotaImpugnacion' => $row['idNotaImpugnacion'],
                 'nota' => $row['nota'],
+                'monetizado' => $row['monetizado'],
             );
             $datosResumen[] = array(
                 'idProyecto' => $row['idProyecto'],
