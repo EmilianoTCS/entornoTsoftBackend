@@ -41,5 +41,8 @@ if (isset($_GET['ihh_listadoResumenGralProy'])) {
 
         $jsonstring = json_encode($json);
         echo $jsonstring;
+    }else{
+        $jsonstring = json_encode([]);
+        echo $jsonstring;
     }
 }
