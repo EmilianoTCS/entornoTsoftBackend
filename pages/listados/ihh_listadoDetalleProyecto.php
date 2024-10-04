@@ -44,6 +44,9 @@ if (isset($_GET['ihh_listadoDetalleProyecto'])) {
                 'porc_rentabilidad_reco' => $row['porc_rentabilidad_reco'],
                 'porc_rentabilidad_real' => $row['porc_rentabilidad_real'],
                 'cantColaboradores' => $row['cantColaboradores'],
+                'cantMonetizados' => $row['cantMonetizados'],
+                'cantNoMonetizados' => $row['cantNoMonetizados'],
+
             );
         }
         $jsonstring = json_encode($json);

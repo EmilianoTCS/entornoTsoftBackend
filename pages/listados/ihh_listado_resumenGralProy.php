@@ -35,13 +35,16 @@ if (isset($_GET['ihh_listadoResumenGralProy'])) {
                 'cantColaboradores' => $row['cantColaboradores'],
                 'cantMonetizados' => $row['cantMonetizados'],
                 'cantNoMonetizados' => $row['cantNoMonetizados'],
+                'pptoMiscelaneo' => $row['pptoMiscelaneo'] ? $row['pptoMiscelaneo'] : null,
+                'costoTotalMiscelaneo' => $row['costoTotalMiscelaneo'] ?  $row['costoTotalMiscelaneo'] : null,
+                'saldoPresupuestoMiscelaneo' => $row['saldoPresupuestoMiscelaneo'] ? $row['saldoPresupuestoMiscelaneo'] : null,
 
             );
         }
 
         $jsonstring = json_encode($json);
         echo $jsonstring;
-    }else{
+    } else {
         $jsonstring = json_encode([]);
         echo $jsonstring;
     }
