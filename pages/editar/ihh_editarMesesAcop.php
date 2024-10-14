@@ -13,6 +13,11 @@ if (isset($_GET['ihh_editarMesesAcop'])) {
     $presupuestosCambiados = $data->presupuestosCambiados;
     $usuarioModificacion = $data->usuarioModificacion;
     $codResult = "";
+
+
+
+
+    // echo json_encode($presupuestosCambiados);
     foreach ($presupuestosCambiados as $item) {
         $query = "CALL SP_ihh_editarMesAcop(
             '$item->idacopmes',

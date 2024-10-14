@@ -118,7 +118,8 @@ if (isset($_GET['cambiarEstado'])) {
                         'telefonoEmpleado' => $row['telefonoEmpleado'],
                         'nomArea' => $row['UPPER(ar.nomArea)'],
                         'nomPais' => $row['UPPER(pa.nomPais)'],
-                        'nomCargo' => $row['UPPER(ca.nomCargo)']
+                        'nomCargo' => $row['UPPER(ca.nomCargo)'],
+                        'valorHH' => $row['valorHH']
                     );
                     break;
                 case 'notaexamen':

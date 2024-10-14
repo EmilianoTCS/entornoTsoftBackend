@@ -110,7 +110,9 @@ if (isset($_GET['seleccionarDatos'])) {
                         'telefonoEmpleado' => $row['telefonoEmpleado'],
                         'idArea' => $row['idArea'],
                         'idPais' => $row['idPais'],
-                        'idCargo' => $row['idCargo']
+                        'idCargo' => $row['idCargo'],
+                        'valorHH' => $row['valorHH'],
+                        'idCliente' => $row['idCliente'],
                     );
                     break;
                 case 'notaexamen':

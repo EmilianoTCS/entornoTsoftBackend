@@ -31,13 +31,13 @@ if (isset($_GET['ihh_insertarAcopProy'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'codResultInsertar' => $row['@codResultInsertar'],
-                'mjeResultInsertar' => $row['@mjeResultInsertar'],
-                'codResultValidar' => $row['@codResultValidar'],
-                'mjeResultValidar' => $row['@mjeResultValidar'],
+                // 'codResultInsertar' => $row['@codResultInsertar'],
+                // 'mjeResultInsertar' => $row['@mjeResultInsertar'],
+                // 'codResultValidar' => $row['@codResultValidar'],
+                // 'mjeResultValidar' => $row['@mjeResultValidar'],
             );
         } else {
-           
+
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],

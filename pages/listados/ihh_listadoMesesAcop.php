@@ -36,6 +36,7 @@ if (isset($_GET['ihh_listadoMesesAcop'])) {
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],
                 'fechaValorUSD' => $row['fechaValorUSD'],
+                'observaciones' => $row['observaciones'],
             );
         }
 
