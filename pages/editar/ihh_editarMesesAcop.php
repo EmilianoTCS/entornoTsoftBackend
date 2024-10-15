@@ -41,7 +41,7 @@ if (isset($_GET['ihh_editarMesesAcop'])) {
                 } else {
                     $codResult =  $row['OUT_CODRESULT'];
                 }
-            }
+            }   
         }
         mysqli_next_result($conection);
     }
