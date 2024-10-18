@@ -12,13 +12,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['listadoCursoAlumnoRamo'])) {
     $data = json_decode(file_get_contents("php://input"));
     $data->num_boton = "" || null ? $num_boton = 1 : $num_boton = $data->num_boton;
-    $data->idEmpleado = "" || null ? $idEmpleado = null : $idEmpleado = $data->idEmpleado;
-    $data->idCurso = "" || null ? $idCurso = null : $idCurso = $data->idCurso;
+    $data->idCursoAlumno = "" || null ? $idCursoAlumno = null : $idCursoAlumno = $data->idCursoAlumno;
+    $data->idRamo = "" || null ? $idRamo = null : $idRamo = $data->idRamo;
     $data->cantidadPorPagina = "" || null ? $cantidadPorPagina = 10 : $cantidadPorPagina = $data->cantidadPorPagina;
     $inicio = ($num_boton - 1) * $cantidadPorPagina;
 
 
-    $query = "CALL SP_listadoCursoAlumno('$inicio', '$cantidadPorPagina','$idEmpleado', '$idCurso')";
+    $query = "CALL SP_listadoCursoAlumnoRamo('$inicio', '$cantidadPorPagina','$idCursoAlumno', '$idRamo')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
@@ -29,20 +29,23 @@ if (isset($_GET['listadoCursoAlumnoRamo'])) {
 
         while ($row = mysqli_fetch_array($result)) {
             $json[] = array(
-                'idCursoAlumno' => $row['idCursoAlumno'],
+                'idCursoAlumnoRamo' => $row['idCursoAlumnoRamo'],
                 'fechaIni' => $row['fechaIni'],
                 'horaIni' => $row['horaIni'],
                 'fechaFin' => $row['fechaFin'],
                 'horaFin' => $row['horaFin'],
                 'porcAsistencia' => $row['porcAsistencia'],
                 'porcParticipacion' => $row['porcParticipacion'],
-                'claseAprobada' => $row['claseAprobada'],
+                'ramoAprobado' => $row['ramoAprobado'],
                 'porcAprobacion' => $row['porcAprobacion'],
-                'estadoCurso' => $row['estadoCurso'],
-                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-                'nomCurso' => $row['UPPER(cur.nomCurso)']
+                'estadoRamo' => $row['estadoRamo'],
+                'idCursoAlumno' => $row['idCursoAlumno'],
+                'idRamo' => $row['idRamo'],
+                'nomRamo' => $row['nomRamo'],
+                'nomEmpleado' => $row['nomEmpleado'],
+                'nomCurso' => $row['nomCurso']
             );
-            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+            $FN_cantPaginas = cantPaginas($row['totalRegistros'], $cantidadPorPagina);
         }
         $jsonstring = json_encode([
             'datos' => $json,

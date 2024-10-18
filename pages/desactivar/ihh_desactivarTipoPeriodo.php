@@ -11,9 +11,9 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['ihh_desactivarTipoPeriodo'])) {
     $data = json_decode(file_get_contents("php://input"));
     $usuarioModificacion = $data->usuarioModificacion;
-    $idTipoElemento = $data->idTipoElemento;
+    $idTipoPeriodo = $data->idTipoPeriodo;
 
-    $query = "CALL ihh_desactivarTipoPeriodo(
+    $query = "CALL SP_ihh_desactivarTipoPeriodo(
             '$idTipoPeriodo',
             '$usuarioModificacion',
             @p0, 

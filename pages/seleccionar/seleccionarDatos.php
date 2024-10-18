@@ -89,9 +89,9 @@ if (isset($_GET['seleccionarDatos'])) {
                         'idCurso' => $row['idCurso']
                     );
                     break;
-                case 'cursoalumno_sesion':
+                case 'cursoalumnoramo_sesion':
                     $json[] = array(
-                        'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
+                        'idCursoAlumnoRamoSesion' => $row['idCursoAlumnoRamoSesion'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
                         'horaIni' => $row['horaIni'],
@@ -99,7 +99,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'asistencia' => $row['asistencia'],
                         'participacion' => $row['participacion'],
                         'idSesion' => $row['idSesion'],
-                        'idCursoAlumno' => $row['idCursoAlumno']
+                        'idCursoAlumnoRamo' => $row['idCursoAlumnoRamo']
                     );
                     break;
                 case 'empleado':

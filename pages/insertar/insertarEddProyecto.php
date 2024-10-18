@@ -47,12 +47,13 @@ if (isset($_GET['insertarEddProyecto'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idEDDProyecto' => $row['idEDDProyecto'],
-                'nomProyecto' => $row['nomProyecto'],
-                'fechaIni' => $row['fechaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'nomServicio' => $row['nomServicio'],
-                'tipoProyecto' => $row['tipoProyecto'],
+                // 'ultIdProy' => $row['ultIdProy'],
+                // 'idEDDProyecto' => $row['idEDDProyecto'],
+                // 'nomProyecto' => $row['nomProyecto'],
+                // 'fechaIni' => $row['fechaIni'],
+                // 'fechaFin' => $row['fechaFin'],
+                // 'nomServicio' => $row['nomServicio'],
+                // 'tipoProyecto' => $row['tipoProyecto'],
             );
         }
     }

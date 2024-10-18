@@ -8,29 +8,25 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['insertarCursoAlumnoSesion'])) {
+if (isset($_GET['editarCursoAlumnoRamoSesion'])) {
     $data = json_decode(file_get_contents("php://input"));
+    $idCursoAlumnoRamoSesion = $data->idCursoAlumnoRamoSesion;
     $fechaIni = $data->fechaIni;
     $fechaFin = $data->fechaFin;
     $horaIni = $data->horaIni;
     $horaFin = $data->horaFin;
-    $data->asistencia = "" || $data->asistencia = null || $data->asistencia = 0 ? $asistencia = 0 : $asistencia = $data->asistencia;
-    $data->participacion = "" || $data->participacion = null || $data->participacion =  0 ? $participacion = 0 : $participacion = $data->participacion;
+    $asistencia = $data->asistencia;
+    $participacion = $data->participacion;
     $isActive = $data->isActive;
     $idSesion = $data->idSesion;
-    $idCursoAlumno = $data->idCursoAlumno;
-    $usuarioCreacion = $data->usuarioCreacion;
+    $idCursoAlumnoRamo = $data->idCursoAlumnoRamo;
+    $usuarioModificacion = $data->usuarioModificacion;
 
-
-
-
-
-    $query = "CALL SP_insertarCursoAlumnoSesion('$fechaIni','$fechaFin', $asistencia, $participacion, $isActive, $idSesion, $idCursoAlumno, '$usuarioCreacion', @p0, @p1, '$horaIni', '$horaFin')";
+    $query = "CALL SP_editarCursoAlumnoRamoSesion($idCursoAlumnoRamoSesion, '$fechaIni','$fechaFin', $asistencia, $participacion, $isActive, $idSesion, $idCursoAlumnoRamo, '$usuarioModificacion', @p0, @p1, '$horaFin', '$horaIni')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
     }
-
 
     $json = array();
     while ($row = mysqli_fetch_array($result)) {
@@ -43,15 +39,15 @@ if (isset($_GET['insertarCursoAlumnoSesion'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
-                'fechaIni' => $row['fechaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'horaIni' => $row['horaIni'],
-                'horaFin' => $row['horaFin'],
-                'asistencia' => $row['asistencia'],
-                'participacion' => $row['participacion'],
-                'oi' => $row['UPPER(se.nomSesion)'],
-                'idCursoAlumno' => $row['idCursoAlumno']
+                // 'idCursoAlumnoRamoSesion' => $row['idCursoAlumnoRamoSesion'],
+                // 'fechaIni' => $row['fechaIni'],
+                // 'fechaFin' => $row['fechaFin'],
+                // 'horaIni' => $row['horaIni'],
+                // 'horaFin' => $row['horaFin'],
+                // 'asistencia' => $row['asistencia'],
+                // 'participacion' => $row['participacion'],
+                // 'nomSesion' => $row['UPPER(se.nomSesion)'],
+                // 'idCursoAlumnoRamo' => $row['idCursoAlumnoRamo']
             );
         }
     }

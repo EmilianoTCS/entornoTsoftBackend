@@ -95,11 +95,11 @@ if (isset($_GET['cambiarEstado'])) {
                         'nomCurso' => $row['UPPER(cur.nomCurso)']
                     );
                     break;
-                case 'cursoalumno_sesion':
+                case 'cursoalumnoramo_sesion':
                     $json[] = array(
                         'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                         'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                        'idCursoAlumnoSesion' => $row['idCursoAlumnoSesion'],
+                        'idCursoAlumnoRamoSesion' => $row['idCursoAlumnoRamoSesion'],
                         'fechaIni' => $row['fechaIni'],
                         'fechaFin' => $row['fechaFin'],
                         'asistencia' => $row['asistencia'],
@@ -112,14 +112,14 @@ if (isset($_GET['cambiarEstado'])) {
                     $json[] = array(
                         'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                         'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                        'idEmpleado' => $row['idEmpleado'],
-                        'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-                        'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
-                        'telefonoEmpleado' => $row['telefonoEmpleado'],
-                        'nomArea' => $row['UPPER(ar.nomArea)'],
-                        'nomPais' => $row['UPPER(pa.nomPais)'],
-                        'nomCargo' => $row['UPPER(ca.nomCargo)'],
-                        'valorHH' => $row['valorHH']
+                        // 'idEmpleado' => $row['idEmpleado'],
+                        // 'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+                        // 'correoEmpleado' => $row['UPPER(emp.correoEmpleado)'],
+                        // 'telefonoEmpleado' => $row['telefonoEmpleado'],
+                        // 'nomArea' => $row['UPPER(ar.nomArea)'],
+                        // 'nomPais' => $row['UPPER(pa.nomPais)'],
+                        // 'nomCargo' => $row['UPPER(ca.nomCargo)'],
+                        // 'valorHH' => $row['valorHH']
                     );
                     break;
                 case 'notaexamen':

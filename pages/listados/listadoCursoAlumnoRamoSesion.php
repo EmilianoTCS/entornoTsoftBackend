@@ -35,7 +35,7 @@ if (isset($_GET['listadoCursoAlumnoRamoSesion'])) {
                 'horaFin' => $row['horaFin'],
                 'asistencia' => $row['asistencia'],
                 'participacion' => $row['participacion'],
-                'nomSesion' => $row['UPPER(se.nomSesion)'],
+                'nomSesion' => $row['nomSesion'],
                 'idCursoAlumnoRamo' => $row['idCursoAlumnoRamo'],
                 'nomEmpleado' => $row['nomEmpleado']
             );
@@ -55,7 +55,7 @@ if (isset($_GET['listadoCursoAlumnoRamoSesion'])) {
             'asistencia' => 'empty / vacio',
             'participacion' => 'empty / vacio',
             'nomSesion' => 'empty / vacio',
-            'idCursoAlumno' => 'empty / vacio',
+            'idCursoAlumnoRamo' => 'empty / vacio',
             'nomEmpleado' => 'empty / vacio',
         );
 
