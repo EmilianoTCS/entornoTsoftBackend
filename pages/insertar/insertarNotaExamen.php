@@ -36,11 +36,11 @@ if (isset($_GET['insertarNotaExamen'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idNotaExamen' => $row['idNotaExamen'],
-                'notaExamen' => $row['notaExamen'],
-                'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
-                'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
-                'idCursoAlumno' => $row['idCursoAlumno']
+                // 'idNotaExamen' => $row['idNotaExamen'],
+                // 'notaExamen' => $row['notaExamen'],
+                // 'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
+                // 'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
+                // 'idCursoAlumno' => $row['idCursoAlumno']
             );
         }
     }

@@ -31,6 +31,7 @@ if (isset($_GET['listadoNotaExamen'])) {
                 'notaExamen' => $row['notaExamen'],
                 'apruebaExamen' => $row['apruebaExamen'],
                 'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
+                'idCursoAlumnoRamo' => $row['idCursoAlumnoRamo'],
                 'idCursoAlumno' => $row['idCursoAlumno'],
                 'nomEmpleado' => $row['nomEmpleado'],
                 'nomCurso' => $row['nomCurso'],
@@ -49,6 +50,7 @@ if (isset($_GET['listadoNotaExamen'])) {
             'notaExamen' => 'empty / vacio',
             'apruebaExamen' => 'empty / vacio',
             'nomExamen' => 'empty / vacio',
+            'idCursoAlumnoRamo' => 'empty / vacio',
             'idCursoAlumno' => 'empty / vacio',
             'nomEmpleado' => 'empty / vacio',
             'nomCurso' => 'empty / vacio'

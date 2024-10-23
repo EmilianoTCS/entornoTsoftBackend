@@ -121,7 +121,7 @@ if (isset($_GET['seleccionarDatos'])) {
                         'notaExamen' => $row['notaExamen'],
                         'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
                         'idRamoExamen' => $row['idRamoExamen'],
-                        'idCursoAlumno' => $row['idCursoAlumno']
+                        'idCursoAlumnoRamo' => $row['idCursoAlumnoRamo']
                     );
                     break;
                 case 'ramo':

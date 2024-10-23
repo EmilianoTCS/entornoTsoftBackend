@@ -34,7 +34,9 @@ if (isset($_GET['AF_listadoDetalleRamo'])) {
                 'cantReprobados' => $row['cantReprobados'],
                 'cantExamenes' => $row['cantExamenes'],
                 'nomExamen' => $row['nomExamen'],
-
+                'cantSesionesTerminadas' => $row['cantSesionesTerminadas'],
+                'cantSesiones' => $row['cantSesiones'],
+                // 'cantColaboradoresRamo' => $row['cantColaboradoresRamo'],    
             );
         }
 

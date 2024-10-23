@@ -15,7 +15,7 @@ if (isset($_GET['editarNotaExamen'])) {
     $apruebaExamen = $data->apruebaExamen;
     $isActive = $data->isActive;
     $idRamoExamen = $data->idRamoExamen;
-    $idCursoAlumno = $data->idCursoAlumno;
+    $idCursoAlumno = $data->idCursoAlumnoRamo;
     $usuarioModificacion = $data->usuarioModificacion;
 
 
@@ -37,11 +37,11 @@ if (isset($_GET['editarNotaExamen'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idNotaExamen' => $row['idNotaExamen'],
-                'notaExamen' => $row['notaExamen'],
-                'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
-                'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
-                'idCursoAlumno' => $row['idCursoAlumno']
+                // 'idNotaExamen' => $row['idNotaExamen'],
+                // 'notaExamen' => $row['notaExamen'],
+                // 'apruebaExamen' => $row['UPPER(notaEx.apruebaExamen)'],
+                // 'nomExamen' => $row['UPPER(ramoEx.nomExamen)'],
+                // 'idCursoAlumno' => $row['idCursoAlumno']
             );
         }
     }

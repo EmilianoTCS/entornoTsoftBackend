@@ -19,7 +19,7 @@ if (isset($_GET['insertarCursoAlumnoRamo'])) {
     $data->porcParticipacion = "" || $data->porcParticipacion = null || $data->porcParticipacion =  0 ? $porcParticipacion = 0 : $porcParticipacion = $data->porcParticipacion;
     $data->ramoAprobado = "" || $data->ramoAprobado = null || $data->ramoAprobado = 0 ? $ramoAprobado = 'N' : $ramoAprobado = $data->ramoAprobado;
     $data->porcAprobacion = "" || $data->porcAprobacion = null || $data->porcAprobacion = 0 ? $porcAprobacion = 0 : $porcAprobacion = $data->porcAprobacion;
-    $data->estadoRamo = "" || $data->estadoRamo = null || $data->estadoRamo = 0 ? $estadoRamo = 'reprobado' : $estadoRamo = $data->estadoRamo;
+    $data->estadoRamo = "" || $data->estadoRamo = null || $data->estadoRamo = 0 ? $estadoRamo = '1' : $estadoRamo = $data->estadoRamo;
 
     $isActive = $data->isActive;
     $idRamo = $data->idRamo;

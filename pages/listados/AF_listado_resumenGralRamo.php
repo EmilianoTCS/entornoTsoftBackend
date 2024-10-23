@@ -25,23 +25,21 @@ if (isset($_GET['AF_listado_resumenGralRamo'])) {
         while ($row = mysqli_fetch_array($result)) {
             $json[] = array(
                 'idCurso' => $row['idCurso'],
-                'nomCurso' => $row['nomCurso'],
                 'idRamo' => $row['idRamo'],
-                'nomRamo' => $row['nomRamo'],
+                'nomCurso' => $row['nomCurso'],
+                'cantColaboradores' => $row['cantColaboradores'],
                 'cantRamos' => $row['cantRamos'],
                 'cantRamosTerminados' => $row['cantRamosTerminados'],
                 'porcRamosTerminados' => $row['porcRamosTerminados'],
-                'cantColaboradores' => $row['cantColaboradores'],
                 'cantAprobados' => $row['cantAprobados'],
                 'cantDesaprobados' => $row['cantDesaprobados'],
                 'cantDesertores' => $row['cantDesertores'],
                 'porcDesertados' => $row['porcDesertados'],
                 'porcAprobacionGeneral' => $row['porcAprobacionGeneral'],
-                'fechaIni_curAlRa' => $row['fechaIni_curAlRa'],
-                'fechaFin_curAlRa' => $row['fechaFin_curAlRa'],
-                'cantSesionesRamo' => $row['cantSesionesRamo'],
-                'cantSesionesRealizadas' => $row['cantSesionesRealizadas'],
-                'porcAsistenciaGeneral' => $row['porcAsistenciaGeneral'],
+                'nomRamo' => $row['nomRamo'],
+                'promedioAsistencia' => $row['promedioAsistencia'],
+                'cantSesiones' => $row['cantSesiones'],
+                'cantSesionesTerminadas' => $row['cantSesionesTerminadas'],
             );
         }
 
