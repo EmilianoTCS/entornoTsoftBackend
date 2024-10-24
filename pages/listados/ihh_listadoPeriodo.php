@@ -32,6 +32,7 @@ if (isset($_GET['ihh_listadoPeriodo'])) {
                 'nomTipoPeriodo' => $row['nomTipoPeriodo'],
                 'nomPeriodo' => $row['nomPeriodo'],
                 'descripcion' => $row['descripcion'],
+                'idRandom' => uniqid(),
             );
 
             $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);

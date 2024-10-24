@@ -32,7 +32,8 @@ if (isset($_GET['ihh_listadoElementoImp'])) {
                 'nomTipoElemento' => $row['nomTipoElemento'],
                 'nomElemento' => $row['nomElemento'],
                 'descripcion' => $row['descripcion'],
-                'randomID' => uniqid()
+                'idRandom' => uniqid(),
+
             );
 
             $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);
