@@ -26,6 +26,7 @@ if (isset($_GET['AF_listado_resumenGralRamo'])) {
             $json[] = array(
                 'idCurso' => $row['idCurso'],
                 'idRamo' => $row['idRamo'],
+                'idCursoAlumnoRamo' => $row['idCursoAlumnoRamo'],
                 'nomCurso' => $row['nomCurso'],
                 'cantColaboradores' => $row['cantColaboradores'],
                 'cantRamos' => $row['cantRamos'],
@@ -37,6 +38,7 @@ if (isset($_GET['AF_listado_resumenGralRamo'])) {
                 'porcDesertados' => $row['porcDesertados'],
                 'porcAprobacionGeneral' => $row['porcAprobacionGeneral'],
                 'nomRamo' => $row['nomRamo'],
+                'cantAlumnosEnRamo' => $row['cantAlumnosEnRamo'],
                 'promedioAsistencia' => $row['promedioAsistencia'],
                 'cantSesiones' => $row['cantSesiones'],
                 'cantSesionesTerminadas' => $row['cantSesionesTerminadas'],

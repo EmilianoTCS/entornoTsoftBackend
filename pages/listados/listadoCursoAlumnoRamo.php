@@ -43,6 +43,7 @@ if (isset($_GET['listadoCursoAlumnoRamo'])) {
                 'idRamo' => $row['idRamo'],
                 'nomRamo' => $row['nomRamo'],
                 'nomEmpleado' => $row['nomEmpleado'],
+                'idEmpleado' => $row['idEmpleado'],
                 'nomCurso' => $row['nomCurso']
             );
             $FN_cantPaginas = cantPaginas($row['totalRegistros'], $cantidadPorPagina);

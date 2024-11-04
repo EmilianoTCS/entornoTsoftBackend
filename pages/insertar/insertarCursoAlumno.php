@@ -45,18 +45,18 @@ if (isset($_GET['insertarCursoAlumno'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idCursoAlumno' => $row['idCursoAlumno'],
-                'fechaIni' => $row['fechaIni'],
-                'horaIni' => $row['horaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'horaFin' => $row['horaFin'],
-                'porcAsistencia' => $row['porcAsistencia'],
-                'porcParticipacion' => $row['porcParticipacion'],
-                'claseAprobada' => $row['claseAprobada'],
-                'porcAprobacion' => $row['porcAprobacion'],
-                'estadoCurso' => $row['estadoCurso'],
-                'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-                'nomCurso' => $row['UPPER(cur.nomCurso)']
+                // 'idCursoAlumno' => $row['idCursoAlumno'],
+                // 'fechaIni' => $row['fechaIni'],
+                // 'horaIni' => $row['horaIni'],
+                // 'fechaFin' => $row['fechaFin'],
+                // 'horaFin' => $row['horaFin'],
+                // 'porcAsistencia' => $row['porcAsistencia'],
+                // 'porcParticipacion' => $row['porcParticipacion'],
+                // 'claseAprobada' => $row['claseAprobada'],
+                // 'porcAprobacion' => $row['porcAprobacion'],
+                // 'estadoCurso' => $row['estadoCurso'],
+                // 'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
+                // 'nomCurso' => $row['UPPER(cur.nomCurso)']
             );
         }
     }

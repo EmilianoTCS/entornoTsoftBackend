@@ -40,7 +40,9 @@ if (isset($_GET['listadoCursoAlumno'])) {
                 'porcAprobacion' => $row['porcAprobacion'],
                 'estadoCurso' => $row['estadoCurso'],
                 'nomEmpleado' => $row['UPPER(emp.nomEmpleado)'],
-                'nomCurso' => $row['UPPER(cur.nomCurso)']
+                'nomCurso' => $row['UPPER(cur.nomCurso)'],
+                'idEmpleado' => $row['idEmpleado'],
+                'idCurso' => $row['idCurso']
             );
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
         }
@@ -63,6 +65,8 @@ if (isset($_GET['listadoCursoAlumno'])) {
             'estadoCurso' => 'empty / vacio',
             'nomAlumno' => 'empty / vacio',
             'nomCurso' => 'empty / vacio',
+            'idEmpleado' => 'empty / vacio',
+            'idCurso' => 'empty / vacio',
         );
 
         $FN_cantPaginas = cantPaginas(1, $cantidadPorPagina);
