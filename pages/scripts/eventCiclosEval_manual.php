@@ -10,7 +10,6 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if (isset($_GET['eventCiclosEval_manual'])) {
 
-    //Declaración de variables
     $data = json_decode(file_get_contents("php://input"));
     $idProyecto = $data->idProyecto;
     $cargoEnProy = $data->cargoEnProy;
@@ -19,7 +18,6 @@ if (isset($_GET['eventCiclosEval_manual'])) {
     $cicloEvaluacion = '';
     $listContactos = $data->listContactos === "" || null ? "" : $data->listContactos;
 
-
     $query = "CALL SP_duplicarRefEddEvalProyEmp_manual('$idProyecto', '$cargoEnProy', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
@@ -27,24 +25,32 @@ if (isset($_GET['eventCiclosEval_manual'])) {
     }
 
     $datos = array();
-    while ($row = mysqli_fetch_array($result)) {
-        if ($row['out_codResp'] != '00') {
-            $datos[] = array(
-                'out_codResp' => $row['out_codResp'],
-                'out_msjResp' => $row['out_msjResp']
-            );
-        } else {
-            $datos[] = array(
-                'out_codResp' => $row['out_codResp'],
-                'out_msjResp' => $row['out_msjResp']
-            );
-            $cicloEvaluacion = $row['numCicloEval'];
-        }
-    }
-    mysqli_close($conection);
-    echo json_encode($datos);
+    do {
+        // Captura cada conjunto de resultados
+        if ($result = mysqli_store_result($conection)) {
+            while ($row = mysqli_fetch_array($result)) {
+                $OUT_CODRESULT = $row['OUT_CODRESULT'];
+                $OUT_MJERESULT = $row['OUT_MJERESULT'];
+                $numCicloEval = isset($row['numCicloEval']) ? $row['numCicloEval'] : null;
 
-    if ($cicloEvaluacion != null || $cicloEvaluacion != '') {
-        emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $tipoConfDato);
+                // Asigna el ciclo de evaluación si existe en este conjunto de resultados
+                if ($OUT_CODRESULT === '00' && $numCicloEval !== null) {
+                    $cicloEvaluacion = $numCicloEval;
+                    $datos[] = array(
+                        'OUT_CODRESULT' => $OUT_CODRESULT,
+                        'OUT_MJERESULT' => $OUT_MJERESULT,
+                        'cicloEvaluacion' => $cicloEvaluacion,
+                    );
+                }
+            }
+            mysqli_free_result($result);
+        }
+    } while (mysqli_next_result($conection));
+
+    mysqli_close($conection);
+    // echo json_encode($datos);
+
+    if ($cicloEvaluacion !== null && $cicloEvaluacion !== '') {
+    emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $tipoConfDato);
     }
 }

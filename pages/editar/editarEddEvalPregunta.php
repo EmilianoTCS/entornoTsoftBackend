@@ -39,15 +39,15 @@ if (isset($_GET['editarEddEvalPregunta'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
-                'nomPregunta' => $row['nomPregunta'],
-                'ordenPregunta' => $row['ordenPregunta'],
-                'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
-                'nomEvaluacion' => $row['nomEvaluacion'],
-                'nomCompetencia' => $row['nomCompetencia'],
-                'tipoResp' => $row['tipoResp'],
-                'preguntaObligatoria' => $row['preguntaObligatoria'],
+                // 'idEDDEvalPregunta' => $row['idEDDEvalPregunta'],
+                // 'nomPregunta' => $row['nomPregunta'],
+                // 'ordenPregunta' => $row['ordenPregunta'],
+                // 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                // 'idEDDEvalCompetencia' => $row['idEDDEvalCompetencia'],
+                // 'nomEvaluacion' => $row['nomEvaluacion'],
+                // 'nomCompetencia' => $row['nomCompetencia'],
+                // 'tipoResp' => $row['tipoResp'],
+                // 'preguntaObligatoria' => $row['preguntaObligatoria'],
             );
     
         }

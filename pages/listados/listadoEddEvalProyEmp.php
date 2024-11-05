@@ -58,7 +58,7 @@ if (isset($_GET['listadoEddEvalProyEmp'])) {
 
             );
 
-            $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);
+            $FN_cantPaginas = cantPaginas($row['temp_cantRegistros'], $cantidadPorPagina);
         }
         $jsonstring = json_encode([
             'datos' => $json,

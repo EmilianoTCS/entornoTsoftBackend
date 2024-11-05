@@ -14,12 +14,13 @@ if (isset($_GET['editarContacto'])) {
     $nomContacto = $data->nomContacto;
     $correoContacto = $data->correoContacto;
     $telefonoContacto = $data->telefonoContacto;
+    $fechaIni = $data->fechaIni;
     $isActive = true;
     $idServicio = $data->idServicio;
     $usuarioModificacion = $data->usuarioModificacion;
 
 
-    $query = "CALL SP_editarContacto($idContacto,'$nomContacto','$correoContacto','$telefonoContacto','$isActive', $idServicio,'$usuarioModificacion', @p0, @p1)";
+    $query = "CALL SP_editarContacto($idContacto,'$nomContacto','$correoContacto','$telefonoContacto','$fechaIni', '$isActive', $idServicio,'$usuarioModificacion', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

@@ -139,6 +139,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
     $adjuntos = '';
     $aux = '';
     $destinatarios = array();
+    // print_r($datosConfig);
     for ($indexConfig = 0; $indexConfig < count($datosConfig); $indexConfig++) {
         if ($datosConfig[$indexConfig]['subTipoConfDato'] === "DESTINATARIOS") {
             $adjuntos = $datosConfig[$indexConfig]['datoNoVisible'];
@@ -155,6 +156,7 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
             }
         }
     }
+    // print_r($destinatarios);
 
 
 
@@ -275,10 +277,10 @@ function emailEDD($idProyecto, $cicloEvaluacion, $cargoEnProy, $listContactos, $
 
         foreach ($listContactos as $itemContactos) {
             $cuerpoCorreo = str_replace('%%(nom_Lider)%%', strtoupper($itemContactos->nomContacto), $cuerpoCorreo);
-            // GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
+            GeneradorEmails($itemContactos->correoContacto, $cuerpoCorreo, $asuntoRef);
 
             if (!empty($itemContactos->correoContacto2)) {
-                // GeneradorEmails($itemContactos->correoContacto2, $cuerpoCorreo, $asuntoRef);
+                GeneradorEmails($itemContactos->correoContacto2, $cuerpoCorreo, $asuntoRef);
             }
 
             $cuerpoCorreo = $plantillaInicial;

@@ -38,17 +38,17 @@ if (isset($_GET['editarEddEvalProyEmp'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
-                'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
-                'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
-                'evalRespondida' => $row['evalRespondida'],
-                'fechaIni' => $row['fechaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'nomEvaluacion' => $row['nomEvaluacion'],
-                'nomProyecto' => $row['nomProyecto'],
-                'nomEmpleadoEvaluador' => $row['nomEmpleadoEvaluador'],
-                'nomEmpleadoEvaluado' => $row['nomEmpleadoEvaluado'],
+                // 'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
+                // 'idEDDEvaluacion' => $row['idEDDEvaluacion'],
+                // 'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
+                // 'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
+                // 'evalRespondida' => $row['evalRespondida'],
+                // 'fechaIni' => $row['fechaIni'],
+                // 'fechaFin' => $row['fechaFin'],
+                // 'nomEvaluacion' => $row['nomEvaluacion'],
+                // 'nomProyecto' => $row['nomProyecto'],
+                // 'nomEmpleadoEvaluador' => $row['nomEmpleadoEvaluador'],
+                // 'nomEmpleadoEvaluado' => $row['nomEmpleadoEvaluado'],
             );
         }
     }

@@ -37,17 +37,6 @@ if (isset($_GET['insertarEddEvalProyEmp'])) {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'], //00
                 'OUT_MJERESULT' => $row['OUT_MJERESULT'], //SUCCESS
-                'idEDDEvalProyEmp' => $row['idEDDEvalProyEmp'],
-                'idEDDEvaluacion' => $row['idEDDEvaluacion'],
-                'idEDDProyEmpEvaluador' => $row['idEDDProyEmpEvaluador'],
-                'idEDDProyEmpEvaluado' => $row['idEDDProyEmpEvaluado'],
-                'evalRespondida' => $row['evalRespondida'],
-                'fechaIni' => $row['fechaIni'],
-                'fechaFin' => $row['fechaFin'],
-                'nomEvaluacion' => $row['nomEvaluacion'],
-                'nomProyecto' => $row['nomProyecto'],
-                'nomEmpleadoEvaluador' => $row['nomEmpleadoEvaluador'],
-                'nomEmpleadoEvaluado' => $row['nomEmpleadoEvaluado'],
             );
         }
     }
