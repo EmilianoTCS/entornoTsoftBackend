@@ -35,7 +35,8 @@ if (isset($_GET['listadoRamos'])) {
             'tipoRamoHH' => $row['UPPER(ram.tipoRamoHH)'],
             'duracionRamoHH' => $row['duracionRamoHH'],
             'cantSesionesRamo' => $row['cantSesionesRamo'],
-            'nomCurso' => $row['UPPER(cur.nomCurso)']
+            'nomCurso' => $row['UPPER(cur.nomCurso)'],
+            'idCurso' => $row['idCurso'],
         );
 
             $FN_cantPaginas = cantPaginas($row['@temp_cantRegistros'], $cantidadPorPagina);

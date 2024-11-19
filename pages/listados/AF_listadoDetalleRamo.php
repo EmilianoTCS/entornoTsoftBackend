@@ -10,9 +10,11 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 if (isset($_GET['AF_listadoDetalleRamo'])) {
     $data = json_decode(file_get_contents("php://input"));
     $idRamo = $data->idRamo;
+    $fechaIni = $data->fechaIni;
+    $fechaFin = $data->fechaFin;
+    $estado = $data->estado;
 
-
-    $query = "CALL SP_AF_listadoDetalleRamo('$idRamo')";
+    $query = "CALL SP_AF_listadoDetalleRamo('$idRamo','$fechaIni','$fechaFin','$estado')";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));

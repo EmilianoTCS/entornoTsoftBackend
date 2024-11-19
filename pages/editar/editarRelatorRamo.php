@@ -30,12 +30,12 @@ if (isset($_GET['editarRelatorRamo'])) {
         if ($row['OUT_CODRESULT'] != '00') {
             $json[] = array(
                 'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
                 'OUT_MJERESULT' => $row['OUT_MJERESULT']
             );
         } else {
             $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT'],
                 'idRelatorRamo' => $row['idRelatorRamo'],
                 'fechaIni' => $row['fechaIni'],
                 'fechaFin' => $row['fechaFin'],

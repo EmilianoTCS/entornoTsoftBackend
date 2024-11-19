@@ -13,16 +13,19 @@ if (isset($_GET['AF_listado_resumenGralRamo'])) {
     $fechaFin = $data->fechaFin === "" ? null : $data->fechaFin;
     $estadoRamo = $data->estadoRamo;
 
+    // echo json_encode($data);
+
+
     $query = "CALL SP_resumenGralRamo($idCurso, '$fechaInicio', '$fechaFin', '$estadoRamo', @p0, @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
-    }   
-
+    }
     $json = array();
 
     if (mysqli_num_rows($result) > 0) {
         while ($row = mysqli_fetch_array($result)) {
+            // echo json_encode($row);
             $json[] = array(
                 'idCurso' => $row['idCurso'],
                 'idRamo' => $row['idRamo'],
