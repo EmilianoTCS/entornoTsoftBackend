@@ -11,15 +11,14 @@ function validarFormatoCampos($fila, $numFila)
 {
     $bool_errores = false;
     $str_error = '';
-
     //nom colaborador
-    if ($fila['nombre colaborador'] === "" || $fila['nombre colaborador'] === null) {
+    if (trim($fila['nombre colaborador']) === "" || $fila['nombre colaborador'] === null) {
         $str_errorPlantilla = 'Error fila: ' . $numFila . ', campo "nombre colaborador" está vacío o nulo.';
         $bool_errores = true;
         $str_error =  $str_error . $str_errorPlantilla . "\n";
     }
     //nombre proyecto
-    if ($fila['nombre proyecto'] === "" || $fila['nombre proyecto'] === null) {
+    if (trim($fila['nombre proyecto']) === "" || $fila['nombre proyecto'] === null) {
         $str_errorPlantilla = 'Error fila: ' . $numFila . ', campo "nombre proyecto" está vacío o nulo.';
         $bool_errores = true;
         $str_error =  $str_error . $str_errorPlantilla . "\n";
@@ -92,10 +91,8 @@ if (isset($_POST)) {
                     $contadorFallidos = $contadorFallidos + 1;
                 } else {
                     // Declaración de variables
-                    $fila = $resultadoValidarCampos['fila'];
                     $contadorExitosos = $contadorExitosos + 1;
-
-                    // print_r($fila);
+                    $fila = $resultadoValidarCampos['fila'];
                     $nombreColaborador = $fila['nombre colaborador'];
                     $nombreProyecto = $fila['nombre proyecto'];
                     $mes = $fila['mes (formato YYYYMM)'];
@@ -104,30 +101,34 @@ if (isset($_POST)) {
                     $cantHHExtra = $fila['cantidad horas extra'];
                     $valorHH = $fila['valor HH'];
 
-                    // Ejecución de QUERY
+                    // Inside your loop where you execute the stored procedure
                     $query = "CALL SP_ihh_cargaImpHoras(
-                        '$nombreColaborador',
-                        '$nombreProyecto',
-                        '$mes',
-                        '$miscelaneo',
-                        '$cantHH',
-                        '$cantHHExtra',
-                        '$valorHH',
-                    @p0, @p1)";
+                        '" . mysqli_real_escape_string($conection, $nombreColaborador) . "',
+                        '" . mysqli_real_escape_string($conection, $nombreProyecto) . "',
+                        '" . mysqli_real_escape_string($conection, $mes) . "',
+                        '" . mysqli_real_escape_string($conection, $miscelaneo) . "',
+                        '" . mysqli_real_escape_string($conection, $cantHH) . "',
+                        '" . mysqli_real_escape_string($conection, $cantHHExtra) . "',
+                        '" . mysqli_real_escape_string($conection, $valorHH) . "',
+                        @p0, @p1);
+                        SELECT @p0 AS OUT_CODRESULT, @p1 AS OUT_MJERESULT;";
 
-                    // $result = mysqli_query($conection, $query);
-                    // if (!$result) {
-                    //     die('Query Failed' . mysqli_error($conection));
-                    // }
-
-                    // $json = array();
-                    // while ($row = mysqli_fetch_array($result)) {
-                    //     $json[] = array(
-                    //         'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                    //         'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                    //     );
-                    //     echo json_encode($json);
-                    // }
+                    if (mysqli_multi_query($conection, $query)) {
+                        do {
+                            if ($result = mysqli_store_result($conection)) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    // Process the result if needed
+                                    // For example, you could add to your $json array here
+                                    // $json[] = $row;
+                                }
+                                mysqli_free_result($result);
+                            }
+                        } while (mysqli_next_result($conection));
+                    } else {
+                        $errores[] = "Error executing query: " . mysqli_error($conection);
+                        $contadorFallidos++;
+                        $contadorExitosos--;
+                    }
                 }
             }
 
@@ -137,10 +138,11 @@ if (isset($_POST)) {
                 'cantTotal' => $contadorTotales,
                 'errores' => $errores,
             ]);
+            mysqli_close($conection);
         } else {
             echo json_encode([
                 'OUT_CODRESULT' => '01',
-                'MJE_CODRESULT' => 'El formato del archivo es incorrecto, debe ser .CSV de forma obligatoria.'
+                'OUT_MJERESULT' => 'El formato del archivo es incorrecto, debe ser .CSV de forma obligatoria.'
             ]);
         }
     }

@@ -189,7 +189,8 @@ function validarFormatoCampos($fila, $numFila)
     // print_r(['errores' => $str_error, 'bool_errores' => $bool_errores, 'Fila' => $fila, 'num' => $numFila]);
     return ['errores' => $str_error, 'bool_errores' => $bool_errores, 'fila' => $fila];
 }
-function formatearFecha($fechaOriginal) {
+function formatearFecha($fechaOriginal)
+{
     try {
         // Crear un objeto DateTime desde la fecha original
         $fecha = DateTime::createFromFormat('d/m/Y', $fechaOriginal);
@@ -210,136 +211,109 @@ function formatearFecha($fechaOriginal) {
 if (isset($_POST)) {
     $archivo = $_FILES['file'];
 
-
-    //Valida que no tenga errores
     if ($archivo['error'] !== UPLOAD_ERR_OK) {
-        echo "Error al subir el archivo.";
+        echo json_encode(['error' => "Error al subir el archivo."]);
         exit;
-    } else {
-        $nomDocumento = basename($_FILES['file']['name']);
-        $tipo = strtolower(pathinfo($nomDocumento, PATHINFO_EXTENSION));
-
-        //Verifica el tipo de archivo
-        if ($tipo === "csv") {
-            $errores = array();
-            $contadorExitosos = 0;
-            $contadorFallidos = 0;
-            $contadorTotales = 0;
-
-            //Leo el archivo y obtengo las filas y los encabezados por separado, se utiliza la función leerCSV().
-            $resultadoCSV = array();
-            $resultadoCSV = leerCSV($_FILES['file']['tmp_name']);
-
-
-            $filas = $resultadoCSV['filas'];
-            $encabezados = $resultadoCSV['encabezados'];
-
-            for ($i = 0; $i < count($filas); $i++) {
-                $resultadoValidarCampos = validarFormatoCampos($filas[$i], $i + 2);
-                $contadorTotales = $contadorTotales + 1;
-
-                if (!empty($resultadoValidarCampos['bool_errores']) || $resultadoValidarCampos['bool_errores'] === true) {
-                    array_push($errores, $resultadoValidarCampos['errores']);
-                    $contadorFallidos = $contadorFallidos + 1;
-                } else {    
-                    // Declaración de variables
-                    $fila = $resultadoValidarCampos['fila'];
-                    $contadorExitosos = $contadorExitosos + 1;
-
-                    $nombreCliente = $fila['nombre Cliente'];
-                    $direccionCliente = $fila['direccion Cliente'];
-                    $paisCliente = $fila['pais Cliente'];
-                    $servicioCliente = $fila['servicio Cliente'];
-                    $nombreContactoCliente = $fila['nombre contacto cliente'];
-                    $telefonoContacto = $fila['telefono contacto'];
-                    $correoContacto1Cliente = $fila['correo contacto 1 cliente'];
-                    $correoContacto2Cliente = $fila['correo contacto 2 cliente'];
-                    $fechaInicioVigenciaContacto = formatearFecha($fila['fecha inicio vigencia contacto']);
-                    $fechaFinVigenciaContacto = formatearFecha($fila['fecha fin vigencia contacto']);
-                    $nombreProyecto = $fila['nombre Proyecto'];
-                    $fechaInicioProyecto = formatearFecha($fila['fecha Inicio proyecto']);
-                    $fechaFinProyecto = formatearFecha($fila['fecha fin proyecto']);
-                    $tipoDeProyecto = $fila['tipo de proyecto (llave en mano o eshopping)'];
-                    $presupuestoTotal = $fila['presupuesto total'];
-                    $nombreColaborador = $fila['nombre colaborador'];
-                    $liderProyecto = $fila['Lider proyecto (si o no)'];
-                    $correoColaborador = $fila['correo colaborador'];
-                    $telefonoColaboradorOpcional = $fila['telefono colaborador (opcional)'];
-                    $paisDelColaborador = $fila['pais del colaborador'];
-                    $cargoColaborador = $fila['cargo colaborador'];
-                    $areaColaborador = $fila['area colaborador'];
-                    $valorHHColaborador = $fila['valor hh colaborador'];
-                    $monetizado = $fila['monetizado'];
-
-                    // print_r("nombreContactoCliente: " . $nombreContactoCliente ."\n");
-                    // print_r("telefonoContacto: " . $telefonoContacto ."\n");
-                    // print_r("correoContacto1Cliente: " . $correoContacto1Cliente ."\n");
-                    // print_r("correoContacto2Cliente: " . $correoContacto2Cliente ."\n");
-                    // print_r("fechaInicioVigenciaContacto: " . $fechaInicioVigenciaContacto ."\n");
-                    // print_r("fechaFinVigenciaContacto: " . $fechaFinVigenciaContacto ."\n");
-                    // print_r("valorHHColaborador: " . $valorHHColaborador ."\n");
-                    // print_r("liderProyecto: " . $liderProyecto ."\n");
-
-
-
-
-                    // Ejecución de QUERY
-                    $query = "CALL SP_ihh_cargaDatosBase(
-                        '$nombreCliente',
-                        '$direccionCliente',
-                        '$paisCliente',
-                        '$servicioCliente',
-                        '$nombreContactoCliente',
-                        '$correoContacto1Cliente',
-                        '$correoContacto2Cliente',
-                        '$telefonoContacto',
-                        '$fechaInicioVigenciaContacto',
-                        '$fechaFinVigenciaContacto',
-                        '$nombreProyecto',
-                        '$fechaInicioProyecto',
-                        '$fechaFinProyecto',
-                        '$tipoDeProyecto',
-                        '$presupuestoTotal',
-                        '$nombreColaborador',
-                        '$liderProyecto',
-                        '$correoColaborador',
-                        '$cargoColaborador',
-                        '$telefonoColaboradorOpcional',
-                        '$paisDelColaborador',
-                        '$areaColaborador',
-                        '$valorHHColaborador',
-
-                    @p0, @p1)";
-                    $result = mysqli_query($conection, $query);
-                    if (!$result) {
-                        die('Query Failed' . mysqli_error($conection));
-                    }
-
-
-
-                    // $json = array();
-                    // while ($row = mysqli_fetch_array($result)) {
-                    //     $json[] = array(
-                    //         'OUT_CODRESULT' => $row['OUT_CODRESULT'],
-                    //         'OUT_MJERESULT' => $row['OUT_MJERESULT'],
-                    //         'idServicio' => $row['int_idServicio']
-                    //     );
-                    //     echo json_encode($json);
-                    // }
-                }
-            }
-
-            echo json_encode([
-                'cantExitosos' => $contadorExitosos,
-                'cantFallidos' => $contadorFallidos,
-                'cantTotal' => $contadorTotales,
-                'errores' => $errores,
-            ]);
-        } else {
-            echo json_encode([
-                'OUT_CODRESULT' => '01',
-                'MJE_CODRESULT' => 'El formato del archivo es incorrecto, debe ser .CSV de forma obligatoria.'
-            ]);
-        }
     }
+
+    $nomDocumento = basename($_FILES['file']['name']);
+    $tipo = strtolower(pathinfo($nomDocumento, PATHINFO_EXTENSION));
+
+    if ($tipo !== "csv") {
+        echo json_encode([
+            'OUT_CODRESULT' => '01',
+            'OUT_MJERESULT' => 'El formato del archivo es incorrecto, debe ser .CSV de forma obligatoria.'
+        ]);
+        exit;
+    }
+
+    $resultadoCSV = leerCSV($_FILES['file']['tmp_name']);
+    $filas = $resultadoCSV['filas'];
+    $encabezados = $resultadoCSV['encabezados'];
+
+    $errores = array();
+    $contadorExitosos = 0;
+    $contadorFallidos = 0;
+    $contadorTotales = 0;
+
+    foreach ($filas as $i => $fila) {
+        $contadorTotales++;
+        $resultadoValidarCampos = validarFormatoCampos($fila, $i + 2);
+
+        if ($resultadoValidarCampos['bool_errores']) {
+            $errores[] = $resultadoValidarCampos['errores'];
+            $contadorFallidos++;
+            continue;
+        }
+
+        $fila = $resultadoValidarCampos['fila'];
+
+        // Prepare the query with placeholders
+        $query = "CALL SP_ihh_cargaDatosBase(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @p0, @p1);";
+        $query .= "SELECT @p0 AS OUT_CODRESULT, @p1 AS OUT_MJERESULT;";
+
+        // Prepare the statement
+        $stmt = mysqli_prepare($conection, $query);
+        if (!$stmt) {
+            $errores[] = "Error preparing statement: " . mysqli_error($conection);
+            $contadorFallidos++;
+            continue;
+        }
+
+        // Bind parameters
+        mysqli_stmt_bind_param(
+            $stmt,
+            "ssssssssssssssssssssssss",
+            $fila['nombre Cliente'],
+            $fila['direccion Cliente'],
+            $fila['pais Cliente'],
+            $fila['servicio Cliente'],
+            $fila['nombre contacto cliente'],
+            $fila['correo contacto 1 cliente'],
+            $fila['correo contacto 2 cliente'],
+            $fila['telefono contacto'],
+            formatearFecha($fila['fecha inicio vigencia contacto']),
+            formatearFecha($fila['fecha fin vigencia contacto']),
+            $fila['nombre Proyecto'],
+            formatearFecha($fila['fecha Inicio proyecto']),
+            formatearFecha($fila['fecha fin proyecto']),
+            $fila['tipo de proyecto (llave en mano o eshopping)'],
+            $fila['presupuesto total'],
+            $fila['nombre colaborador'],
+            $fila['Lider proyecto (si o no)'],
+            $fila['correo colaborador'],
+            $fila['cargo colaborador'],
+            $fila['telefono colaborador (opcional)'],
+            $fila['pais del colaborador'],
+            $fila['area colaborador'],
+            $fila['valor hh colaborador']
+        );
+
+        // Execute the statement
+        if (mysqli_stmt_execute($stmt)) {
+            $result = mysqli_stmt_get_result($stmt);
+            $row = mysqli_fetch_assoc($result);
+            if ($row['OUT_CODRESULT'] !== '00') {
+                $errores[] = "Error en fila " . ($i + 2) . ": " . $row['OUT_MJERESULT'];
+                $contadorFallidos++;
+            } else {
+                $contadorExitosos++;
+            }
+            mysqli_free_result($result);
+        } else {
+            $errores[] = "Error executing query for row " . ($i + 2) . ": " . mysqli_stmt_error($stmt);
+            $contadorFallidos++;
+        }
+
+        mysqli_stmt_close($stmt);
+    }
+
+    echo json_encode([
+        'cantExitosos' => $contadorExitosos,
+        'cantFallidos' => $contadorFallidos,
+        'cantTotal' => $contadorTotales,
+        'errores' => $errores,
+    ]);
 }
+
+mysqli_close($conection);
