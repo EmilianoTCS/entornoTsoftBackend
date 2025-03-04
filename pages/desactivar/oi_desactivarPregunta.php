@@ -8,28 +8,30 @@ header("Access-Control-Allow-Methods: GET,POST");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-if (isset($_GET['listados'])) {
+if (isset($_GET['oi_desactivarPregunta'])) {
     $data = json_decode(file_get_contents("php://input"));
-    $idProyecto = $data->idProyecto;
+    $usuarioModificacion = $data->usuarioModificacion;
+    $idPregunta = $data->idPregunta;
 
-    $query = "CALL SP_AUX_listadoEddProyEmpForms($idProyecto)";
+    $query = "CALL SP_oi_desactivarPregunta(
+            '$idPregunta',
+            '$usuarioModificacion',
+            @p0, 
+            @p1)";
     $result = mysqli_query($conection, $query);
     if (!$result) {
         die('Query Failed' . mysqli_error($conection));
-    }
-    $json = array();
+    } else {
+        while ($row = mysqli_fetch_array($result)) {
 
-
-    while ($row = mysqli_fetch_array($result)) {
-        $json[] = array(
-            'idEDDProyEmp' => $row['idEDDProyEmp'],
-            'nomProyEmp' => $row['nomProyEmp'],
-            'cargoEnProy' => $row['cargoEnProy'],
-        );
+            $json[] = array(
+                'OUT_CODRESULT' => $row['OUT_CODRESULT'],
+                'OUT_MJERESULT' => $row['OUT_MJERESULT']
+            );
+        }
+        $jsonstring = json_encode($json);
+        echo $jsonstring;
     }
-    $jsonstring = json_encode($json);
-    echo $jsonstring;
-    mysqli_close($conection);
 } else {
     echo json_encode("Error");
 }
