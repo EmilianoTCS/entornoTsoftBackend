@@ -2,7 +2,9 @@
 $host = 'localhost';
 $user = 'root';
 $password = '';
-$db = 'entornoTsoft';
+$db = 'entornotsoft';
+// $db = 'ettestcarga';
+// $db = 'entornotsoftlimpia';
 $conection = @mysqli_connect($host, $user, $password, $db);
 
 // $host = 'us-cdbr-east-06.cleardb.net';
